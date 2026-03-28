@@ -34,10 +34,10 @@ export function CharacterItem({ character, index, onClick }: CharacterItemProps)
     }
 
     if (character.avatarId) {
-      return `/assets/avatars/${character.avatarId}.webp`;
+      return `${import.meta.env.BASE_URL}assets/avatars/${character.avatarId}.webp`;
     }
 
-    return '/assets/placeholder-avatar.png';
+    return `${import.meta.env.BASE_URL}assets/placeholder-avatar.png`;
   };
 
   const elementEmoji = ELEMENT_EMOJIS[character.element as keyof typeof ELEMENT_EMOJIS] || '?';
@@ -64,7 +64,7 @@ export function CharacterItem({ character, index, onClick }: CharacterItemProps)
               className={styles.image}
               loading="lazy"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = '/assets/placeholder-avatar.png';
+                (e.target as HTMLImageElement).src = `${import.meta.env.BASE_URL}assets/placeholder-avatar.png`;
               }}
             />
 
