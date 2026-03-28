@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-import type { Character } from '@/types';
+import { DragDropContext } from 'react-beautiful-dnd';
+import type { DropResult } from 'react-beautiful-dnd';
+import type { Character, TierKey } from '@/types';
 import { useTierListState } from '@/hooks/useTierListState';
 import { TIERS } from '@/config';
 import { TierRow } from './TierRow';
@@ -57,12 +58,12 @@ export function TierList({ characters }: TierListProps) {
     }
 
     // Determine destination tier
-    let destinationTier: string;
+    let destinationTier: TierKey;
     if (destination.droppableId === 'unassigned-pool') {
       destinationTier = 'unassigned';
     } else {
       // Extract tier from droppableId: "tier-s" → "S"
-      destinationTier = destination.droppableId.replace('tier-', '').toUpperCase();
+      destinationTier = destination.droppableId.replace('tier-', '').toUpperCase() as TierKey;
     }
 
     // Move character to destination

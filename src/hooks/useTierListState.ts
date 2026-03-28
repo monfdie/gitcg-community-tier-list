@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import type { Character, TierList } from '@/types';
+import type { Character, TierList, TierKey } from '@/types';
 import { TIERS, DEBUG } from '@/config';
 
 const STORAGE_KEY = 'gi_tier_list_draft';
@@ -52,7 +52,7 @@ export function useTierListState(allCharacters: Character[]) {
 
   // Move character from one tier to another
   const moveCharacterToTier = useCallback(
-    (character: Character, tierKey: keyof TierList | 'unassigned') => {
+    (character: Character, tierKey: TierKey) => {
       setState((prevState) => {
         const newState = { ...prevState };
 

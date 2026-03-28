@@ -50,6 +50,11 @@ export interface FormSubmissionPayload {
 }
 
 /**
+ * Union type for tier keys including unassigned pool
+ */
+export type TierKey = keyof TierList | 'unassigned';
+
+/**
  * Application state shape
  */
 export interface AppState {

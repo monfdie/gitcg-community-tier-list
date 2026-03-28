@@ -4,6 +4,7 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/20260328-gi-community-tier-list/',
   plugins: [react()],
   resolve: {
     alias: {
