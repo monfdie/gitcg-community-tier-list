@@ -1,4 +1,4 @@
-import { Character } from '@/types';
+import type { Character } from '@/types';
 import { CHARACTER_DATA_URL, DEBUG } from '@/config';
 
 /**
