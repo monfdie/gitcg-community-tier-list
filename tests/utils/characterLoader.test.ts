@@ -43,14 +43,17 @@ const mockCharacters: Character[] = [
 ];
 
 describe('characterLoader', () => {
+  const mockFetch = vi.fn();
+
   beforeEach(() => {
     // Mock fetch
-    global.fetch = vi.fn();
+    global.fetch = mockFetch as unknown as typeof fetch;
+    mockFetch.mockReset();
   });
 
   describe('loadCharacters', () => {
     it('should load and parse character data successfully', async () => {
-      (global.fetch as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      mockFetch.mockResolvedValueOnce({
         ok: true,
         json: () => Promise.resolve(mockCharacters),
       } as MockFetchResponse);
@@ -62,7 +65,7 @@ describe('characterLoader', () => {
     });
 
     it('should throw error on network failure', async () => {
-      (global.fetch as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 404,
         statusText: 'Not Found',
@@ -72,7 +75,7 @@ describe('characterLoader', () => {
     });
 
     it('should throw error on invalid JSON', async () => {
-      (global.fetch as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      mockFetch.mockResolvedValueOnce({
         ok: true,
         json: () => Promise.reject(new Error('Invalid JSON')),
       } as MockFetchResponse);
@@ -87,7 +90,7 @@ describe('characterLoader', () => {
         { id: 'invalid2', name: 'Invalid2', element: 'invalid_element', rarity: 5 }, // Invalid element
       ];
 
-      (global.fetch as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      mockFetch.mockResolvedValueOnce({
         ok: true,
         json: () => Promise.resolve(invalidData),
       } as MockFetchResponse);
