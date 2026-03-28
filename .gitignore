@@ -1,78 +1,24 @@
-# Dependencies
-node_modules/
-yarn.lock
-package-lock.json
-pnpm-lock.yaml
-
-# Production build
-dist/
-.dist/
-build/
-
-# Environment variables
-.env
-.env.local
-.env.*.local
-.env.production.local
-
-# IDE and editor
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-.DS_Store
-.sublime-project
-.sublime-workspace
-*.code-workspace
-
 # Logs
-logs/
+logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
 
-# Testing
-coverage/
-.nyc_output/
-.c8rc
+node_modules
+dist
+dist-ssr
+*.local
 
-# OS
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
-Thumbs.db
-*.psd
-*.sketch
-
-# Development
-.vite/
-src/**/*.module.css.d.ts
-
-# Temp files
-*.tmp
-*.temp
-.cache
-tmp/
-
-# Build cache
-.eslintcache
-.tsc-output/
-
-# Pre-commit hooks
-.husky/_
-
-# Local development
-.env.development.local
-.local/
-dist-*/
-
-# Development setup notes (keep template, exclude local setup)
-DEVELOPMENT_SETUP.md
-DEVELOPMENT_SETUP_*.md
-!DEVELOPMENT_SETUP_TEMPLATE.md
-
-# Character data (keep production build, exclude build artifacts)
-public/data/avatars/
-scripts/output/
-scripts/logs/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
