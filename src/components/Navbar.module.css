@@ -2,12 +2,9 @@
   background: transparent;
   border-bottom: none;
   padding: 10px;
-  position: static;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  visibility: hidden;
-  height: 56px;
 }
 
 .authContainer {
