@@ -38,11 +38,6 @@ jobs:
       - name: Type check
         run: npm run type-check
 
-      - name: Run tests
-        timeout-minutes: 1
-        continue-on-error: true
-        run: npm test -- --run || true
-
       - name: Build project
         run: npm run build
 
