@@ -3,708 +3,826 @@
     "id": "23",
     "name": "Albedo",
     "element": "geo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Albedo"
   },
   {
     "id": "62",
     "name": "Alhaitham",
     "element": "dendro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Alhatham"
   },
   {
     "id": "41",
     "name": "Arataki Itto",
     "element": "geo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Itto"
   },
   {
     "id": "80",
     "name": "Arlecchino",
     "element": "pyro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Arlecchino"
   },
   {
     "id": "66",
     "name": "Baizhu",
     "element": "dendro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Baizhuer"
   },
   {
     "id": "88",
     "name": "Chasca",
     "element": "anemo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Chasca"
   },
   {
     "id": "78",
     "name": "Chiori",
     "element": "geo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Chiori"
   },
   {
     "id": "91",
     "name": "Citlali",
     "element": "cryo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Citlali"
   },
   {
     "id": "82",
     "name": "Clorinde",
     "element": "electro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Clorinde"
   },
   {
     "id": "109",
     "name": "Columbina",
     "element": "hydro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Columbina"
   },
   {
     "id": "55",
     "name": "Cyno",
     "element": "electro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Cyno"
   },
   {
     "id": "63",
     "name": "Dehya",
     "element": "pyro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Dehya"
   },
   {
     "id": "5",
     "name": "Diluc",
     "element": "pyro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Diluc"
   },
   {
     "id": "107",
     "name": "Durin",
     "element": "pyro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Durin"
   },
   {
     "id": "83",
     "name": "Emilie",
     "element": "dendro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Emilie"
   },
   {
     "id": "96",
     "name": "Escoffier",
     "element": "cryo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Escoffier"
   },
   {
     "id": "35",
     "name": "Eula",
     "element": "cryo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Eula"
   },
   {
     "id": "104",
     "name": "Flins",
     "element": "electro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Flins"
   },
   {
     "id": "73",
     "name": "Furina",
     "element": "hydro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Furina"
   },
   {
     "id": "22",
     "name": "Ganyu",
     "element": "cryo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Ganyu"
   },
   {
     "id": "30",
     "name": "Hu Tao",
     "element": "pyro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Hutao"
   },
   {
     "id": "100",
     "name": "Ineffa",
     "element": "electro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Ineffa"
   },
   {
     "id": "1",
     "name": "Jean",
     "element": "anemo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Qin"
   },
   {
     "id": "31",
     "name": "Kaedehara Kazuha",
     "element": "anemo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Kazuha"
   },
   {
     "id": "0",
     "name": "Kamisato Ayaka",
     "element": "cryo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Ayaka"
   },
   {
     "id": "50",
     "name": "Kamisato Ayato",
     "element": "hydro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Ayato"
   },
   {
     "id": "26",
     "name": "Keqing",
     "element": "electro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Keqing"
   },
   {
     "id": "85",
     "name": "Kinich",
     "element": "dendro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Kinich"
   },
   {
     "id": "14",
     "name": "Klee",
     "element": "pyro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Klee"
   },
   {
     "id": "103",
     "name": "Lauma",
     "element": "dendro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Lauma"
   },
   {
     "id": "113",
     "name": "Linnea",
     "element": "geo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Linnea"
   },
   {
     "id": "68",
     "name": "Lyney",
     "element": "pyro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Liney"
   },
   {
     "id": "90",
     "name": "Mavuika",
     "element": "pyro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Mavuika"
   },
   {
     "id": "25",
     "name": "Mona",
     "element": "hydro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Mona"
   },
   {
     "id": "86",
     "name": "Mualani",
     "element": "hydro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Mualani"
   },
   {
     "id": "57",
     "name": "Nahida",
     "element": "dendro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Nahida"
   },
   {
     "id": "75",
     "name": "Navia",
     "element": "geo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Navia"
   },
   {
     "id": "106",
     "name": "Nefer",
     "element": "dendro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Nefer"
   },
   {
     "id": "71",
     "name": "Neuvillette",
     "element": "hydro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Neuvillette"
   },
   {
     "id": "54",
     "name": "Nilou",
     "element": "hydro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Nilou"
   },
   {
     "id": "20",
     "name": "Qiqi",
     "element": "cryo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Qiqi"
   },
   {
     "id": "36",
     "name": "Raiden Shogun",
     "element": "electro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Shougun"
   },
   {
     "id": "38",
     "name": "Sangonomiya Kokomi",
     "element": "hydro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Kokomi"
   },
   {
     "id": "47",
     "name": "Shenhe",
     "element": "cryo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Shenhe"
   },
   {
     "id": "79",
     "name": "Sigewinne",
     "element": "hydro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Sigewinne"
   },
   {
     "id": "98",
     "name": "Skirk",
     "element": "cryo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_SkirkNew"
   },
   {
     "id": "18",
     "name": "Tartaglia",
     "element": "hydro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Tartaglia"
   },
   {
     "id": "53",
     "name": "Tighnari",
     "element": "dendro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Tighnari"
   },
   {
     "id": "traveler-anemo",
     "name": "Traveler",
     "element": "anemo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_PlayerBoy"
   },
   {
     "id": "traveler-dendro",
     "name": "Traveler",
     "element": "dendro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_PlayerBoy"
   },
   {
     "id": "traveler-electro",
     "name": "Traveler",
     "element": "electro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_PlayerBoy"
   },
   {
     "id": "traveler-geo",
     "name": "Traveler",
     "element": "geo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_PlayerBoy"
   },
   {
     "id": "traveler-hydro",
     "name": "Traveler",
     "element": "hydro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_PlayerBoy"
   },
   {
     "id": "traveler-pyro",
     "name": "Traveler",
     "element": "pyro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_PlayerBoy"
   },
   {
     "id": "95",
     "name": "Varesa",
     "element": "electro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Varesa"
   },
   {
     "id": "112",
     "name": "Varka",
     "element": "anemo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Varka"
   },
   {
     "id": "8",
     "name": "Venti",
     "element": "anemo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Venti"
   },
   {
     "id": "59",
     "name": "Wanderer",
     "element": "anemo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Wanderer"
   },
   {
     "id": "70",
     "name": "Wriothesley",
     "element": "cryo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Wriothesley"
   },
   {
     "id": "77",
     "name": "Xianyun",
     "element": "anemo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Liuyun"
   },
   {
     "id": "12",
     "name": "Xiao",
     "element": "anemo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Xiao"
   },
   {
     "id": "87",
     "name": "Xilonen",
     "element": "geo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Xilonen"
   },
   {
     "id": "42",
     "name": "Yae Miko",
     "element": "electro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Yae"
   },
   {
     "id": "44",
     "name": "Yelan",
     "element": "hydro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Yelan"
   },
   {
     "id": "33",
     "name": "Yoimiya",
     "element": "pyro",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Yoimiya"
   },
   {
     "id": "93",
     "name": "Yumemizuki Mizuki",
     "element": "anemo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Mizuki"
   },
   {
     "id": "15",
     "name": "Zhongli",
     "element": "geo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Zhongli"
   },
   {
     "id": "110",
     "name": "Zibai",
     "element": "geo",
-    "rarity": 5
+    "rarity": 5,
+    "avatarId": "UI_Gacha_AvatarIcon_Zibai"
   },
   {
     "id": "105",
     "name": "Aino",
     "element": "hydro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Aino"
   },
   {
     "id": "46",
     "name": "Aloy",
     "element": "cryo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Aloy"
   },
   {
     "id": "7",
     "name": "Amber",
     "element": "pyro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Ambor"
   },
   {
     "id": "3",
     "name": "Barbara",
     "element": "hydro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Barbara"
   },
   {
     "id": "10",
     "name": "Beidou",
     "element": "electro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Beidou"
   },
   {
     "id": "17",
     "name": "Bennett",
     "element": "pyro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Bennett"
   },
   {
     "id": "56",
     "name": "Candace",
     "element": "hydro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Candace"
   },
   {
     "id": "72",
     "name": "Charlotte",
     "element": "cryo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Charlotte"
   },
   {
     "id": "74",
     "name": "Chevreuse",
     "element": "pyro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Chevreuse"
   },
   {
     "id": "21",
     "name": "Chongyun",
     "element": "cryo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Chongyun"
   },
   {
     "id": "51",
     "name": "Collei",
     "element": "dendro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Collei"
   },
   {
     "id": "99",
     "name": "Dahlia",
     "element": "hydro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Dahlia"
   },
   {
     "id": "24",
     "name": "Diona",
     "element": "cryo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Diona"
   },
   {
     "id": "52",
     "name": "Dori",
     "element": "electro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Dori"
   },
   {
     "id": "60",
     "name": "Faruzan",
     "element": "anemo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Faruzan"
   },
   {
     "id": "16",
     "name": "Fischl",
     "element": "electro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Fischl"
   },
   {
     "id": "69",
     "name": "Freminet",
     "element": "cryo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Freminet"
   },
   {
     "id": "76",
     "name": "Gaming",
     "element": "pyro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Gaming"
   },
   {
     "id": "39",
     "name": "Gorou",
     "element": "geo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Gorou"
   },
   {
     "id": "94",
     "name": "Iansan",
     "element": "electro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Iansan"
   },
   {
     "id": "97",
     "name": "Ifa",
     "element": "anemo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Ifa"
   },
   {
     "id": "111",
     "name": "Illuga",
     "element": "geo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Illuga"
   },
   {
     "id": "108",
     "name": "Jahoda",
     "element": "anemo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Jahoda"
   },
   {
     "id": "84",
     "name": "Kachina",
     "element": "geo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Kachina"
   },
   {
     "id": "4",
     "name": "Kaeya",
     "element": "cryo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Kaeya"
   },
   {
     "id": "65",
     "name": "Kaveh",
     "element": "dendro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Kaveh"
   },
   {
     "id": "45",
     "name": "Kirara",
     "element": "dendro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Momoka"
   },
   {
     "id": "40",
     "name": "Kujou Sara",
     "element": "electro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Sara"
   },
   {
     "id": "49",
     "name": "Kuki Shinobu",
     "element": "electro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Shinobu"
   },
   {
     "id": "92",
     "name": "Lan Yan",
     "element": "anemo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Lanyan"
   },
   {
     "id": "58",
     "name": "Layla",
     "element": "cryo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Layla"
   },
   {
     "id": "2",
     "name": "Lisa",
     "element": "electro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Lisa"
   },
   {
     "id": "67",
     "name": "Lynette",
     "element": "anemo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Linette"
   },
   {
     "id": "64",
     "name": "Mika",
     "element": "cryo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Mika"
   },
   {
     "id": "13",
     "name": "Ningguang",
     "element": "geo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Ningguang"
   },
   {
     "id": "19",
     "name": "Noelle",
     "element": "geo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Noel"
   },
   {
     "id": "89",
     "name": "Ororon",
     "element": "electro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Olorun"
   },
   {
     "id": "6",
     "name": "Razor",
     "element": "electro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Razor"
   },
   {
     "id": "29",
     "name": "Rosaria",
     "element": "cryo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Rosaria"
   },
   {
     "id": "37",
     "name": "Sayu",
     "element": "anemo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Sayu"
   },
   {
     "id": "81",
     "name": "Sethos",
     "element": "electro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Sethos"
   },
   {
     "id": "43",
     "name": "Shikanoin Heizou",
     "element": "anemo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Heizo"
   },
   {
     "id": "27",
     "name": "Sucrose",
     "element": "anemo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Sucrose"
   },
   {
     "id": "34",
     "name": "Thoma",
     "element": "pyro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Tohma"
   },
   {
     "id": "9",
     "name": "Xiangling",
     "element": "pyro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Xiangling"
   },
   {
     "id": "11",
     "name": "Xingqiu",
     "element": "hydro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Xingqiu"
   },
   {
     "id": "28",
     "name": "Xinyan",
     "element": "pyro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Xinyan"
   },
   {
     "id": "32",
     "name": "Yanfei",
     "element": "pyro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Feiyan"
   },
   {
     "id": "61",
     "name": "Yaoyao",
     "element": "dendro",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Yaoyao"
   },
   {
     "id": "48",
     "name": "Yun Jin",
     "element": "geo",
-    "rarity": 4
+    "rarity": 4,
+    "avatarId": "UI_Gacha_AvatarIcon_Yunjin"
   }
 ]
