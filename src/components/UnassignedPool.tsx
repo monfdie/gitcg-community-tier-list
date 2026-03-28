@@ -7,7 +7,9 @@ interface UnassignedPoolProps {
   characters: Character[];
   searchQuery?: string;
   onCharacterClick?: (character: Character) => void;
-  onDragStart?: (character: Character, e: React.DragEvent<HTMLDivElement>) => void;
+  onCharacterDragStart?: (character: Character) => (e: React.DragEvent<HTMLDivElement>) => void;
+  onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void;
+  onDrop?: (e: React.DragEvent<HTMLDivElement>) => void;
 }
 
 /**
@@ -17,7 +19,9 @@ export function UnassignedPool({
   characters,
   searchQuery = '',
   onCharacterClick,
-  onDragStart,
+  onCharacterDragStart,
+  onDragOver,
+  onDrop,
 }: UnassignedPoolProps) {
   const filteredCharacters = useMemo(() => {
     if (!searchQuery.trim()) {
@@ -49,7 +53,7 @@ export function UnassignedPool({
   }
 
   return (
-    <div className={styles.unassignedPool}>
+    <div className={styles.unassignedPool} onDragOver={onDragOver} onDrop={onDrop}>
       <div className={styles.header}>
         <h3>Available Characters</h3>
         <span className={styles.count}>{filteredCharacters.length} left</span>
@@ -61,9 +65,7 @@ export function UnassignedPool({
             key={character.id}
             character={character}
             onClick={onCharacterClick}
-            onDragStart={
-              onDragStart ? (e) => onDragStart(character, e) : undefined
-            }
+            onDragStart={onCharacterDragStart?.(character)}
           />
         ))}
       </div>

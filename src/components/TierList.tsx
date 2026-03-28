@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Character } from '@/types';
 import { useTierListState } from '@/hooks/useTierListState';
+import { useDragDrop } from '@/hooks/useDragDrop';
 import { TIERS } from '@/config';
 import { TierRow } from './TierRow';
 import { UnassignedPool } from './UnassignedPool';
@@ -21,10 +22,15 @@ export function TierList({ characters, isAuthenticated, onSubmit }: TierListProp
     tierList,
     unassignedCharacters,
     moveCharacterToTier,
+    swapInTier,
+    reorderUnassigned,
     isComplete,
     getTierCount,
     reset,
   } = useTierListState(characters);
+
+  const { handleDragStart, handleDragOver, handleDropOnTier, handleDropOnUnassigned } =
+    useDragDrop(moveCharacterToTier, swapInTier, reorderUnassigned, tierList, unassignedCharacters);
 
   const handleCharacterClick = (character: Character) => {
     // If character is in a tier, move to unassigned
@@ -109,6 +115,9 @@ export function TierList({ characters, isAuthenticated, onSubmit }: TierListProp
             characters={tierList[tier as keyof typeof tierList]}
             count={getTierCount(tier as keyof typeof tierList)}
             onCharacterClick={handleCharacterClick}
+            onDragOver={handleDragOver}
+            onDrop={handleDropOnTier(tier)}
+            onCharacterDragStart={(char) => handleDragStart(char, 'tier', tier)}
           />
         ))}
       </div>
@@ -117,6 +126,9 @@ export function TierList({ characters, isAuthenticated, onSubmit }: TierListProp
         characters={unassignedCharacters}
         searchQuery={searchQuery}
         onCharacterClick={handleCharacterClick}
+        onCharacterDragStart={(char) => handleDragStart(char, 'unassigned')}
+        onDragOver={handleDragOver}
+        onDrop={handleDropOnUnassigned}
       />
 
       {isComplete() && (
