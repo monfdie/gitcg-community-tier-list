@@ -7,9 +7,10 @@
 
 /* Tiers Container - tiermaker style */
 .tiersContainer {
-  background: #2a2a2a;
-  border: 1px solid #444;
-  border-radius: 4px;
+  background: #1A1A17;
+  border-left: solid 1px #000;
+  border-right: solid 1px #000;
+  border-radius: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;

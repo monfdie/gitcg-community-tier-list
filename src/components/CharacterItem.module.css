@@ -2,7 +2,7 @@
   padding: 0;
   background: transparent;
   border: none;
-  border-radius: 2px;
+  border-radius: 0;
   cursor: grab;
   user-select: none;
   transition: opacity 0.2s ease, transform 0.1s ease;
@@ -12,17 +12,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
 }
 
 .characterItem:hover {
   border-color: transparent;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  transform: scale(1.02);
+  box-shadow: none;
+  transform: none;
 }
 
 .characterItem:focus-visible {
-  outline: 2px solid #4285f4;
-  outline-offset: 1px;
+  outline: none;
+  outline-offset: 0;
 }
 
 .characterItem.dragging {
@@ -36,8 +39,8 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  border-radius: 2px;
-  background: #222;
+  border-radius: 0;
+  background: #000;
   flex: 1;
 }
 
@@ -45,12 +48,12 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 2px;
-  transition: transform 0.2s ease;
+  border-radius: 0;
+  transition: none;
 }
 
 .characterItem:hover .image {
-  transform: scale(1.05);
+  transform: none;
 }
 
 /* Hide badges and info */
@@ -85,14 +88,16 @@
 /* Mobile responsive */
 @media (max-width: 640px) {
   .characterItem {
-    border-radius: 1px;
+    border-radius: 0;
+    width: 70px;
+    height: 70px;
   }
 
   .imageWrapper {
-    border-radius: 1px;
+    border-radius: 0;
   }
 
   .image {
-    border-radius: 1px;
+    border-radius: 0;
   }
 }

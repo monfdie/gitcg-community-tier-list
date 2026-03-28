@@ -1,7 +1,7 @@
 .navbar {
-  background: #1a1a1a;
-  border-bottom: 1px solid #333;
-  padding: 1rem 2rem;
+  background: #000;
+  border-bottom: none;
+  padding: 10px;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -17,12 +17,7 @@
 }
 
 .userInfo {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 1rem;
-  background: #333;
-  border-radius: 20px;
+  display: none;
 }
 
 .avatar {
@@ -30,7 +25,7 @@
   height: 36px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #555;
+  border: none;
 }
 
 .userName {
@@ -46,7 +41,7 @@
 .button {
   padding: 0.6rem 1.2rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
   font-size: 0.9rem;
   font-weight: 600;
@@ -60,28 +55,29 @@
 }
 
 .loginButton {
-  background: linear-gradient(135deg, #4285f4 0%, #3367d6 100%);
-  color: white;
+  background: #fff;
+  color: #333;
   border: none;
+  font-weight: bold;
 }
 
 .loginButton:hover:not(:disabled) {
-  background: linear-gradient(135deg, #357ae8 0%, #2e5cc8 100%);
-  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.4);
+  background: #f0f0f0;
+  box-shadow: none;
 }
 
 .loginButton:active:not(:disabled) {
-  transform: scale(0.98);
+  transform: none;
 }
 
 /* Mobile responsive */
 @media (max-width: 768px) {
   .navbar {
-    padding: 0.75rem 1.5rem;
+    padding: 10px;
   }
 
   .userInfo {
-    padding: 0.4rem 0.8rem;
+    display: none;
   }
 
   .userName {
@@ -101,7 +97,7 @@
 
 @media (max-width: 480px) {
   .navbar {
-    padding: 0.75rem 1rem;
+    padding: 10px;
   }
 
   .authContainer {
