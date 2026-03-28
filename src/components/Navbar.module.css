@@ -1,9 +1,10 @@
 .navbar {
-  background: #000;
+  background: transparent;
   border-bottom: none;
   padding: 10px;
-  position: sticky;
+  position: fixed;
   top: 0;
+  right: 0;
   z-index: 100;
   display: flex;
   justify-content: flex-end;

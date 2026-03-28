@@ -21,14 +21,14 @@ export const TIERS = ['S', 'A', 'B', 'C', 'D'] as const;
 export type TierLevel = typeof TIERS[number];
 
 /**
- * Tier colors for visual distinction (tiermaker.com colors)
+ * Tier colors for visual distinction (tiermaker.com colors - RGB format)
  */
 export const TIER_COLORS: Record<TierLevel, string> = {
-  S: '#FF5252', // Red - Best
-  A: '#FFB74D', // Orange
-  B: '#FFEB3B', // Yellow
-  C: '#FFF59D', // Light Yellow
-  D: '#81C784', // Green - Worst
+  S: 'rgb(255, 127, 127)', // Red - Best
+  A: 'rgb(255, 201, 95)', // Orange
+  B: 'rgb(255, 238, 77)', // Yellow
+  C: 'rgb(255, 241, 157)', // Light Yellow
+  D: 'rgb(157, 201, 109)', // Green - Worst
 };
 
 // ============================================================================

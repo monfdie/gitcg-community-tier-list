@@ -2,14 +2,13 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0;
 }
 
 /* Tiers Container - tiermaker style */
 .tiersContainer {
   background: #1A1A17;
-  border-left: solid 1px #000;
-  border-right: solid 1px #000;
+  border: none;
   border-radius: 0;
   overflow: hidden;
   display: flex;
