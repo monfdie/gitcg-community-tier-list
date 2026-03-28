@@ -26,6 +26,18 @@ export const GOOGLE_FORM_CONFIG = {
   baseUrl: 'https://docs.google.com/forms/d',
   formResponseEndpoint: (formId: string) =>
     `${GOOGLE_FORM_CONFIG.baseUrl}/${formId}/formResponse`,
+  formFields: {
+    // Map form field names to entry IDs (from Google Forms pre-fill URL)
+    // These should be updated based on your actual form structure
+    userName: 'entry.1234567890', // Replace with actual entry ID
+    userEmail: 'entry.0987654321', // Replace with actual entry ID
+    sTier: 'entry.1111111111',     // Replace with actual entry ID
+    aTier: 'entry.2222222222',     // Replace with actual entry ID
+    bTier: 'entry.3333333333',     // Replace with actual entry ID
+    cTier: 'entry.4444444444',     // Replace with actual entry ID
+    dTier: 'entry.5555555555',     // Replace with actual entry ID
+    timestamp: 'entry.6666666666', // Replace with actual entry ID
+  },
 } as const;
 
 /**
