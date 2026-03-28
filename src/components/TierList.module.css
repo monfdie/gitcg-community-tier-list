@@ -1,0 +1,195 @@
+.tierList {
+  width: 100%;
+}
+
+.controls {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.controls h2 {
+  margin: 0 0 1.5rem 0;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.controlsRow {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #4285f4;
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+}
+
+.actionButtons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.buttonSecondary,
+.buttonPrimary {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.buttonSecondary {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.buttonSecondary:hover:not(:disabled) {
+  background: #e0e0e0;
+}
+
+.buttonPrimary {
+  background: #4285f4;
+  color: white;
+}
+
+.buttonPrimary:hover:not(:disabled) {
+  background: #357ae8;
+  box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+}
+
+.buttonSecondary:disabled,
+.buttonPrimary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.progress {
+  margin-top: 1rem;
+}
+
+.progressBar {
+  width: 100%;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #4285f4, #34a853);
+  transition: width 0.3s ease;
+}
+
+.progressText {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.tiersContainer {
+  margin-bottom: 2rem;
+}
+
+.completionMessage {
+  padding: 1.5rem;
+  background: #e8f5e9;
+  border: 2px solid #66bb6a;
+  border-radius: 8px;
+  text-align: center;
+  color: #2e7d32;
+  font-weight: 500;
+  margin-top: 2rem;
+}
+
+.completionMessage p {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .controls {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .controls h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .controlsRow {
+    flex-direction: column;
+  }
+
+  .searchInput {
+    width: 100%;
+  }
+
+  .actionButtons {
+    width: 100%;
+  }
+
+  .buttonSecondary,
+  .buttonPrimary {
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .controls {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .controls h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .searchInput {
+    font-size: 0.9rem;
+    padding: 0.6rem 0.75rem;
+  }
+
+  .actionButtons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .buttonSecondary,
+  .buttonPrimary {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .completionMessage {
+    padding: 1rem;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+  }
+
+  .completionMessage p {
+    font-size: 0.95rem;
+  }
+}

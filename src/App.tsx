@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Navbar } from '@/components/Navbar';
+import { TierList } from '@/components/TierList';
+import { useGoogleAuth } from '@/hooks/useGoogleAuth';
 import { loadCharacters } from '@/utils/characterLoader';
 import type { Character } from '@/types';
 import styles from './App.module.css';
@@ -8,6 +10,7 @@ function App() {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { isAuthenticated, user } = useGoogleAuth();
 
   useEffect(() => {
     loadCharacters()
@@ -21,23 +24,39 @@ function App() {
       });
   }, []);
 
+  const handleSubmitTierList = () => {
+    if (!isAuthenticated || !user) {
+      setError('Please sign in to submit your tier list');
+      return;
+    }
+    // TODO: Implement form submission
+    console.log('Submitting tier list for', user.name);
+  };
+
   return (
     <div className={styles.app}>
       <Navbar />
 
       <main className={styles.main}>
         <div className={styles.container}>
-          <h2>Genshin Impact Community Tier List</h2>
-
-          {isLoading && <div className={styles.status}>Loading characters...</div>}
-
-          {error && <div className={styles.error}>Error: {error}</div>}
-
-          {!isLoading && !error && (
-            <div className={styles.info}>
-              <p>Ready to create your tier list!</p>
-              <p>{characters.length} characters loaded.</p>
+          {isLoading && (
+            <div className={styles.status}>
+              <p>Loading characters...</p>
             </div>
+          )}
+
+          {error && (
+            <div className={styles.error}>
+              <p>Error: {error}</p>
+            </div>
+          )}
+
+          {!isLoading && !error && characters.length > 0 && (
+            <TierList
+              characters={characters}
+              isAuthenticated={isAuthenticated}
+              onSubmit={handleSubmitTierList}
+            />
           )}
         </div>
       </main>
