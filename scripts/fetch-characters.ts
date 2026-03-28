@@ -31,32 +31,38 @@ const VALID_ELEMENTS = ['pyro', 'hydro', 'electro', 'cryo', 'anemo', 'geo', 'den
 const VALID_RARITIES = [4, 5];
 
 /**
- * Validates and normalizes character data
+ * Validates and normalizes character data from Lunaris API
  */
-function validateCharacter(char: any): Character | null {
-  if (!char.id || !char.name || !char.element || !char.rarity) {
-    console.warn(`⚠️ Skipping character with missing fields:`, char);
+function validateCharacter(char: any, id: string): Character | null {
+  // Extract English name - API uses enName, ptName, or ruName
+  const name = char.enName || char.ptName || char.name || '';
+  const element = char.element || '';
+  
+  if (!name || !element) {
+    console.warn(`⚠️ Skipping character ${id}: missing name or element`);
     return null;
   }
 
-  const element = String(char.element).toLowerCase();
-  const rarity = Number(char.rarity);
-
-  if (!VALID_ELEMENTS.includes(element)) {
-    console.warn(`⚠️ Skipping character "${char.name}": invalid element "${element}"`);
+  // Parse element (API returns "Cryo", "Pyro", etc.)
+  const elementLower = String(element).toLowerCase();
+  if (!VALID_ELEMENTS.includes(elementLower)) {
+    console.warn(`⚠️ Skipping character "${name}": invalid element "${element}"`);
     return null;
   }
 
-  if (!VALID_RARITIES.includes(rarity)) {
-    console.warn(`⚠️ Skipping character "${char.name}": invalid rarity "${rarity}"`);
-    return null;
+  // Parse rarity from qualityType (QUALITY_ORANGE = 5-star, QUALITY_PURPLE = 4-star)
+  let rarity: 4 | 5 = 4;
+  if (char.qualityType === 'QUALITY_ORANGE' || char.qualityType === 'QUALITY_5') {
+    rarity = 5;
+  } else if (char.qualityType === 'QUALITY_PURPLE' || char.qualityType === 'QUALITY_4') {
+    rarity = 4;
   }
 
   return {
-    id: String(char.id).toLowerCase().replace(/\s+/g, '-'),
-    name: String(char.name),
-    element: element as Character['element'],
-    rarity: rarity as 4 | 5,
+    id: id.toLowerCase().replace(/[_\s]+/g, '-').replace(/-anemo|-cryo|-dendro|-electro|-geo|-hydro|-pyro$/, ''),
+    name: name,
+    element: elementLower as Character['element'],
+    rarity: rarity,
   };
 }
 
@@ -82,7 +88,14 @@ async function fetchCharacters() {
     const rawData = await response.json();
 
     // Handle different API response formats
-    const items = Array.isArray(rawData) ? rawData : rawData.items || rawData.data || [];
+    let items: any[] = [];
+    
+    if (Array.isArray(rawData)) {
+      items = rawData;
+    } else if (typeof rawData === 'object' && rawData !== null) {
+      // Convert object with character IDs as keys to array
+      items = Object.values(rawData);
+    }
 
     if (items.length === 0) {
       throw new Error('No characters found in API response');
@@ -90,10 +103,18 @@ async function fetchCharacters() {
 
     // Validate and normalize each character
     const characters: Character[] = [];
-    for (const item of items) {
-      const char = validateCharacter(item);
+    for (const [charId, item] of Object.entries(items)) {
+      // Skip duplicate elements for the same character (e.g., 10000005_ANEMO, 10000005_CRYO)
+      if (charId.match(/_[A-Z]+$/)) {
+        // This is a variant, skip for now (keep only main version)
+        continue;
+      }
+      const char = validateCharacter(item, charId);
       if (char) {
-        characters.push(char);
+        // Check if we already have this character
+        if (!characters.some((c) => c.id === char.id)) {
+          characters.push(char);
+        }
       }
     }
 
