@@ -16,7 +16,9 @@ dist-ssr
 scripts/form-questions.json
 scripts/characters-full.json
 scripts/google-form-importer.gs
-scripts/temp/
+
+# Temporary directory (do NOT commit)
+/tmp/
 
 # Editor directories and files
 .vscode/*

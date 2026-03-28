@@ -21,6 +21,7 @@ interface Character {
   name: string;
   element: 'pyro' | 'hydro' | 'electro' | 'cryo' | 'anemo' | 'geo' | 'dendro';
   rarity: 4 | 5;
+  avatarId?: string;
   imageUrl?: string;
 }
 
@@ -51,11 +52,21 @@ function validateCharacterFromAPI(char: any, id: string): Character | null {
     rarity = 4;
   }
 
+  // Extract avatar ID from API (e.g., "UI_AvatarIcon_Nahida")
+  let avatarId: string | undefined;
+  if (char.CardImg) {
+    // CardImg is the full path, extract the ID
+    const parts = char.CardImg.split('/');
+    const filename = parts[parts.length - 1];
+    avatarId = filename.replace('.webp', '').replace('.png', '');
+  }
+
   return {
     id: id.toLowerCase().replace(/[_\s]+/g, '-').replace(/-anemo|-cryo|-dendro|-electro|-geo|-hydro|-pyro$/, ''),
     name: name,
     element: elementLower as Character['element'],
     rarity: rarity,
+    ...(avatarId && { avatarId }),
   };
 }
 

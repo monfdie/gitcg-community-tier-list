@@ -14,7 +14,9 @@
 - **form-questions.json** — Вопросы в JSON формате (артефакт генерации)
 - **characters-full.json** — Полный список символов из API (артефакт)
 - **google-form-importer.gs** — Google Apps Script для форм (⚠️ АВТОГЕНЕРИРУЕТСЯ)
-- **temp/avatars/** — Загруженные аватары персонажей (для обзора и выбора)
+
+### Temporary Files (корневой /tmp/ НЕ отслеживается)
+- **/tmp/avatars/** — Загруженные аватары персонажей (для обзора и выбора)
 
 ---
 
@@ -44,8 +46,8 @@ npm run scripts:fetch-avatars
 ```
 
 Это:
-- Загружает иконки из Lunaris API
-- Сохраняет в `scripts/temp/avatars/` (не коммитится)
+- Загружает иконки из Lunaris API (используя avatarId из characters.json)
+- Сохраняет в `/tmp/avatars/` (не коммитится)
 - Показывает статистику загрузки
 
 **Результат:**
@@ -80,15 +82,15 @@ npm run scripts:fetch-avatars
 ```
 
 Скрипт:
-1. Читает список персонажей из `public/data/characters.json`
-2. Загружает иконки из Lunaris API
-3. Сохраняет в `scripts/temp/avatars/` для обзора
+1. Читает список персонажей из `public/data/characters.json` (включая `avatarId`)
+2. Загружает иконки из Lunaris API используя avatarId
+3. Сохраняет в `/tmp/avatars/` для обзора
 4. Показывает статистику
 
 ### Using Downloaded Avatars
 
 После загрузки:
-1. Откройте `scripts/temp/avatars/` и посмотрите иконки
+1. Откройте `/tmp/avatars/` и посмотрите иконки
 2. Скопируйте нужные в `public/assets/avatars/`
 3. (Опционально) Обновите `public/data/characters.json` с `imageUrl`
 4. Используйте в компонентах

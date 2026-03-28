@@ -4,12 +4,12 @@
  * Usage:
  * npm run scripts:fetch-avatars
  * 
- * Output: scripts/temp/avatars/ (not committed)
+ * Output: /tmp/avatars/ (not committed)
  * 
  * This script:
  * 1. Reads character list from public/data/characters.json
- * 2. Downloads avatar images from Lunaris API
- * 3. Saves to scripts/temp/avatars/ for review
+ * 2. Uses avatarId to download avatars from Lunaris API
+ * 3. Saves to /tmp/avatars/ for review
  * 4. Shows download report
  * 
  * For production, select needed avatars and copy to public/assets/avatars/
@@ -23,69 +23,72 @@ interface Character {
   name: string;
   element: string;
   rarity: number;
+  avatarId?: string;
 }
 
 /**
  * Convert character ID to Lunaris API avatar ID
  * Examples:
- *   "nahida" → "UI_AvatarIcon_Nahida"
- *   "raiden-shogun" → "UI_AvatarIcon_Raiden"
- *   "kaedehara-kazuha" → "UI_AvatarIcon_Kazuha"
- *   "traveler-anemo" → "UI_AvatarIcon_PlayerBoy" or "UI_AvatarIcon_PlayerGirl"
+ *   "nahida" → "UI_AvatarIcon_Nahida" (from avatarId in characters.json)
+ *   "traveler-anemo" → "UI_AvatarIcon_PlayerBoy" (hardcoded fallback)
  */
-function getAvatarId(charId: string): string {
-  // Special case: Traveler uses generic icons
-  if (charId.startsWith('traveler-')) {
-    // For now, use a standard Traveler icon (can be customized)
+function getAvatarId(char: Character): string | null {
+  // If avatarId is present in character data, use it
+  if (char.avatarId) {
+    return char.avatarId;
+  }
+
+  // Special case: Traveler uses standard icon
+  if (char.id.startsWith('traveler-')) {
     return 'UI_AvatarIcon_PlayerBoy';
   }
 
-  // Convert ID format: "kaedehara-kazuha" → "Kazuha"
-  // Most character IDs map directly to their last name
-  const parts = charId.split('-');
-  const lastPart = parts[parts.length - 1];
-  
-  // Capitalize first letter
-  const capitalized = lastPart.charAt(0).toUpperCase() + lastPart.slice(1);
-  
-  return `UI_AvatarIcon_${capitalized}`;
+  // No avatar ID available
+  return null;
 }
 
 /**
  * Downloads a single avatar image
  */
 async function downloadAvatar(
-  charId: string,
-  charName: string,
+  char: Character,
   apiBaseUrl: string
 ): Promise<{ success: boolean; message: string }> {
   try {
-    const avatarId = getAvatarId(charId);
+    const avatarId = getAvatarId(char);
+    
+    if (!avatarId) {
+      return {
+        success: false,
+        message: `⚠️ [${char.name}] No avatarId available`,
+      };
+    }
+
     const avatarUrl = `${apiBaseUrl}${avatarId}.webp`;
 
     const response = await fetch(avatarUrl);
     if (!response.ok) {
       return {
         success: false,
-        message: `⚠️ [${charName}] Not found (404): ${avatarId}`,
+        message: `⚠️ [${char.name}] Not found (404): ${avatarId}`,
       };
     }
 
     const buffer = await response.arrayBuffer();
-    const tempDir = join(process.cwd(), 'scripts', 'temp', 'avatars');
+    const tempDir = join(process.cwd(), 'tmp', 'avatars');
     mkdirSync(tempDir, { recursive: true });
 
-    const filePath = join(tempDir, `${charId}.webp`);
+    const filePath = join(tempDir, `${char.id}.webp`);
     writeFileSync(filePath, Buffer.from(buffer));
 
     return {
       success: true,
-      message: `✅ [${charName}] Downloaded`,
+      message: `✅ [${char.name}] Downloaded`,
     };
   } catch (error) {
     return {
       success: false,
-      message: `❌ [${charName}] Error: ${error instanceof Error ? error.message : String(error)}`,
+      message: `❌ [${char.name}] Error: ${error instanceof Error ? error.message : String(error)}`,
     };
   }
 }
@@ -115,7 +118,7 @@ async function fetchAvatars() {
     // Download avatars sequentially with small delays to avoid rate limiting
     for (let i = 0; i < characters.length; i++) {
       const char = characters[i];
-      const result = await downloadAvatar(char.id, char.name, apiBaseUrl);
+      const result = await downloadAvatar(char, apiBaseUrl);
       
       console.log(result.message);
       
@@ -131,23 +134,22 @@ async function fetchAvatars() {
       }
     }
 
-    const tempDir = join(process.cwd(), 'scripts', 'temp', 'avatars');
+    const tempDir = join(process.cwd(), 'tmp', 'avatars');
     console.log(`\n📊 Summary:`);
     console.log(`  ✅ Downloaded: ${successCount}`);
-    console.log(`  ⚠️ Failed: ${failureCount}`);
+    console.log(`  ⚠️ Failed/Skipped: ${failureCount}`);
     console.log(`  📁 Location: ${tempDir}`);
 
     console.log(`\n💡 Next steps:`);
-    console.log(`1. Review avatars in scripts/temp/avatars/`);
+    console.log(`1. Review avatars in /tmp/avatars/`);
     console.log(`2. Copy avatars you want to use to public/assets/avatars/`);
     console.log(`3. Update character records with imageUrl if needed`);
     console.log(`4. Run: npm run scripts:generate-form-questions`);
 
     if (failureCount > 0) {
       console.log(
-        `\n⚠️ Note: Some avatars failed to download. This is normal if the API`
+        `\n⚠️ Note: Some avatars failed or skipped. Check /tmp/avatars/ for what was downloaded.`
       );
-      console.log(`   has different ID formats. Check scripts/temp/avatars/ for what was downloaded.`);
     }
   } catch (error) {
     console.error('❌ Error fetching avatars:', error);
