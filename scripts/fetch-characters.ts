@@ -103,6 +103,8 @@ async function fetchCharacters() {
 
     // Validate and normalize each character
     const characters: Character[] = [];
+    const seenCharacters = new Set<string>();
+    
     for (const [charId, item] of Object.entries(items)) {
       // Skip duplicate elements for the same character (e.g., 10000005_ANEMO, 10000005_CRYO)
       if (charId.match(/_[A-Z]+$/)) {
@@ -111,9 +113,15 @@ async function fetchCharacters() {
       }
       const char = validateCharacter(item, charId);
       if (char) {
-        // Check if we already have this character
-        if (!characters.some((c) => c.id === char.id)) {
+        // For Traveler, use combined ID like "traveler-anemo"
+        if (char.name === 'Traveler') {
+          char.id = `traveler-${char.element}`;
+        }
+        
+        // Check if we already have this exact character (by combined id)
+        if (!seenCharacters.has(char.id)) {
           characters.push(char);
+          seenCharacters.add(char.id);
         }
       }
     }

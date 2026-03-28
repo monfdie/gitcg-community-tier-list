@@ -288,73 +288,37 @@
     "rarity": 5
   },
   {
-    "id": "114",
+    "id": "traveler-anemo",
     "name": "Traveler",
     "element": "anemo",
     "rarity": 5
   },
   {
-    "id": "115",
+    "id": "traveler-dendro",
     "name": "Traveler",
     "element": "dendro",
     "rarity": 5
   },
   {
-    "id": "116",
+    "id": "traveler-electro",
     "name": "Traveler",
     "element": "electro",
     "rarity": 5
   },
   {
-    "id": "117",
+    "id": "traveler-geo",
     "name": "Traveler",
     "element": "geo",
     "rarity": 5
   },
   {
-    "id": "118",
+    "id": "traveler-hydro",
     "name": "Traveler",
     "element": "hydro",
     "rarity": 5
   },
   {
-    "id": "119",
-    "name": "Traveler",
-    "element": "pyro",
-    "rarity": 5
-  },
-  {
-    "id": "120",
-    "name": "Traveler",
-    "element": "anemo",
-    "rarity": 5
-  },
-  {
-    "id": "121",
-    "name": "Traveler",
-    "element": "dendro",
-    "rarity": 5
-  },
-  {
-    "id": "122",
-    "name": "Traveler",
-    "element": "electro",
-    "rarity": 5
-  },
-  {
-    "id": "123",
-    "name": "Traveler",
-    "element": "geo",
-    "rarity": 5
-  },
-  {
-    "id": "124",
-    "name": "Traveler",
-    "element": "hydro",
-    "rarity": 5
-  },
-  {
-    "id": "125",
+    "id": "traveler-pyro",
     "name": "Traveler",
     "element": "pyro",
     "rarity": 5
