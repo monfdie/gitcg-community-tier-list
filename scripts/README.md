@@ -6,14 +6,14 @@
 
 - **fetch-characters.ts** — Загружает полный список персонажей из API
 - **validate-characters.ts** — Проверяет целостность данных персонажей
-- **generate-form-questions.ts** — Генерирует вопросы для Google Form из characters.json
-- **google-form-importer.gs** — Google Apps Script для добавления вопросов в форму
+- **generate-form-questions.ts** — Генерирует вопросы для Google Form из characters.json (вспомогательный)
+- **google-form-importer.gs** — Google Apps Script для добавления вопросов в форму (со встроенными вопросами)
 - **form-questions.json** — Артефакт генерации (не отслеживается в git)
 - **characters-full.json** — Артефакт загрузки (не отслеживается в git)
 
 ---
 
-## 🚀 Workflow
+## 🚀 Основной Workflow
 
 ### 1️⃣ Получить полный список персонажей
 
@@ -49,39 +49,41 @@ npm run scripts:validate-characters
 npm run scripts:validate-characters
 ```
 
-### 4️⃣ Сгенерировать вопросы для Google Form
+### 4️⃣ Сгенерировать вопросы для Google Form (опционально)
 
 ```bash
 npm run scripts:generate-form-questions
 ```
 
-Это создаст `scripts/form-questions.json` из текущего `public/data/characters.json`.
+**Примечание**: Вопросы уже встроены в `google-form-importer.gs`, поэтому этот шаг нужен только если вы:
+- Обновили список персонажей
+- Хотите посмотреть JSON структуру вопросов
+- Нужно синхронизировать данные
 
 ---
 
-## 🔌 Google Form Integration
+## 🔌 Google Form Integration (Быстрый способ)
 
 ### Подготовка
 
-1. Запустите скрипты с шага 3️⃣
-2. Откройте вашу **Google Form**
-3. Перейдите в **Tools → Script editor**
-4. Скопируйте содержимое `google-form-importer.gs`
+Откройте вашу **Google Form** и добавьте вопросы.
 
-### Конфигурация скрипта
+### Шаг за шагом
 
-Измените `QUESTIONS_URL` на путь к вашему файлу:
+1. Откройте вашу **Google Form** в браузере
+2. Перейдите в **Tools → Script editor** (или три точки → Скрипты)
+3. **Скопируйте весь код** из `scripts/google-form-importer.gs`
+4. **Вставьте** в Google Apps Script редактор
+5. **Выберите функцию** `addQuestionsToForm` в выпадающем меню
+6. **Нажмите "Run"** (▶️ кнопка)
+7. **Авторизируйте скрипт** (первый запуск)
+8. **Проверьте логи** (View → Logs) для статуса
 
-```javascript
-const QUESTIONS_URL = 'https://raw.githubusercontent.com/aurceive/20260328-gi-community-tier-list/main/scripts/form-questions.json';
-```
+### Результат
 
-### Запуск
+Все 118 вопросов добавятся в вашу форму за несколько секунд!
 
-1. Выберите функцию `addQuestionsFromJSON`
-2. Нажмите **Run** (▶)
-3. Авторизируйте скрипт (первый запуск)
-4. Проверьте логи
+**Готово! ✨** Форма заполнена и готова к публикации.
 
 ---
 
@@ -127,6 +129,7 @@ CHARACTER_API_URL=https://your-api.com/characters.json npm run scripts:fetch-cha
 - `[{ ... }]` — прямой массив
 - `{ items: [...] }` — объект с полем items
 - `{ data: [...] }` — объект с полем data
+- `{ 10000002: {...}, 10000003: {...} }` — объект с ключами (Lunaris API)
 
 ---
 
@@ -134,6 +137,7 @@ CHARACTER_API_URL=https://your-api.com/characters.json npm run scripts:fetch-cha
 
 - **form-questions.json** и **characters-full.json** не коммитятся в git (артефакты)
 - **public/data/characters.json** — это source of truth для production
+- **google-form-importer.gs** содержит встроенные вопросы (не требует внешних URL)
 - Все скрипты работают только в dev environment
 - Google Apps Script требует авторизации при первом запуске
 
@@ -155,8 +159,14 @@ CHARACTER_API_URL=https://your-api.com/characters.json npm run scripts:fetch-cha
 
 **Проблема**: Google Form скрипт не добавляет вопросы
 - Проверьте логи в Script Editor (View → Logs)
-- Убедитесь, что URL доступен через HTTPS
-- Используйте raw.githubusercontent.com для GitHub файлов
+- Убедитесь, что выбрали функцию **addQuestionsToForm**
+- Авторизируйте скрипт, если запрашивает доступ
+
+**Проблема**: Authorization error при запуске скрипта
+- Это нормально при первом запуске
+- Нажмите "Review permissions"
+- Выберите свой Google аккаунт
+- Нажмите "Allow" для разрешений
 
 ---
 
@@ -165,4 +175,3 @@ CHARACTER_API_URL=https://your-api.com/characters.json npm run scripts:fetch-cha
 - **AGENTS.md** — Developer guidelines
 - **docs/ARCHITECTURE.md** — System architecture
 - **README.md** — Project overview
-
