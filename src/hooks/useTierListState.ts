@@ -1,0 +1,166 @@
+import { useState, useCallback } from 'react';
+import type { Character, TierList } from '@/types';
+import { TIERS, DEBUG } from '@/config';
+
+const STORAGE_KEY = 'gi_tier_list_draft';
+
+interface TierListState {
+  tierList: TierList;
+  unassignedCharacters: Character[];
+}
+
+/**
+ * Custom hook for managing tier list state
+ * Handles character assignments, reordering, and persistence to localStorage
+ */
+export function useTierListState(allCharacters: Character[]) {
+  // Initialize from localStorage or with all characters unassigned
+  const [state, setState] = useState<TierListState>(() => {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      try {
+        if (DEBUG) console.log('[useTierListState] Loaded draft from localStorage');
+        return JSON.parse(stored);
+      } catch (err) {
+        if (DEBUG) console.warn('[useTierListState] Failed to parse stored state:', err);
+      }
+    }
+
+    // Initialize with all characters unassigned
+    const initialState: TierListState = {
+      tierList: {
+        S: [],
+        A: [],
+        B: [],
+        C: [],
+        D: [],
+      },
+      unassignedCharacters: allCharacters,
+    };
+    return initialState;
+  });
+
+  // Persist state to localStorage
+  const saveState = useCallback((newState: TierListState) => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(newState));
+      if (DEBUG) console.log('[useTierListState] Saved to localStorage');
+    } catch (err) {
+      console.error('[useTierListState] Failed to save state:', err);
+    }
+  }, []);
+
+  // Move character from one tier to another
+  const moveCharacterToTier = useCallback(
+    (character: Character, tierKey: keyof TierList | 'unassigned') => {
+      setState((prevState) => {
+        const newState = { ...prevState };
+
+        // Remove character from current location
+        if (newState.unassignedCharacters.some((c) => c.id === character.id)) {
+          newState.unassignedCharacters = newState.unassignedCharacters.filter(
+            (c) => c.id !== character.id
+          );
+        } else {
+          for (const tier of TIERS) {
+            newState.tierList[tier] = newState.tierList[tier].filter(
+              (c) => c.id !== character.id
+            );
+          }
+        }
+
+        // Add to new location
+        if (tierKey === 'unassigned') {
+          newState.unassignedCharacters.push(character);
+        } else {
+          newState.tierList[tierKey].push(character);
+        }
+
+        saveState(newState);
+        if (DEBUG) console.log(`[useTierListState] Moved ${character.name} to ${tierKey}`);
+        return newState;
+      });
+    },
+    [saveState]
+  );
+
+  // Swap positions of two characters in the same tier
+  const swapInTier = useCallback(
+    (tierKey: keyof TierList, fromIndex: number, toIndex: number) => {
+      setState((prevState) => {
+        const newState = { ...prevState };
+        const tier = newState.tierList[tierKey];
+
+        if (fromIndex >= 0 && fromIndex < tier.length && toIndex >= 0 && toIndex < tier.length) {
+          [tier[fromIndex], tier[toIndex]] = [tier[toIndex], tier[fromIndex]];
+          saveState(newState);
+          if (DEBUG) console.log(`[useTierListState] Swapped items in ${tierKey}`);
+        }
+
+        return newState;
+      });
+    },
+    [saveState]
+  );
+
+  // Reorder unassigned characters
+  const reorderUnassigned = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      setState((prevState) => {
+        const newState = { ...prevState };
+        const chars = newState.unassignedCharacters;
+
+        if (fromIndex >= 0 && fromIndex < chars.length && toIndex >= 0 && toIndex < chars.length) {
+          [chars[fromIndex], chars[toIndex]] = [chars[toIndex], chars[fromIndex]];
+          saveState(newState);
+          if (DEBUG) console.log('[useTierListState] Reordered unassigned characters');
+        }
+
+        return newState;
+      });
+    },
+    [saveState]
+  );
+
+  // Check if all characters are assigned
+  const isComplete = useCallback((): boolean => {
+    const assigned = TIERS.reduce((sum, tier) => sum + state.tierList[tier].length, 0);
+    return assigned === allCharacters.length && state.unassignedCharacters.length === 0;
+  }, [state, allCharacters]);
+
+  // Get character count for a tier
+  const getTierCount = useCallback(
+    (tierKey: keyof TierList): number => {
+      return state.tierList[tierKey].length;
+    },
+    [state]
+  );
+
+  // Clear all assignments
+  const reset = useCallback(() => {
+    const newState: TierListState = {
+      tierList: {
+        S: [],
+        A: [],
+        B: [],
+        C: [],
+        D: [],
+      },
+      unassignedCharacters: [...allCharacters],
+    };
+    setState(newState);
+    saveState(newState);
+    if (DEBUG) console.log('[useTierListState] Reset tier list');
+  }, [allCharacters, saveState]);
+
+  return {
+    tierList: state.tierList,
+    unassignedCharacters: state.unassignedCharacters,
+    moveCharacterToTier,
+    swapInTier,
+    reorderUnassigned,
+    isComplete,
+    getTierCount,
+    reset,
+  };
+}
