@@ -6,7 +6,7 @@ This document outlines the structure, coding standards, and deployment workflow 
 
 A single-page web application that allows the Genshin Impact community to create and submit personalized tier lists through Google OAuth authentication and direct Google Form submission.
 
-**Live Site**: https://aurceive.github.io/20260328-public-gi-tier-list/
+**Live Site**: https://aurceive.github.io/20260328-gi-community-tier-list/
 
 ---
 
@@ -313,7 +313,7 @@ npm run deploy
 ```
 
 ### Monitoring
-- Check GitHub Actions for build status: https://github.com/aurceive/20260328-public-gi-tier-list/actions
+- Check GitHub Actions for build status: https://github.com/aurceive/20260328-gi-community-tier-list/actions
 - Monitor browser console for errors
 - Test form submissions weekly
 

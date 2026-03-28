@@ -173,7 +173,7 @@ Every push to `main` triggers automatic deployment:
 2. Builds with Vite
 3. Deploys to GitHub Pages
 
-Check deployment status: https://github.com/aurceive/20260328-public-gi-tier-list/actions
+Check deployment status: https://github.com/aurceive/20260328-gi-community-tier-list/actions
 
 ### Manual Deployment
 
@@ -271,11 +271,11 @@ See [plan.md](./docs/PLAN.md) for detailed implementation phases.
 ## Support
 
 - 📖 Read [AGENTS.md](./AGENTS.md) for detailed guides
-- 🐛 Report issues on [GitHub Issues](https://github.com/aurceive/20260328-public-gi-tier-list/issues)
-- 💬 Discuss on [GitHub Discussions](https://github.com/aurceive/20260328-public-gi-tier-list/discussions)
+- 🐛 Report issues on [GitHub Issues](https://github.com/aurceive/20260328-gi-community-tier-list/issues)
+- 💬 Discuss on [GitHub Discussions](https://github.com/aurceive/20260328-gi-community-tier-list/discussions)
 
 ---
 
-**Live Site**: https://aurceive.github.io/20260328-public-gi-tier-list/  
-**Repository**: https://github.com/aurceive/20260328-public-gi-tier-list  
+**Live Site**: https://aurceive.github.io/20260328-gi-community-tier-list/  
+**Repository**: https://github.com/aurceive/20260328-gi-community-tier-list
 **Last Updated**: 2026-03-28

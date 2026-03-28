@@ -5,7 +5,7 @@ This document describes the repository organization and purpose of each director
 ## Directory Tree
 
 ```
-20260328-public-gi-tier-list/
+20260328-gi-community-tier-list/
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml              # GitHub Actions CI/CD pipeline

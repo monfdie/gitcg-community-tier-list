@@ -260,7 +260,7 @@ npm run build
   ↓
 Deploy dist/ to gh-pages branch
   ↓
-GitHub Pages serves from https://aurceive.github.io/20260328-public-gi-tier-list/
+GitHub Pages serves from https://aurceive.github.io/20260328-gi-community-tier-list/
 ```
 
 **Rationale**:
