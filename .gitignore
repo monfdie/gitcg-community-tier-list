@@ -12,9 +12,10 @@ dist
 dist-ssr
 *.local
 
-# Scripts artifacts (generated files)
+# Scripts artifacts (generated files, do NOT commit)
 scripts/form-questions.json
 scripts/characters-full.json
+scripts/google-form-importer.gs
 
 # Editor directories and files
 .vscode/*
