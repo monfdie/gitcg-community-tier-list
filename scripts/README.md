@@ -4,12 +4,16 @@
 
 ## 📂 Файлы
 
+### Source Files (отслеживаются в git)
 - **fetch-characters.ts** — Загружает полный список персонажей из API
-- **validate-characters.ts** — Проверяет целостность данных персонажей
-- **generate-form-questions.ts** — Генерирует вопросы для Google Form из characters.json (вспомогательный)
-- **google-form-importer.gs** — Google Apps Script для добавления вопросов в форму (со встроенными вопросами)
-- **form-questions.json** — Артефакт генерации (не отслеживается в git)
-- **characters-full.json** — Артефакт загрузки (не отслеживается в git)
+- **validate-characters.ts** — Проверяет целостность данных персонажей  
+- **generate-form-questions.ts** — Генерирует вопросы для формы И Google Apps Script
+- **README.md** — Эта документация
+
+### Generated Files (НЕ отслеживаются в git)
+- **form-questions.json** — Вопросы в JSON формате (артефакт генерации)
+- **characters-full.json** — Полный список символов из API (артефакт)
+- **google-form-importer.gs** — Google Apps Script для форм (⚠️ АВТОГЕНЕРИРУЕТСЯ)
 
 ---
 
@@ -49,16 +53,17 @@ npm run scripts:validate-characters
 npm run scripts:validate-characters
 ```
 
-### 4️⃣ Сгенерировать вопросы для Google Form (опционально)
+### 4️⃣ Сгенерировать вопросы и Google Apps Script
 
 ```bash
 npm run scripts:generate-form-questions
 ```
 
-**Примечание**: Вопросы уже встроены в `google-form-importer.gs`, поэтому этот шаг нужен только если вы:
-- Обновили список персонажей
-- Хотите посмотреть JSON структуру вопросов
-- Нужно синхронизировать данные
+**Что это генерирует:**
+- ✅ `scripts/form-questions.json` — Все вопросы в JSON
+- ✅ `scripts/google-form-importer.gs` — Google Apps Script с встроенными вопросами
+
+⚠️ **ВАЖНО**: google-form-importer.gs — это АВТОГЕНЕРИРУЕМЫЙ файл. Не редактируйте его вручную! Если нужны изменения — обновите characters.json и переган.
 
 ---
 
@@ -66,22 +71,30 @@ npm run scripts:generate-form-questions
 
 ### Подготовка
 
-Откройте вашу **Google Form** и добавьте вопросы.
+1. Убедитесь, что вы запустили генерацию скрипта:
+
+```bash
+npm run scripts:generate-form-questions
+```
+
+Это создаст `scripts/google-form-importer.gs` с актуальными вопросами.
 
 ### Шаг за шагом
 
 1. Откройте вашу **Google Form** в браузере
-2. Перейдите в **Tools → Script editor** (или три точки → Скрипты)
-3. **Скопируйте весь код** из `scripts/google-form-importer.gs`
-4. **Вставьте** в Google Apps Script редактор
-5. **Выберите функцию** `addQuestionsToForm` в выпадающем меню
-6. **Нажмите "Run"** (▶️ кнопка)
-7. **Авторизируйте скрипт** (первый запуск)
-8. **Проверьте логи** (View → Logs) для статуса
+2. Нажмите на **три точки** (⋮) → **Скрипты** (или Tools → Script editor)
+3. **Удалите весь текущий код** в редакторе
+4. **Скопируйте весь файл** `scripts/google-form-importer.gs`
+5. **Вставьте** его полностью в Google Apps Script редактор
+6. **Сохраните** скрипт (Ctrl+S / Cmd+S)
+7. В выпадающем меню выберите функцию **`addQuestionsToForm`**
+8. **Нажмите "Run"** (▶️ кнопка)
+9. **Авторизируйте скрипт** (первый запуск, нужно разрешить доступ)
+10. **Проверьте логи** (View → Logs) для статуса
 
 ### Результат
 
-Все 118 вопросов добавятся в вашу форму за несколько секунд!
+Все 118+ вопросов добавятся в вашу форму за несколько секунд!
 
 **Готово! ✨** Форма заполнена и готова к публикации.
 
@@ -133,13 +146,31 @@ CHARACTER_API_URL=https://your-api.com/characters.json npm run scripts:fetch-cha
 
 ---
 
+---
+
+## 🔧 Обслуживание
+
+### Как обновить вопросы в форме, если изменились персонажи
+
+1. Обновите `public/data/characters.json`
+2. Запустите генерацию:
+   ```bash
+   npm run scripts:generate-form-questions
+   ```
+3. В Google Form: Tools → Script editor
+4. Запустите `clearAllQuestions()` чтобы удалить старые вопросы
+5. Скопируйте новый `scripts/google-form-importer.gs`
+6. Запустите `addQuestionsToForm()` чтобы добавить новые
+
+---
+
 ## ⚠️ Important Notes
 
-- **form-questions.json** и **characters-full.json** не коммитятся в git (артефакты)
+- **form-questions.json**, **characters-full.json**, и **google-form-importer.gs** не коммитятся в git (артефакты)
 - **public/data/characters.json** — это source of truth для production
-- **google-form-importer.gs** содержит встроенные вопросы (не требует внешних URL)
-- Все скрипты работают только в dev environment
+- Всегда переган форму-скрипты после изменения списка персонажей
 - Google Apps Script требует авторизации при первом запуске
+- Все dev скрипты работают только локально (Node.js environment)
 
 ---
 
