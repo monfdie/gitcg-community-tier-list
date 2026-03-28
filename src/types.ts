@@ -11,6 +11,7 @@ export interface Character {
   element: 'pyro' | 'hydro' | 'electro' | 'cryo' | 'anemo' | 'geo' | 'dendro';
   rarity: 4 | 5;
   imageUrl?: string;
+  avatarId?: string;
 }
 
 /**
@@ -20,7 +21,7 @@ export interface UserProfile {
   id: string;
   name: string;
   email: string;
-  avatar?: string;
+  picture?: string;
 }
 
 /**
