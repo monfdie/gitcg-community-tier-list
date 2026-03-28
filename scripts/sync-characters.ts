@@ -1,30 +1,27 @@
 /**
- * Script to fetch full character list from external API
+ * Script to fetch and validate character data from external API
  * 
  * Usage:
- * npm run scripts:fetch-characters
+ * npm run scripts:sync-characters
  * 
- * Output: scripts/characters-full.json (not committed)
+ * This script:
+ * 1. Fetches characters from Lunaris API
+ * 2. Validates and normalizes the data
+ * 3. Saves to scripts/characters-full.json for review
+ * 4. Shows validation report
  * 
- * This script is for development only to gather character data.
- * For production, use public/data/characters.json instead.
+ * For production, review and copy valid characters to public/data/characters.json
  */
 
-import { writeFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
-
-interface RawCharacter {
-  id: string;
-  name: string;
-  element: string;
-  rarity: number;
-}
 
 interface Character {
   id: string;
   name: string;
   element: 'pyro' | 'hydro' | 'electro' | 'cryo' | 'anemo' | 'geo' | 'dendro';
   rarity: 4 | 5;
+  imageUrl?: string;
 }
 
 const VALID_ELEMENTS = ['pyro', 'hydro', 'electro', 'cryo', 'anemo', 'geo', 'dendro'];
@@ -33,20 +30,16 @@ const VALID_RARITIES = [4, 5];
 /**
  * Validates and normalizes character data from Lunaris API
  */
-function validateCharacter(char: any, id: string): Character | null {
-  // Extract English name - API uses enName, ptName, or ruName
+function validateCharacterFromAPI(char: any, id: string): Character | null {
   const name = char.enName || char.ptName || char.name || '';
   const element = char.element || '';
   
   if (!name || !element) {
-    console.warn(`⚠️ Skipping character ${id}: missing name or element`);
     return null;
   }
 
-  // Parse element (API returns "Cryo", "Pyro", etc.)
   const elementLower = String(element).toLowerCase();
   if (!VALID_ELEMENTS.includes(elementLower)) {
-    console.warn(`⚠️ Skipping character "${name}": invalid element "${element}"`);
     return null;
   }
 
@@ -67,20 +60,42 @@ function validateCharacter(char: any, id: string): Character | null {
 }
 
 /**
- * Fetches characters from API
- * Configure API_URL to match your data source
+ * Validates character data structure
  */
-async function fetchCharacters() {
+function validateCharacterStructure(char: Character, index: number): { valid: boolean; errors: string[] } {
+  const errors: string[] = [];
+
+  if (!char.id || typeof char.id !== 'string') {
+    errors.push(`Invalid or missing id`);
+  } else if (char.id !== char.id.toLowerCase()) {
+    errors.push(`id "${char.id}" should be lowercase`);
+  }
+
+  if (!char.name || typeof char.name !== 'string') {
+    errors.push(`Invalid or missing name`);
+  }
+
+  if (!char.element || !VALID_ELEMENTS.includes(char.element)) {
+    errors.push(`Invalid element "${char.element}"`);
+  }
+
+  if (!VALID_RARITIES.includes(char.rarity)) {
+    errors.push(`Invalid rarity ${char.rarity}`);
+  }
+
+  return { valid: errors.length === 0, errors };
+}
+
+/**
+ * Fetches characters from API and validates them
+ */
+async function syncCharacters() {
   try {
-    // Default: Lunaris API (for development only)
-    // You can configure this via environment variable or hardcode your API
     const API_URL = process.env.CHARACTER_API_URL || 'https://api.lunaris.moe/data/6.4.54/charlist.json';
 
-    console.log(`📡 Fetching characters from: ${API_URL}`);
-    console.log(`⚠️ This is development-only. Production uses public/data/characters.json\n`);
+    console.log(`📡 Fetching characters from: ${API_URL}\n`);
 
     const response = await fetch(API_URL);
-
     if (!response.ok) {
       throw new Error(`API Error: ${response.status} ${response.statusText}`);
     }
@@ -89,11 +104,9 @@ async function fetchCharacters() {
 
     // Handle different API response formats
     let items: any[] = [];
-    
     if (Array.isArray(rawData)) {
       items = rawData;
     } else if (typeof rawData === 'object' && rawData !== null) {
-      // Convert object with character IDs as keys to array
       items = Object.values(rawData);
     }
 
@@ -101,28 +114,30 @@ async function fetchCharacters() {
       throw new Error('No characters found in API response');
     }
 
-    // Validate and normalize each character
+    // Fetch and validate
     const characters: Character[] = [];
     const seenCharacters = new Set<string>();
-    
+    let fetchErrors = 0;
+
     for (const [charId, item] of Object.entries(items)) {
-      // Skip duplicate elements for the same character (e.g., 10000005_ANEMO, 10000005_CRYO)
+      // Skip duplicate elements for the same character
       if (charId.match(/_[A-Z]+$/)) {
-        // This is a variant, skip for now (keep only main version)
         continue;
       }
-      const char = validateCharacter(item, charId);
+
+      const char = validateCharacterFromAPI(item, charId);
       if (char) {
         // For Traveler, use combined ID like "traveler-anemo"
         if (char.name === 'Traveler') {
           char.id = `traveler-${char.element}`;
         }
         
-        // Check if we already have this exact character (by combined id)
         if (!seenCharacters.has(char.id)) {
           characters.push(char);
           seenCharacters.add(char.id);
         }
+      } else {
+        fetchErrors++;
       }
     }
 
@@ -136,14 +151,35 @@ async function fetchCharacters() {
       return a.name.localeCompare(b.name);
     });
 
+    // Validate structure of all characters
+    console.log(`🔍 Validating ${characters.length} characters...\n`);
+
+    let structureErrors = 0;
+    let validCharacters = 0;
+
+    characters.forEach((char, index) => {
+      const validation = validateCharacterStructure(char, index);
+      if (validation.valid) {
+        console.log(`✅ [${index}] ${char.name} (${char.element} • ${char.rarity}★)`);
+        validCharacters++;
+      } else {
+        console.error(`❌ [${index}] ${char.name}: ${validation.errors.join(', ')}`);
+        structureErrors++;
+      }
+    });
+
     // Save to scripts/characters-full.json
     const outputPath = join(process.cwd(), 'scripts', 'characters-full.json');
     writeFileSync(outputPath, JSON.stringify(characters, null, 2));
 
-    console.log(`✅ Fetched and validated ${characters.length} characters`);
-    console.log(`📁 Output: ${outputPath}`);
-    console.log(`\n📊 Breakdown:`);
+    console.log(`\n📊 Summary:`);
+    console.log(`  📥 Fetched: ${items.length} items from API`);
+    console.log(`  ✅ Valid: ${characters.length} characters`);
+    console.log(`  ⚠️ Skipped during fetch: ${fetchErrors}`);
+    console.log(`  ❌ Structure errors: ${structureErrors}`);
+    console.log(`  ✨ Ready for production: ${validCharacters}`);
 
+    console.log(`\n📈 Breakdown:`);
     const by5Star = characters.filter((c) => c.rarity === 5).length;
     const by4Star = characters.filter((c) => c.rarity === 4).length;
     console.log(`  • 5⭐: ${by5Star}`);
@@ -160,14 +196,19 @@ async function fetchCharacters() {
         console.log(`    • ${element}: ${count}`);
       });
 
+    console.log(`\n📁 Output: ${outputPath}`);
     console.log(`\n💡 Next steps:`);
     console.log(`1. Review scripts/characters-full.json`);
     console.log(`2. Copy valid characters to public/data/characters.json`);
     console.log(`3. Run: npm run scripts:generate-form-questions`);
+
+    if (structureErrors > 0) {
+      process.exit(1);
+    }
   } catch (error) {
-    console.error('❌ Error fetching characters:', error);
+    console.error('❌ Error syncing characters:', error);
     process.exit(1);
   }
 }
 
-fetchCharacters();
+syncCharacters();
