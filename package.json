@@ -13,7 +13,8 @@
     "type-check": "tsc --noEmit",
     "test": "vitest",
     "test:watch": "vitest --watch",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "scripts:generate-form-questions": "tsx scripts/generate-form-questions.ts"
   },
   "dependencies": {
     "react": "^19.2.4",
@@ -35,6 +36,7 @@
     "globals": "^17.4.0",
     "jsdom": "^29.0.1",
     "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.57.0",
     "vite": "^8.0.1",
