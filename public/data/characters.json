@@ -1,0 +1,50 @@
+[
+  {
+    "id": "nahida",
+    "name": "Nahida",
+    "element": "dendro",
+    "rarity": 5
+  },
+  {
+    "id": "raiden-shogun",
+    "name": "Raiden Shogun",
+    "element": "electro",
+    "rarity": 5
+  },
+  {
+    "id": "fischl",
+    "name": "Fischl",
+    "element": "electro",
+    "rarity": 4
+  },
+  {
+    "id": "kazuha",
+    "name": "Kazuha",
+    "element": "anemo",
+    "rarity": 5
+  },
+  {
+    "id": "zhongli",
+    "name": "Zhongli",
+    "element": "geo",
+    "rarity": 5
+  },
+  {
+    "id": "bennett",
+    "name": "Bennett",
+    "element": "pyro",
+    "rarity": 4
+  },
+  {
+    "id": "barbara",
+    "name": "Barbara",
+    "element": "hydro",
+    "rarity": 4
+  },
+  {
+    "id": "amber",
+    "name": "Amber",
+    "element": "pyro",
+    "rarity": 4
+  }
+]
