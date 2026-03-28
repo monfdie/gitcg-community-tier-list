@@ -64,13 +64,15 @@ async function downloadAvatar(
       };
     }
 
-    const avatarUrl = `${apiBaseUrl}${avatarId}.webp`;
+    // Convert UI_Gacha_AvatarIcon_* to UI_AvatarIcon_* for Lunaris API
+    const apiAvatarId = avatarId.replace('UI_Gacha_AvatarIcon_', 'UI_AvatarIcon_');
+    const avatarUrl = `${apiBaseUrl}${apiAvatarId}.webp`;
 
     const response = await fetch(avatarUrl);
     if (!response.ok) {
       return {
         success: false,
-        message: `⚠️ [${char.name}] Not found (404): ${avatarId}`,
+        message: `⚠️ [${char.name}] Not found (404): ${apiAvatarId}`,
       };
     }
 
@@ -78,7 +80,7 @@ async function downloadAvatar(
     const tempDir = join(process.cwd(), 'tmp', 'avatars');
     mkdirSync(tempDir, { recursive: true });
 
-    const filePath = join(tempDir, `${char.id}.webp`);
+    const filePath = join(tempDir, `${avatarId}.webp`);
     writeFileSync(filePath, Buffer.from(buffer));
 
     return {
