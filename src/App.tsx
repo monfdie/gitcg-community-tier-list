@@ -76,62 +76,38 @@ function App() {
       <Navbar />
 
       {/* Main content */}
-      <main className={styles.main}>
-        <div className={styles.container}>
-          {/* Loading state */}
-          {isLoadingCharacters && (
-            <div className={styles.statusContainer}>
-              <div className={styles.status}>
-                <p>⏳ Loading character data...</p>
-              </div>
-            </div>
-          )}
+      {isLoadingCharacters && (
+        <p className={styles.loadingMessage}>⏳ Loading character data...</p>
+      )}
 
-          {/* Error state */}
-          {error && (
-            <div className={styles.statusContainer}>
-              <div className={styles.errorMessage}>
-                <p>❌ {error}</p>
-              </div>
-            </div>
-          )}
+      {error && (
+        <p className={styles.errorMessage}>❌ {error}</p>
+      )}
 
-          {/* Success message */}
-          {submissionMessage && (
-            <div className={styles.statusContainer}>
-              <div className={styles.successMessage}>
-                <p>{submissionMessage}</p>
-              </div>
-            </div>
-          )}
+      {!isLoadingCharacters && !error && characters.length > 0 && (
+        <div className={styles.mainContent}>
+          {/* Tier list on the left/center */}
+          <TierList characters={characters} />
 
-          {/* Tier list and submission (when characters loaded) */}
-          {!isLoadingCharacters && !error && characters.length > 0 && (
-            <>
-              <TierList characters={characters} />
-
-              {user && (
-                <SubmitButton
-                  tierList={tierList}
-                  user={user}
-                  isComplete={isComplete()}
-                  onSuccess={handleSubmitSuccess}
-                  onError={handleSubmitError}
-                />
-              )}
-            </>
-          )}
-
-          {/* Empty state - no characters loaded but no error */}
-          {!isLoadingCharacters && !error && characters.length === 0 && (
-            <div className={styles.statusContainer}>
-              <div className={styles.errorMessage}>
-                <p>❌ No characters found. Please check the data source.</p>
-              </div>
-            </div>
+          {/* Submit button on the right */}
+          {user && (
+            <SubmitButton
+              tierList={tierList}
+              user={user}
+              isComplete={isComplete()}
+              onSuccess={handleSubmitSuccess}
+              onError={handleSubmitError}
+            />
           )}
         </div>
-      </main>
+      )}
+
+      {/* Success/Error messages */}
+      {submissionMessage && (
+        <div style={{ textAlign: 'center', padding: '1rem', color: '#66bb6a' }}>
+          {submissionMessage}
+        </div>
+      )}
     </div>
   );
 }

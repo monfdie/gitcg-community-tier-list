@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import type { DropResult } from 'react-beautiful-dnd';
 import type { Character, TierKey } from '@/types';
@@ -23,13 +22,10 @@ interface TierListProps {
  * - Validation and progress tracking
  */
 export function TierList({ characters }: TierListProps) {
-  const [searchQuery, setSearchQuery] = useState('');
   const {
     tierList,
     unassignedCharacters,
     moveCharacterToTier,
-    isComplete,
-    reset,
   } = useTierListState(characters);
 
   /**
@@ -88,59 +84,9 @@ export function TierList({ characters }: TierListProps) {
     }
   };
 
-  const assignedCount = characters.length - unassignedCharacters.length;
-  const progressPercentage = (assignedCount / characters.length) * 100;
-
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className={styles.tierList}>
-        {/* Controls Section */}
-        <div className={styles.controls}>
-          <h2>Create Your Tier List</h2>
-
-          <div className={styles.controlsRow}>
-            <input
-              type="text"
-              placeholder="🔍 Search characters by name or element..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className={styles.searchInput}
-              aria-label="Search characters by name or element"
-            />
-
-            <button
-              onClick={reset}
-              className={styles.resetButton}
-              disabled={unassignedCharacters.length === characters.length}
-              title="Reset all assignments"
-            >
-              🔄 Reset
-            </button>
-          </div>
-
-          {/* Progress Bar */}
-          {!isComplete() && (
-            <div className={styles.progressSection}>
-              <div className={styles.progressBar}>
-                <div
-                  className={styles.progressFill}
-                  style={{ width: `${progressPercentage}%` }}
-                />
-              </div>
-              <span className={styles.progressText}>
-                {assignedCount} of {characters.length} characters assigned
-              </span>
-            </div>
-          )}
-
-          {/* Completion Message */}
-          {isComplete() && (
-            <div className={styles.completionMessage}>
-              <span>✅ All characters assigned! Ready to submit your tier list.</span>
-            </div>
-          )}
-        </div>
-
         {/* Tiers Section */}
         <div className={styles.tiersContainer}>
           {TIERS.map((tier) => (
@@ -156,7 +102,6 @@ export function TierList({ characters }: TierListProps) {
         {/* Unassigned Pool */}
         <UnassignedPool
           characters={unassignedCharacters}
-          searchQuery={searchQuery}
           onCharacterClick={handleCharacterClick}
         />
       </div>

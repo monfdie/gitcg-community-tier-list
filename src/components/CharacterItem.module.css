@@ -1,51 +1,51 @@
 .characterItem {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 0.75rem;
-  background: white;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 2px;
   cursor: grab;
   user-select: none;
-  transition: all 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.1s ease;
   position: relative;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 1;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .characterItem:hover {
-  border-color: #4285f4;
-  box-shadow: 0 4px 12px rgba(66, 133, 244, 0.2);
-  transform: translateY(-2px);
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transform: scale(1.02);
 }
 
 .characterItem:focus-visible {
   outline: 2px solid #4285f4;
-  outline-offset: 2px;
+  outline-offset: 1px;
 }
 
 .characterItem.dragging {
-  opacity: 0.5;
+  opacity: 0.7;
   cursor: grabbing;
 }
 
-/* Image wrapper with badges */
+/* Image wrapper - full square */
 .imageWrapper {
   position: relative;
   width: 100%;
-  height: 0;
-  flex: 1;
+  height: 100%;
   overflow: hidden;
-  border-radius: 4px;
-  background: #f5f5f5;
+  border-radius: 2px;
+  background: #222;
+  flex: 1;
 }
 
 .image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 2px;
   transition: transform 0.2s ease;
 }
 
@@ -53,113 +53,46 @@
   transform: scale(1.05);
 }
 
-/* Rarity badge (top-left) */
+/* Hide badges and info */
 .rarityBadge {
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  background: rgba(255, 193, 7, 0.9);
-  color: white;
-  padding: 2px 6px;
-  border-radius: 3px;
-  font-size: 0.7rem;
-  font-weight: bold;
-  letter-spacing: 0.05em;
+  display: none;
 }
 
-/* Element badge (top-right) */
 .elementBadge {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  font-size: 1rem;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  display: none;
 }
 
-/* Character name and info */
 .info {
-  flex: 0 1 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+  display: none;
 }
 
 .name {
-  margin: 0;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #333;
-  line-height: 1.2;
-  text-align: center;
-  word-break: break-word;
+  display: none;
 }
 
 .meta {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
+  display: none;
 }
 
 .element {
-  font-size: 0.65rem;
-  font-weight: 600;
-  text-transform: capitalize;
-  color: #666;
-  letter-spacing: 0.05em;
+  display: none;
 }
 
-/* Drag handle */
 .dragHandle {
-  position: absolute;
-  bottom: 4px;
-  right: 4px;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(66, 133, 244, 0.1);
-  border-radius: 3px;
-  font-size: 0.8rem;
-  color: #4285f4;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  pointer-events: none;
-}
-
-.characterItem:hover .dragHandle {
-  opacity: 1;
+  display: none;
 }
 
 /* Mobile responsive */
 @media (max-width: 640px) {
   .characterItem {
-    padding: 0.5rem;
-    gap: 0.35rem;
+    border-radius: 1px;
   }
 
-  .name {
-    font-size: 0.8rem;
+  .imageWrapper {
+    border-radius: 1px;
   }
 
-  .element {
-    font-size: 0.6rem;
-  }
-
-  .rarityBadge {
-    font-size: 0.65rem;
-    padding: 1px 4px;
-  }
-
-  .elementBadge {
-    font-size: 0.9rem;
-  }
-
-  .dragHandle {
-    width: 18px;
-    height: 18px;
-    font-size: 0.7rem;
+  .image {
+    border-radius: 1px;
   }
 }
