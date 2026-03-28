@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Scripts artifacts (generated files)
+scripts/form-questions.json
+scripts/characters-full.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

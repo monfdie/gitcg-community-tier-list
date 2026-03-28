@@ -14,6 +14,8 @@
     "test": "vitest",
     "test:watch": "vitest --watch",
     "test:coverage": "vitest --coverage",
+    "scripts:fetch-characters": "tsx scripts/fetch-characters.ts",
+    "scripts:validate-characters": "tsx scripts/validate-characters.ts",
     "scripts:generate-form-questions": "tsx scripts/generate-form-questions.ts"
   },
   "dependencies": {

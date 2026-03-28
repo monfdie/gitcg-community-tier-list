@@ -1,105 +1,168 @@
-# 📋 Google Form Questions Import Guide
+# 📋 Scripts Directory
 
-Это руководство поможет вам добавить вопросы для рейтинга персонажей в вашу Google Form.
+Утилиты для управления данными и генерирования конфигураций формы.
 
-## 📂 Файлы в этой папке
+## 📂 Файлы
 
-- **form-questions.json** — Файл с вопросами для импорта (генерируется автоматически)
+- **fetch-characters.ts** — Загружает полный список персонажей из API
+- **validate-characters.ts** — Проверяет целостность данных персонажей
+- **generate-form-questions.ts** — Генерирует вопросы для Google Form из characters.json
 - **google-form-importer.gs** — Google Apps Script для добавления вопросов в форму
-- **generate-form-questions.ts** — Скрипт для генерирования questions.json из characters.json
+- **form-questions.json** — Артефакт генерации (не отслеживается в git)
+- **characters-full.json** — Артефакт загрузки (не отслеживается в git)
 
-## 🚀 Быстрый старт
+---
 
-### Шаг 1: Подготовить файл с вопросами
+## 🚀 Workflow
+
+### 1️⃣ Получить полный список персонажей
+
+```bash
+npm run scripts:fetch-characters
+```
+
+Это загрузит персонажей из API и сохранит в `scripts/characters-full.json` (не коммитится).
+
+**Результат:**
+- Валидирует данные
+- Сортирует по редкости и имени
+- Показывает статистику по элементам
+
+### 2️⃣ Валидировать данные
+
+```bash
+npm run scripts:validate-characters
+```
+
+Проверяет `public/data/characters.json` на:
+- Обязательные поля
+- Корректные значения
+- Отсутствие дубликатов
+- Правильное форматирование
+
+### 3️⃣ Обновить characters.json
+
+Скопируйте нужных персонажей из `scripts/characters-full.json` в `public/data/characters.json`:
+
+```bash
+# После редактирования, валидируйте:
+npm run scripts:validate-characters
+```
+
+### 4️⃣ Сгенерировать вопросы для Google Form
 
 ```bash
 npm run scripts:generate-form-questions
 ```
 
-Это создаст/обновит `form-questions.json` с текущим списком персонажей.
+Это создаст `scripts/form-questions.json` из текущего `public/data/characters.json`.
 
-### Шаг 2: Загрузить файл на GitHub (для доступа скрипту)
+---
 
-Убедитесь, что файл `scripts/form-questions.json` есть в вашем GitHub репозитории на ветке `main`.
+## 🔌 Google Form Integration
 
-### Шаг 3: Добавить скрипт в Google Form
+### Подготовка
 
-1. Откройте вашу **Google Form** в браузере
-2. Нажмите на **три точки** (⋮) → **Скрипты** (или **Tools** → **Script editor**)
-3. Скопируйте содержимое файла **google-form-importer.gs**
-4. Вставьте в редактор Google Apps Script
-5. Замените `QUESTIONS_URL` на URL вашего файла:
+1. Запустите скрипты с шага 3️⃣
+2. Откройте вашу **Google Form**
+3. Перейдите в **Tools → Script editor**
+4. Скопируйте содержимое `google-form-importer.gs`
+
+### Конфигурация скрипта
+
+Измените `QUESTIONS_URL` на путь к вашему файлу:
 
 ```javascript
 const QUESTIONS_URL = 'https://raw.githubusercontent.com/aurceive/20260328-gi-community-tier-list/main/scripts/form-questions.json';
 ```
 
-### Шаг 4: Запустить скрипт
+### Запуск
 
-1. Выберите функцию **`addQuestionsFromJSON`** в выпадающем меню
+1. Выберите функцию `addQuestionsFromJSON`
 2. Нажмите **Run** (▶)
-3. Разрешите доступ скрипту (первый запуск)
-4. Проверьте логи (внизу консоли)
-
-### ✅ Готово!
-
-Все вопросы должны появиться в вашей форме.
+3. Авторизируйте скрипт (первый запуск)
+4. Проверьте логи
 
 ---
 
-## 🔄 Обновление вопросов
+## 📊 Структура данных
 
-Если вы добавили новых персонажей в `public/data/characters.json`:
+### Character Interface
 
-```bash
-npm run scripts:generate-form-questions
+```typescript
+interface Character {
+  id: string;           // lowercase, no spaces (e.g., "raiden-shogun")
+  name: string;         // Display name (e.g., "Raiden Shogun")
+  element: string;      // pyro, hydro, electro, cryo, anemo, geo, dendro
+  rarity: 4 | 5;        // 4-star or 5-star
+  imageUrl?: string;    // Optional: local or remote image URL
+}
 ```
 
-Затем снова запустите скрипт `addQuestionsFromJSON()` в Google Form.
-
----
-
-## ⚠️ Важно
-
-- **Очистка формы**: Если нужно удалить старые вопросы, используйте функцию **`clearAllQuestions()`**
-- **Резервная копия**: Перед импортом создайте копию вашей формы
-- **Доступность**: Убедитесь, что URL файла `form-questions.json` доступен по HTTPS
-
----
-
-## 📊 Структура form-questions.json
+### Form Question Structure
 
 ```json
-[
-  {
-    "title": "Название персонажа",
-    "description": "Элемент • Редкость",
-    "choices": ["S", "A", "B", "C", "D"],
-    "required": true
-  }
-]
+{
+  "title": "Character Name",
+  "description": "Element • Rarity",
+  "choices": ["S", "A", "B", "C", "D"],
+  "required": true
+}
 ```
 
-Каждый вопрос — это выпадающий список (multiple choice) с вариантами ответов S, A, B, C, D.
+---
+
+## 🔧 Configuration
+
+### Environment Variables
+
+```bash
+# Override default API URL
+CHARACTER_API_URL=https://your-api.com/characters.json npm run scripts:fetch-characters
+```
+
+### API Compatibility
+
+Скрипты поддерживают разные форматы API ответов:
+- `[{ ... }]` — прямой массив
+- `{ items: [...] }` — объект с полем items
+- `{ data: [...] }` — объект с полем data
+
+---
+
+## ⚠️ Important Notes
+
+- **form-questions.json** и **characters-full.json** не коммитятся в git (артефакты)
+- **public/data/characters.json** — это source of truth для production
+- Все скрипты работают только в dev environment
+- Google Apps Script требует авторизации при первом запуске
 
 ---
 
 ## 🐛 Troubleshooting
 
-**Проблема**: Скрипт не может загрузить файл
-- Проверьте URL в `QUESTIONS_URL`
-- Убедитесь, что файл есть в GitHub репозитории
-- Используйте `raw.githubusercontent.com` а не обычный GitHub URL
+**Проблема**: "Cannot fetch characters from API"
+- Проверьте URL в `CHARACTER_API_URL` или коде скрипта
+- Убедитесь, что API доступен и возвращает JSON
 
-**Проблема**: Вопросы не добавляются
-- Проверьте логи (View → Logs)
-- Убедитесь, что Google Form имеет правильные прав доступа
+**Проблема**: "Invalid element" ошибки при валидации
+- Проверьте орфографию элементов (должны быть lowercase)
+- Допустимые: pyro, hydro, electro, cryo, anemo, geo, dendro
 
-**Проблема**: Форма уже содержит вопросы
-- Используйте `clearAllQuestions()` для удаления старых вопросов перед импортом
+**Проблема**: "Duplicate id"
+- Убедитесь, что у каждого персонажа уникальный id
+- ID должен быть lowercase и без пробелов
+
+**Проблема**: Google Form скрипт не добавляет вопросы
+- Проверьте логи в Script Editor (View → Logs)
+- Убедитесь, что URL доступен через HTTPS
+- Используйте raw.githubusercontent.com для GitHub файлов
 
 ---
 
-## 📞 Поддержка
+## 📖 Related Documentation
 
-Если у вас есть вопросы, обратитесь к документации проекта в `docs/`.
+- **AGENTS.md** — Developer guidelines
+- **docs/ARCHITECTURE.md** — System architecture
+- **README.md** — Project overview
+
