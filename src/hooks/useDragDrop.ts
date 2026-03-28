@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import type { Character } from '@/types';
+import type { Character, TierList } from '@/types';
 import { TIERS } from '@/config';
 
 interface DragData {
@@ -14,10 +14,8 @@ const DRAG_DATA_TYPE = 'application/json';
  * Custom hook for managing drag-and-drop operations in tier list
  */
 export function useDragDrop(
-  moveCharacterToTier: (char: Character, tier: string | 'unassigned') => void,
-  swapInTier: (tier: string, fromIdx: number, toIdx: number) => void,
-  reorderUnassigned: (fromIdx: number, toIdx: number) => void,
-  tierList: Record<string, Character[]>,
+  moveCharacterToTier: (char: Character, tierKey: keyof TierList | 'unassigned') => void,
+  tierList: TierList,
   unassignedCharacters: Character[]
 ) {
   // Start drag: encode character data
@@ -63,7 +61,7 @@ export function useDragDrop(
         );
 
         if (character) {
-          moveCharacterToTier(character, tier);
+          moveCharacterToTier(character, tier as keyof TierList);
         }
       } catch (err) {
         console.error('Drop failed:', err);
@@ -116,7 +114,7 @@ function findCharacterById(
   characterId: string,
   sourceType: 'tier' | 'unassigned',
   sourceTier: string | undefined,
-  tierList: Record<string, Character[]>,
+  tierList: TierList,
   unassignedCharacters: Character[]
 ): Character | null {
   if (sourceType === 'unassigned') {
@@ -124,12 +122,12 @@ function findCharacterById(
   }
 
   if (sourceTier && sourceTier in tierList) {
-    return tierList[sourceTier].find((c) => c.id === characterId) || null;
+    return tierList[sourceTier as keyof TierList].find((c) => c.id === characterId) || null;
   }
 
   // Search all tiers
   for (const tier of TIERS) {
-    const found = tierList[tier]?.find((c) => c.id === characterId);
+    const found = tierList[tier].find((c) => c.id === characterId);
     if (found) return found;
   }
 

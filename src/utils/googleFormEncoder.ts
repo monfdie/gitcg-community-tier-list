@@ -57,7 +57,7 @@ export async function submitTierListForm(
   const formUrl = `https://docs.google.com/forms/d/${GOOGLE_FORM_CONFIG.formId}/formResponse`;
 
   try {
-    const response = await fetch(formUrl, {
+    await fetch(formUrl, {
       method: 'POST',
       mode: 'no-cors',
       body: params,

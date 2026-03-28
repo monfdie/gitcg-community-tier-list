@@ -9,28 +9,24 @@ import styles from './TierList.module.css';
 
 interface TierListProps {
   characters: Character[];
-  isAuthenticated: boolean;
-  onSubmit?: () => void;
 }
 
 /**
  * Main tier list component with all tiers and unassigned pool
  */
-export function TierList({ characters, isAuthenticated, onSubmit }: TierListProps) {
+export function TierList({ characters }: TierListProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const {
     tierList,
     unassignedCharacters,
     moveCharacterToTier,
-    swapInTier,
-    reorderUnassigned,
     isComplete,
     getTierCount,
     reset,
   } = useTierListState(characters);
 
   const { handleDragStart, handleDragOver, handleDropOnTier, handleDropOnUnassigned } =
-    useDragDrop(moveCharacterToTier, swapInTier, reorderUnassigned, tierList, unassignedCharacters);
+    useDragDrop(moveCharacterToTier, tierList, unassignedCharacters);
 
   const handleCharacterClick = (character: Character) => {
     // If character is in a tier, move to unassigned
@@ -69,23 +65,6 @@ export function TierList({ characters, isAuthenticated, onSubmit }: TierListProp
               disabled={unassignedCharacters.length === characters.length}
             >
               Reset
-            </button>
-
-            <button
-              onClick={onSubmit}
-              className={`${styles.buttonPrimary} ${
-                !isAuthenticated || !isComplete() ? styles.disabled : ''
-              }`}
-              disabled={!isAuthenticated || !isComplete()}
-              title={
-                !isAuthenticated
-                  ? 'Please sign in to submit'
-                  : !isComplete()
-                  ? 'All characters must be assigned'
-                  : 'Submit your tier list'
-              }
-            >
-              {!isComplete() ? `${characters.length - (unassignedCharacters.length)} of ${characters.length}` : 'Submit'}
             </button>
           </div>
         </div>

@@ -1,16 +1,30 @@
 import { useEffect, useState } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { TierList } from '@/components/TierList';
+import { SubmitButton } from '@/components/SubmitButton';
 import { useGoogleAuth } from '@/hooks/useGoogleAuth';
+import { useTierListState } from '@/hooks/useTierListState';
 import { loadCharacters } from '@/utils/characterLoader';
-import type { Character } from '@/types';
+import type { Character, UserProfile } from '@/types';
 import styles from './App.module.css';
 
 function App() {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { isAuthenticated, user } = useGoogleAuth();
+  const [submissionMessage, setSubmissionMessage] = useState<string | null>(null);
+  const { user: googleUser } = useGoogleAuth();
+  const { tierList, isComplete } = useTierListState(characters);
+
+  // Map Google profile to UserProfile (sub -> id, picture -> avatar)
+  const user: UserProfile | null = googleUser
+    ? {
+        id: googleUser.sub,
+        name: googleUser.name,
+        email: googleUser.email,
+        avatar: googleUser.picture,
+      }
+    : null;
 
   useEffect(() => {
     loadCharacters()
@@ -24,13 +38,15 @@ function App() {
       });
   }, []);
 
-  const handleSubmitTierList = () => {
-    if (!isAuthenticated || !user) {
-      setError('Please sign in to submit your tier list');
-      return;
-    }
-    // TODO: Implement form submission
-    console.log('Submitting tier list for', user.name);
+  const handleSubmitSuccess = () => {
+    setSubmissionMessage('✅ Your tier list has been submitted successfully!');
+    setTimeout(() => {
+      setSubmissionMessage(null);
+    }, 5000);
+  };
+
+  const handleSubmitError = (errorMsg: string) => {
+    setError(errorMsg);
   };
 
   return (
@@ -51,12 +67,26 @@ function App() {
             </div>
           )}
 
+          {submissionMessage && (
+            <div className={styles.status}>
+              <p>{submissionMessage}</p>
+            </div>
+          )}
+
           {!isLoading && !error && characters.length > 0 && (
-            <TierList
-              characters={characters}
-              isAuthenticated={isAuthenticated}
-              onSubmit={handleSubmitTierList}
-            />
+            <>
+              <TierList characters={characters} />
+              
+              {user && (
+                <SubmitButton
+                  tierList={tierList}
+                  user={user}
+                  isComplete={isComplete()}
+                  onSuccess={handleSubmitSuccess}
+                  onError={handleSubmitError}
+                />
+              )}
+            </>
           )}
         </div>
       </main>
