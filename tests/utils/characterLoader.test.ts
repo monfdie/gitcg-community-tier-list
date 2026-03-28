@@ -7,6 +7,13 @@ import {
 } from '@/utils/characterLoader';
 import { Character } from '@/types';
 
+interface MockFetchResponse {
+  ok: boolean;
+  status?: number;
+  statusText?: string;
+  json: () => Promise<unknown>;
+}
+
 // Mock data
 const mockCharacters: Character[] = [
   {
@@ -43,10 +50,10 @@ describe('characterLoader', () => {
 
   describe('loadCharacters', () => {
     it('should load and parse character data successfully', async () => {
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
         ok: true,
         json: () => Promise.resolve(mockCharacters),
-      });
+      } as MockFetchResponse);
 
       const characters = await loadCharacters();
 
@@ -55,20 +62,20 @@ describe('characterLoader', () => {
     });
 
     it('should throw error on network failure', async () => {
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
         ok: false,
         status: 404,
         statusText: 'Not Found',
-      });
+      } as MockFetchResponse);
 
       await expect(loadCharacters()).rejects.toThrow('Failed to load characters');
     });
 
     it('should throw error on invalid JSON', async () => {
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
         ok: true,
         json: () => Promise.reject(new Error('Invalid JSON')),
-      });
+      } as MockFetchResponse);
 
       await expect(loadCharacters()).rejects.toThrow('Failed to load characters');
     });
@@ -80,10 +87,10 @@ describe('characterLoader', () => {
         { id: 'invalid2', name: 'Invalid2', element: 'invalid_element', rarity: 5 }, // Invalid element
       ];
 
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
         ok: true,
         json: () => Promise.resolve(invalidData),
-      });
+      } as MockFetchResponse);
 
       const characters = await loadCharacters();
 

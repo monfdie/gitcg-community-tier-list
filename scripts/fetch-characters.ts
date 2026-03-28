@@ -13,8 +13,17 @@
  * For production, review and copy valid characters to public/data/characters.json
  */
 
-import { readFileSync, writeFileSync } from 'fs';
+import { writeFileSync } from 'fs';
 import { join } from 'path';
+
+interface APICharacter {
+  enName?: string;
+  ptName?: string;
+  name?: string;
+  element?: string;
+  qualityType?: string;
+  CardImg?: string;
+}
 
 interface Character {
   id: string;
@@ -31,7 +40,7 @@ const VALID_RARITIES = [4, 5];
 /**
  * Validates and normalizes character data from Lunaris API
  */
-function validateCharacterFromAPI(char: any, id: string): Character | null {
+function validateCharacterFromAPI(char: APICharacter, id: string): Character | null {
   const name = char.enName || char.ptName || char.name || '';
   const element = char.element || '';
   
@@ -73,7 +82,7 @@ function validateCharacterFromAPI(char: any, id: string): Character | null {
 /**
  * Validates character data structure
  */
-function validateCharacterStructure(char: Character, index: number): { valid: boolean; errors: string[] } {
+function validateCharacterStructure(char: Character): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
 
   if (!char.id || typeof char.id !== 'string') {
@@ -114,11 +123,11 @@ async function syncCharacters() {
     const rawData = await response.json();
 
     // Handle different API response formats
-    let items: any[] = [];
+    let items: APICharacter[] = [];
     if (Array.isArray(rawData)) {
       items = rawData;
     } else if (typeof rawData === 'object' && rawData !== null) {
-      items = Object.values(rawData);
+      items = Object.values(rawData) as APICharacter[];
     }
 
     if (items.length === 0) {

@@ -125,7 +125,7 @@ export function decodeJWT<T = Record<string, unknown>>(token: string): T {
       atob(parts[1].replace(/-/g, '+').replace(/_/g, '/'))
     );
     return decoded as T;
-  } catch (error) {
+  } catch {
     throw new Error('Failed to decode token');
   }
 }

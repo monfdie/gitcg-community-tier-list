@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useTierListState } from '@/hooks/useTierListState';
 import type { Character } from '@/types';
@@ -156,7 +156,7 @@ describe('useTierListState', () => {
 
   it('should persist state to localStorage', () => {
     const mockCharacters = createMockCharacters();
-    const { result, rerender } = renderHook(() => useTierListState(mockCharacters));
+    const { result } = renderHook(() => useTierListState(mockCharacters));
 
     act(() => {
       result.current.moveCharacterToTier(mockCharacters[0], 'S');
