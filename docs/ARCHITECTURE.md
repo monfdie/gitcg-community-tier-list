@@ -62,8 +62,8 @@ useTierListState (context)
 - Dev script to fetch from external API
 
 **Alternatives Considered**:
-- Direct API calls to `api.lunaris.moe`:
-  - Risk of API downtime
+- Direct API calls to external character data API:
+  - Risk of API downtime or changes
   - CORS issues possible
   - External dependency in production
   
@@ -75,7 +75,7 @@ useTierListState (context)
 **Development Workflow**:
 ```
 npm run scripts:fetch-characters
-  → Fetches from https://api.lunaris.moe/data/6.4.54/charlist.json
+  → Fetches from configured character data API
   → Saves to public/data/characters.json
   → Vite bundles it at build time
 ```
@@ -347,7 +347,7 @@ GitHub Pages serves from https://aurceive.github.io/20260328-gi-community-tier-l
 **Development**:
 ```
 npm run scripts:fetch-characters
-  → Downloads images from https://api.lunaris.moe/data/assets/avataricon/...
+  → Downloads images from configured API endpoint
   → Saves to public/data/avatars/
   → Commits to git
 ```

@@ -67,13 +67,12 @@ tmp/
 .local/
 dist-*/
 
-# Downloaded character data (keep as committed)
-# public/data/characters.json should be committed
-# public/data/avatars/ should be committed
+# Development setup notes (keep template, exclude local setup)
+DEVELOPMENT_SETUP.md
+DEVELOPMENT_SETUP_*.md
+!DEVELOPMENT_SETUP_TEMPLATE.md
 
-# Uncomment if not tracking character images
-# public/data/avatars/
-
-# Scripts output
+# Character data (keep production build, exclude build artifacts)
+public/data/avatars/
 scripts/output/
 scripts/logs/
