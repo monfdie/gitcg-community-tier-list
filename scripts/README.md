@@ -5,7 +5,8 @@
 ## 📂 Файлы
 
 ### Source Files (отслеживаются в git)
-- **sync-characters.ts** — Загружает персонажей из API, валидирует их, показывает отчет
+- **fetch-characters.ts** — Загружает персонажей из API, валидирует их, показывает отчет
+- **fetch-avatars.ts** — Загружает аватары персонажей из API в temp папку
 - **generate-form-questions.ts** — Генерирует вопросы для формы И Google Apps Script
 - **README.md** — Эта документация
 
@@ -13,6 +14,7 @@
 - **form-questions.json** — Вопросы в JSON формате (артефакт генерации)
 - **characters-full.json** — Полный список символов из API (артефакт)
 - **google-form-importer.gs** — Google Apps Script для форм (⚠️ АВТОГЕНЕРИРУЕТСЯ)
+- **temp/avatars/** — Загруженные аватары персонажей (для обзора и выбора)
 
 ---
 
@@ -35,7 +37,22 @@ npm run scripts:fetch-characters
 - Статистика по редкости и элементам
 - Готовые к использованию данные
 
-### 2️⃣ Обновить characters.json
+### 2️⃣ Загрузить аватары персонажей
+
+```bash
+npm run scripts:fetch-avatars
+```
+
+Это:
+- Загружает иконки из Lunaris API
+- Сохраняет в `scripts/temp/avatars/` (не коммитится)
+- Показывает статистику загрузки
+
+**Результат:**
+- Временная папка с аватарами для обзора
+- Готовы к использованию в production
+
+### 3️⃣ Обновить characters.json
 
 Скопируйте персонажей из `scripts/characters-full.json` в `public/data/characters.json`:
 
@@ -44,7 +61,7 @@ npm run scripts:fetch-characters
 npm run scripts:fetch-characters
 ```
 
-### 3️⃣ Сгенерировать вопросы и Google Apps Script
+### 4️⃣ Сгенерировать вопросы и Google Apps Script
 
 ```bash
 npm run scripts:generate-form-questions
@@ -53,6 +70,28 @@ npm run scripts:generate-form-questions
 **Генерирует:**
 - ✅ `scripts/form-questions.json` — Все вопросы в JSON
 - ✅ `scripts/google-form-importer.gs` — Google Apps Script (АВТОГЕНЕРИРУЕТСЯ)
+
+## 🖼️ Avatar Management
+
+### Downloading Avatars
+
+```bash
+npm run scripts:fetch-avatars
+```
+
+Скрипт:
+1. Читает список персонажей из `public/data/characters.json`
+2. Загружает иконки из Lunaris API
+3. Сохраняет в `scripts/temp/avatars/` для обзора
+4. Показывает статистику
+
+### Using Downloaded Avatars
+
+После загрузки:
+1. Откройте `scripts/temp/avatars/` и посмотрите иконки
+2. Скопируйте нужные в `public/assets/avatars/`
+3. (Опционально) Обновите `public/data/characters.json` с `imageUrl`
+4. Используйте в компонентах
 
 ## 🔌 Google Form Integration (Быстрый способ)
 
