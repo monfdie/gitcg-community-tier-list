@@ -5,8 +5,7 @@
 ## 📂 Файлы
 
 ### Source Files (отслеживаются в git)
-- **fetch-characters.ts** — Загружает полный список персонажей из API
-- **validate-characters.ts** — Проверяет целостность данных персонажей  
+- **sync-characters.ts** — Загружает персонажей из API, валидирует их, показывает отчет
 - **generate-form-questions.ts** — Генерирует вопросы для формы И Google Apps Script
 - **README.md** — Эта документация
 
@@ -19,53 +18,41 @@
 
 ## 🚀 Основной Workflow
 
-### 1️⃣ Получить полный список персонажей
+### 1️⃣ Синхронизировать персонажей (fetch + validate в одном)
 
 ```bash
 npm run scripts:fetch-characters
 ```
 
-Это загрузит персонажей из API и сохранит в `scripts/characters-full.json` (не коммитится).
+Это один скрипт который:
+- Загружает персонажей из API
+- Валидирует структуру данных
+- Показывает подробный отчет
+- Сохраняет в `scripts/characters-full.json` (не коммитится)
 
 **Результат:**
-- Валидирует данные
-- Сортирует по редкости и имени
-- Показывает статистику по элементам
+- Полная валидация во время загрузки
+- Статистика по редкости и элементам
+- Готовые к использованию данные
 
-### 2️⃣ Валидировать данные
+### 2️⃣ Обновить characters.json
 
-```bash
-npm run scripts:validate-characters
-```
-
-Проверяет `public/data/characters.json` на:
-- Обязательные поля
-- Корректные значения
-- Отсутствие дубликатов
-- Правильное форматирование
-
-### 3️⃣ Обновить characters.json
-
-Скопируйте нужных персонажей из `scripts/characters-full.json` в `public/data/characters.json`:
+Скопируйте персонажей из `scripts/characters-full.json` в `public/data/characters.json`:
 
 ```bash
-# После редактирования, валидируйте:
-npm run scripts:validate-characters
+# После редактирования, проверьте данные новой загрузкой:
+npm run scripts:fetch-characters
 ```
 
-### 4️⃣ Сгенерировать вопросы и Google Apps Script
+### 3️⃣ Сгенерировать вопросы и Google Apps Script
 
 ```bash
 npm run scripts:generate-form-questions
 ```
 
-**Что это генерирует:**
+**Генерирует:**
 - ✅ `scripts/form-questions.json` — Все вопросы в JSON
-- ✅ `scripts/google-form-importer.gs` — Google Apps Script с встроенными вопросами
-
-⚠️ **ВАЖНО**: google-form-importer.gs — это АВТОГЕНЕРИРУЕМЫЙ файл. Не редактируйте его вручную! Если нужны изменения — обновите characters.json и переган.
-
----
+- ✅ `scripts/google-form-importer.gs` — Google Apps Script (АВТОГЕНЕРИРУЕТСЯ)
 
 ## 🔌 Google Form Integration (Быстрый способ)
 
@@ -152,15 +139,19 @@ CHARACTER_API_URL=https://your-api.com/characters.json npm run scripts:fetch-cha
 
 ### Как обновить вопросы в форме, если изменились персонажи
 
-1. Обновите `public/data/characters.json`
-2. Запустите генерацию:
+1. Запустите синхронизацию:
+   ```bash
+   npm run scripts:fetch-characters
+   ```
+2. Обновите `public/data/characters.json` (если нужно)
+3. Переган форму-скрипты:
    ```bash
    npm run scripts:generate-form-questions
    ```
-3. В Google Form: Tools → Script editor
-4. Запустите `clearAllQuestions()` чтобы удалить старые вопросы
-5. Скопируйте новый `scripts/google-form-importer.gs`
-6. Запустите `addQuestionsToForm()` чтобы добавить новые
+4. В Google Form: Tools → Script editor
+5. Запустите `clearAllQuestions()` чтобы удалить старые вопросы
+6. Копируйте новый `scripts/google-form-importer.gs`
+7. Запустите `addQuestionsToForm()` чтобы добавить новые
 
 ---
 
