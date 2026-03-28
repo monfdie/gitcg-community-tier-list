@@ -121,14 +121,14 @@ export const GOOGLE_FORM_CONFIG = {
 /**
  * Character data source (local JSON file)
  */
-export const CHARACTER_DATA_URL = '/data/characters.json';
+export const CHARACTER_DATA_URL = `${import.meta.env.BASE_URL}data/characters.json`;
 
 /**
  * Asset paths
  */
 export const ASSET_PATHS = {
-  avatars: '/assets/avatars/',
-  travelers: '/assets/travelers/',
+  avatars: `${import.meta.env.BASE_URL}assets/avatars/`,
+  travelers: `${import.meta.env.BASE_URL}assets/travelers/`,
 };
 
 // ============================================================================
