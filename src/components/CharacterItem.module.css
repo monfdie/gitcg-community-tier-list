@@ -4,17 +4,19 @@
   gap: 0.5rem;
   padding: 0.75rem;
   background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
   cursor: grab;
   user-select: none;
   transition: all 0.2s ease;
   position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
 }
 
 .characterItem:hover {
-  border-color: #999;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: #4285f4;
+  box-shadow: 0 4px 12px rgba(66, 133, 244, 0.2);
   transform: translateY(-2px);
 }
 
@@ -23,29 +25,73 @@
   outline-offset: 2px;
 }
 
-.characterItem:active {
+.characterItem.dragging {
+  opacity: 0.5;
   cursor: grabbing;
+}
+
+/* Image wrapper with badges */
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 0;
+  flex: 1;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #f5f5f5;
 }
 
 .image {
   width: 100%;
-  height: auto;
-  border-radius: 4px;
+  height: 100%;
   object-fit: cover;
-  aspect-ratio: 1;
+  border-radius: 4px;
+  transition: transform 0.2s ease;
 }
 
+.characterItem:hover .image {
+  transform: scale(1.05);
+}
+
+/* Rarity badge (top-left) */
+.rarityBadge {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  background: rgba(255, 193, 7, 0.9);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+}
+
+/* Element badge (top-right) */
+.elementBadge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 1rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Character name and info */
 .info {
-  flex: 1;
+  flex: 0 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .name {
-  margin: 0 0 0.5rem 0;
+  margin: 0;
   font-size: 0.9rem;
   font-weight: 600;
   color: #333;
   line-height: 1.2;
   text-align: center;
+  word-break: break-word;
 }
 
 .meta {
@@ -57,62 +103,30 @@
 }
 
 .element {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 600;
-  padding: 0.25rem 0.5rem;
-  border-radius: 3px;
   text-transform: capitalize;
-  color: white;
-}
-
-.element-pyro {
-  background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
-}
-
-.element-hydro {
-  background: linear-gradient(135deg, #0066ff, #0052cc);
-}
-
-.element-electro {
-  background: linear-gradient(135deg, #b954ff, #9933ff);
-}
-
-.element-cryo {
-  background: linear-gradient(135deg, #4dd0ff, #00bfff);
-}
-
-.element-anemo {
-  background: linear-gradient(135deg, #66ffff, #00cccc);
-}
-
-.element-geo {
-  background: linear-gradient(135deg, #ffcc00, #ffaa00);
-}
-
-.element-dendro {
-  background: linear-gradient(135deg, #99ff00, #66cc00);
-}
-
-.rarity {
-  font-size: 0.7rem;
-  color: #ffc107;
+  color: #666;
   letter-spacing: 0.05em;
 }
 
+/* Drag handle */
 .dragHandle {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  bottom: 4px;
+  right: 4px;
   width: 20px;
   height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(66, 133, 244, 0.1);
   border-radius: 3px;
   font-size: 0.8rem;
+  color: #4285f4;
   opacity: 0;
   transition: opacity 0.2s ease;
+  pointer-events: none;
 }
 
 .characterItem:hover .dragHandle {
@@ -128,16 +142,19 @@
 
   .name {
     font-size: 0.8rem;
-    margin-bottom: 0.35rem;
   }
 
   .element {
-    font-size: 0.65rem;
-    padding: 0.2rem 0.4rem;
+    font-size: 0.6rem;
   }
 
-  .rarity {
+  .rarityBadge {
     font-size: 0.65rem;
+    padding: 1px 4px;
+  }
+
+  .elementBadge {
+    font-size: 0.9rem;
   }
 
   .dragHandle {
