@@ -1,4 +1,5 @@
 import type { Character } from '@/types';
+import { CharacterItem } from './CharacterItem';
 import { TIER_COLORS } from '@/config';
 import styles from './TierRow.module.css';
 
@@ -37,32 +38,16 @@ export function TierRow({
         id={`tier-${tier}`}
         data-tier={tier}
       >
+        {characters.length === 0 && (
+          <span className={styles.empty}>Drop characters here</span>
+        )}
         {characters.map((char) => (
-          <div
+          <CharacterItem
             key={char.id}
-            id={char.id}
-            className={`${styles.characterItem} character`}
-            onClick={() => onCharacterClick?.(char)}
-            role="button"
-            tabIndex={0}
-            aria-label={`${char.name} - ${char.rarity} star ${char.element}`}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                onCharacterClick?.(char);
-              }
-            }}
-          >
-            {char.imageUrl && (
-              <img
-                src={char.imageUrl}
-                alt={char.name}
-                className={styles.image}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = `${import.meta.env.BASE_URL}assets/placeholder-avatar.png`;
-                }}
-              />
-            )}
-          </div>
+            character={char}
+            onClick={onCharacterClick}
+            aria-label={`Remove ${char.name} from tier ${tier}`}
+          />
         ))}
       </div>
     </div>

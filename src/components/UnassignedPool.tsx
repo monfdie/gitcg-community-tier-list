@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import type { Character } from '@/types';
+import { CharacterItem } from './CharacterItem';
 import styles from './UnassignedPool.module.css';
 
 interface UnassignedPoolProps {
@@ -57,31 +58,11 @@ export function UnassignedPool({
 
       <div className={`${styles.grid} sort`} data-tier="unassigned">
         {filteredCharacters.map((character) => (
-          <div
+          <CharacterItem
             key={character.id}
-            id={character.id}
-            className={`${styles.characterItem} character`}
-            onClick={() => onCharacterClick?.(character)}
-            role="button"
-            tabIndex={0}
-            aria-label={`${character.name} - ${character.rarity} star ${character.element}`}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                onCharacterClick?.(character);
-              }
-            }}
-          >
-            {character.imageUrl && (
-              <img
-                src={character.imageUrl}
-                alt={character.name}
-                className={styles.image}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = `${import.meta.env.BASE_URL}assets/placeholder-avatar.png`;
-                }}
-              />
-            )}
-          </div>
+            character={character}
+            onClick={onCharacterClick}
+          />
         ))}
       </div>
     </div>
