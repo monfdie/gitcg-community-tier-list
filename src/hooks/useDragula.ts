@@ -18,6 +18,12 @@ export function useDragula(options: UseDragulaOptions) {
   callbacksRef.current = options;
 
   useEffect(() => {
+    // Track mouse position for 2D shadow placement correction in flex-wrap containers
+    let mouseX = 0;
+    let mouseY = 0;
+    const onMouseMove = (e: MouseEvent) => { mouseX = e.clientX; mouseY = e.clientY; };
+    document.addEventListener('mousemove', onMouseMove);
+
     // drake declared outside setTimeout so the cleanup function can destroy it
     // even after the 100ms delay has fired
     let drake: dragula.Drake | undefined;
@@ -41,14 +47,74 @@ export function useDragula(options: UseDragulaOptions) {
           callbacksRef.current.onDragStart?.();
         });
 
-        drake.on('drop', (el: Element, target: Element | null, source: Element, sibling: Element | null) => {
+        // Correct shadow position for flex-wrap containers using 2D hit detection.
+        // Dragula's default only checks Y-midpoints (1D), which fails for multi-row grids.
+        //
+        // Algorithm per item (DOM order):
+        //   - cursor BELOW item's row (mouseY >= rect.bottom) → skip
+        //   - cursor ON/ABOVE item's row AND left of X-midpoint → insert before item
+        //   - cursor right of X-midpoint → check if next item starts a new row:
+        //       yes → place shadow at end of current row (= before first item of next row)
+        //       no  → continue to next item on same row
+        //   - no match → append to end
+        drake.on('shadow', (el: Element, container: Element) => {
+          if (!container.classList.contains('sort')) return;
+
+          const items = Array.from(container.children).filter(
+            (c) => c !== el && c.classList.contains('character')
+          ) as HTMLElement[];
+
+          if (items.length === 0) return;
+
+          let ref: Element | null = null;
+          for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            const rect = item.getBoundingClientRect();
+
+            if (mouseY >= rect.bottom) continue; // cursor is below this row, skip
+
+            if (mouseX < rect.left + rect.width / 2) {
+              ref = item;
+              break;
+            }
+
+            // Cursor is right of this item's midpoint — check if next item is a new row
+            const nextItem = items[i + 1];
+            if (!nextItem) break; // last item; cursor right of it → append to end
+
+            const nextRect = nextItem.getBoundingClientRect();
+            // 1px tolerance for subpixel rendering
+            if (nextRect.top > rect.bottom - 1) {
+              // Next item is on a new row → end of current row is the right spot
+              ref = nextItem;
+              break;
+            }
+            // Same row → continue
+          }
+
+          if (ref !== null) {
+            if (el.nextSibling !== ref) container.insertBefore(el, ref);
+          } else {
+            if (el.nextSibling !== null) container.appendChild(el);
+          }
+        });
+
+        drake.on('drop', (el: Element, target: Element | null, source: Element) => {
           el.classList.remove('dragging');
 
           if (!target) return;
 
           const characterId = el.id;
           const targetTier = target.getAttribute('data-tier') || 'unassigned';
-          const siblingId = sibling?.id ?? null;
+
+          // Read sibling from the DOM at drop time — reflects our corrected shadow position,
+          // not Dragula's 1D-computed sibling passed as the 4th argument.
+          // Skip non-character nodes (e.g. mirror, placeholder) when finding sibling.
+          let domSibling: Element | null = el.nextElementSibling;
+          while (domSibling && !domSibling.classList.contains('character')) {
+            domSibling = domSibling.nextElementSibling;
+          }
+          const siblingId = domSibling?.id ?? null;
 
           if (source !== target) {
             // Cross-container drop: revert el to source so React can remove it cleanly.
@@ -80,6 +146,7 @@ export function useDragula(options: UseDragulaOptions) {
     return () => {
       clearTimeout(timer);
       drake?.destroy();
+      document.removeEventListener('mousemove', onMouseMove);
     };
   }, []);
 }
