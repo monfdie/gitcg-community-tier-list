@@ -16,6 +16,11 @@
   gap: 0;
 }
 
+/* Scroll buffer - ensures 400px space below tier list */
+.scrollBuffer {
+  min-height: calc(max(50vh, 400px));
+}
+
 /* Mobile responsive */
 @media (max-width: 768px) {
   .tierList {

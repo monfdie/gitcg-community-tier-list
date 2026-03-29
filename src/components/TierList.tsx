@@ -90,16 +90,18 @@ export function TierList({ characters, onStateChange }: TierListProps) {
         ))}
       </div>
 
-      <UnassignedPool
-        characters={unassignedCharacters}
-        onCharacterClick={handleCharacterClick}
-      />
+      <div className={styles.scrollBuffer}>
+        <UnassignedPool
+          characters={unassignedCharacters}
+          onCharacterClick={handleCharacterClick}
+        />
 
-      {isComplete() && (
-        <div className={styles.completionMessage}>
-          <p>✅ All characters assigned! Ready to submit your tier list.</p>
-        </div>
-      )}
+        {isComplete() && (
+          <div className={styles.completionMessage}>
+            <p>✅ All characters assigned! Ready to submit your tier list.</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
