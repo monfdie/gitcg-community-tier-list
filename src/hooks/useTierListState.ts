@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import type { Character, TierList, TierKey } from '@/types';
 import { TIERS, DEBUG } from '@/config';
 
@@ -39,6 +39,49 @@ export function useTierListState(allCharacters: Character[]) {
     };
     return initialState;
   });
+
+  // Update unassigned characters with new data when allCharacters changes
+  // This ensures imageUrl and other properties are synced from props
+  useEffect(() => {
+    if (allCharacters.length > 0) {
+      setState((prevState) => {
+        // Create a map of character IDs with their full data from allCharacters
+        const charMap = new Map<string, Character>();
+        allCharacters.forEach(char => charMap.set(char.id, char));
+
+        // Update unassigned characters with fresh data (preserves assignments)
+        const updatedUnassigned = prevState.unassignedCharacters.map(char => {
+          const freshChar = charMap.get(char.id);
+          return freshChar || char;
+        });
+
+        // Update all tiers with fresh data (preserves assignments)
+        const updatedTierList: TierList = { ...prevState.tierList };
+        TIERS.forEach(tier => {
+          updatedTierList[tier] = prevState.tierList[tier].map(char => {
+            const freshChar = charMap.get(char.id);
+            return freshChar || char;
+          });
+        });
+
+        // Only update if something actually changed
+        const hasChanged = 
+          updatedUnassigned !== prevState.unassignedCharacters ||
+          TIERS.some(tier => updatedTierList[tier] !== prevState.tierList[tier]);
+
+        if (hasChanged) {
+          const newState = {
+            tierList: updatedTierList,
+            unassignedCharacters: updatedUnassigned,
+          };
+          if (DEBUG) console.log('[useTierListState] Synced character data from props');
+          return newState;
+        }
+
+        return prevState;
+      });
+    }
+  }, [allCharacters]);
 
   // Persist state to localStorage
   const saveState = useCallback((newState: TierListState) => {

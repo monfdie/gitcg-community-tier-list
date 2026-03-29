@@ -4,7 +4,10 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/20260328-gi-community-tier-list/',
+  // Use GitHub Pages path for production, root for development
+  base: process.env.NODE_ENV === 'production' 
+    ? '/20260328-gi-community-tier-list/'
+    : '/',
   plugins: [react()],
   resolve: {
     alias: {

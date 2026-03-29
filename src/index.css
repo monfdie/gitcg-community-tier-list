@@ -190,38 +190,29 @@ select:focus {
 
 /* Dragula Drag & Drop Styles */
 
-/* Element being dragged */
-.character.dragging {
-  opacity: 0.5;
-}
-
-/* Mirror: The dragged element copy (visual feedback) */
+/* Dragula: mirror element (drag clone following cursor) */
 .gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
   opacity: 0.8;
-  z-index: 9999;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  border-radius: 4px;
-  position: fixed;
   pointer-events: none;
 }
 
-/* Hide the original element being dragged */
+/* Dragula: hide original element while dragging */
 .gu-hide {
-  opacity: 0;
+  display: none !important;
 }
 
-/* Drop zone that will accept the item */
-.gu-over {
-  background: rgba(76, 175, 80, 0.15) !important;
-  border: 1px dashed rgba(76, 175, 80, 0.5) !important;
+/* Dragula: element in transit (semi-transparent placeholder) */
+.gu-transit {
+  opacity: 0.2;
 }
 
-/* Unselectable during drag */
+/* Dragula: prevent text selection during drag */
 .gu-unselectable {
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+  user-select: none !important;
+  -webkit-user-select: none !important;
 }
 
 /* Scrollbar styling */

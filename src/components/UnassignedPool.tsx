@@ -55,7 +55,7 @@ export function UnassignedPool({
         <span className={styles.count}>{filteredCharacters.length} left</span>
       </div>
 
-      <div className={styles.grid}>
+      <div className={`${styles.grid} sort`} data-tier="unassigned">
         {filteredCharacters.map((character) => (
           <div
             key={character.id}

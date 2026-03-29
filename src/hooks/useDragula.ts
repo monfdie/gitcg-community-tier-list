@@ -1,115 +1,74 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import dragula from 'dragula';
-import { TIERS } from '@/config';
 
-interface UseDragulaSetupOptions {
-  onCharacterMoved: (characterId: string, targetTierId: string) => void;
+interface UseDragulaOptions {
+  onCharacterMoved: (characterId: string, targetTier: string) => void;
   onDragStart?: () => void;
   onDragEnd?: () => void;
 }
 
 /**
- * Custom hook for managing drag-and-drop with Dragula library
- * Handles drag-drop between tiers and unassigned pool
+ * Dragula-based drag-and-drop hook following TierMaker's pattern:
+ * - Uses isContainer callback (not explicit container array)
+ * - Characters are direct children of .sort containers
+ * - Manually reverts DOM moves, lets React re-render from state
  */
-export function useDragula(options: UseDragulaSetupOptions) {
-  const { onCharacterMoved, onDragStart, onDragEnd } = options;
+export function useDragula(options: UseDragulaOptions) {
+  const callbacksRef = useRef(options);
+  callbacksRef.current = options;
 
   useEffect(() => {
-    // Wait for DOM to be fully available
     const timer = setTimeout(() => {
       try {
-        // Collect all drop containers
-        const containers: Element[] = [];
-
-        // Add unassigned pool container
-        const unassignedPool = document.getElementById('unassigned-pool');
-        if (unassignedPool) containers.push(unassignedPool);
-
-        // Add all tier containers
-        TIERS.forEach((tier) => {
-          const tierContainer = document.getElementById(`tier-${tier}`);
-          if (tierContainer) containers.push(tierContainer);
-        });
-
-        // Need at least 2 containers to initialize dragula
-        if (containers.length < 2) return;
-
-        // Initialize dragula with options
-        const drake = dragula(containers, {
-          // Only elements with 'character' class are draggable
-          moves: (el: Element | undefined) => {
-            if (!el) return false;
-            return el.classList.contains('character');
+        const drake = dragula({
+          isContainer: (el) => {
+            return el?.classList.contains('sort') ?? false;
           },
-
-          // All containers accept all items
-          accepts: () => {
-            return true;
+          moves: (el) => {
+            return el?.classList.contains('character') ?? false;
           },
-
-          // Move mode (not copy)
           copy: false,
-
-          // Horizontal direction for character arrangement
-          direction: 'horizontal',
-
-          // Don't revert if dropped outside containers
           revertOnSpill: false,
-
-          // Smooth animations
           mirrorContainer: document.body,
         });
 
-        // Handle drag start
         drake.on('drag', (el: Element) => {
           el.classList.add('dragging');
-          onDragStart?.();
+          callbacksRef.current.onDragStart?.();
         });
 
-        // Handle drop
-        drake.on('drop', (el: Element, target: Element | null) => {
+        drake.on('drop', (el: Element, target: Element | null, source: Element) => {
           el.classList.remove('dragging');
 
           if (!target) return;
 
-          // Determine target tier based on container ID
-          const targetId = target.id;
-          let targetTierId = 'unassigned';
-
-          // Parse tier ID (format: "tier-S", "tier-A", etc.)
-          if (targetId.startsWith('tier-')) {
-            targetTierId = targetId.replace('tier-', '');
-          }
-
-          // Get character ID from element
           const characterId = el.id;
-          if (!characterId) {
-            console.warn('Character element missing ID');
-            return;
+          const targetTier = target.getAttribute('data-tier') || 'unassigned';
+
+          // Revert Dragula's DOM move: put element back in source
+          // so React can reconcile cleanly from state update
+          source.appendChild(el);
+
+          if (characterId) {
+            callbacksRef.current.onCharacterMoved(characterId, targetTier);
           }
 
-          // Notify parent of character move
-          onCharacterMoved(characterId, targetTierId);
-
-          onDragEnd?.();
+          callbacksRef.current.onDragEnd?.();
         });
 
-        // Handle drag end (no drop, reverted or cancelled)
         drake.on('dragend', (el: Element) => {
-          el.classList.remove('dragging');
-          onDragEnd?.();
+          if (el) el.classList.remove('dragging');
+          callbacksRef.current.onDragEnd?.();
         });
 
-        // Cleanup on unmount
         return () => {
           drake.destroy();
         };
       } catch (error) {
-        console.error('Failed to initialize dragula:', error);
+        console.error('[useDragula] Failed to initialize:', error);
       }
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [onCharacterMoved, onDragStart, onDragEnd]);
+  }, []);
 }

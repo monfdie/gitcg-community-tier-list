@@ -31,46 +31,39 @@ export function TierRow({
         <span className={styles.tierCount}>{count}</span>
       </div>
 
-      {/* Tier Content (Droppable) */}
+      {/* Tier Content — .sort container for Dragula, characters are direct children */}
       <div
-        className={styles.tierContent}
+        className={`${styles.tierContent} sort`}
         id={`tier-${tier}`}
+        data-tier={tier}
       >
-        {characters.length === 0 ? (
-          <div className={styles.empty}>
-            <span>⬆️ Drop characters here</span>
-          </div>
-        ) : (
-          <div className={styles.characterGrid}>
-            {characters.map((char) => (
-              <div
-                key={char.id}
-                id={char.id}
-                className={`${styles.characterItem} character`}
-                onClick={() => onCharacterClick?.(char)}
-                role="button"
-                tabIndex={0}
-                aria-label={`${char.name} - ${char.rarity} star ${char.element}`}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    onCharacterClick?.(char);
-                  }
+        {characters.map((char) => (
+          <div
+            key={char.id}
+            id={char.id}
+            className={`${styles.characterItem} character`}
+            onClick={() => onCharacterClick?.(char)}
+            role="button"
+            tabIndex={0}
+            aria-label={`${char.name} - ${char.rarity} star ${char.element}`}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                onCharacterClick?.(char);
+              }
+            }}
+          >
+            {char.imageUrl && (
+              <img
+                src={char.imageUrl}
+                alt={char.name}
+                className={styles.image}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = `${import.meta.env.BASE_URL}assets/placeholder-avatar.png`;
                 }}
-              >
-                {char.imageUrl && (
-                  <img
-                    src={char.imageUrl}
-                    alt={char.name}
-                    className={styles.image}
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = `${import.meta.env.BASE_URL}assets/placeholder-avatar.png`;
-                    }}
-                  />
-                )}
-              </div>
-            ))}
+              />
+            )}
           </div>
-        )}
+        ))}
       </div>
     </div>
   );

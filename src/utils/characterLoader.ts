@@ -49,9 +49,15 @@ export async function loadCharacters(): Promise<Character[]> {
  * Uses assets/avatars directory for images
  */
 function buildCharacterImageUrl(character: Character): Character {
-  if (!character.imageUrl && character.avatarId) {
+  const baseUrl = import.meta.env.BASE_URL || '/';
+  const avatarId = (character as any).avatarId;
+  
+  if (!character.imageUrl && avatarId) {
     // Use assets/avatars directory where character images are stored
-    character.imageUrl = `${import.meta.env.BASE_URL}assets/avatars/${character.avatarId}.webp`;
+    character.imageUrl = `${baseUrl}assets/avatars/${avatarId}.webp`;
+    if (DEBUG) {
+      console.log('[buildCharacterImageUrl] Set imageUrl for', character.id, character.imageUrl);
+    }
   }
   return character;
 }
