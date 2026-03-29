@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import dragula from 'dragula';
 
 interface UseDragulaOptions {
-  onCharacterMoved: (characterId: string, targetTier: string) => void;
+  onCharacterMoved: (characterId: string, targetTier: string, siblingId: string | null) => void;
   onDragStart?: () => void;
   onDragEnd?: () => void;
 }
@@ -37,20 +37,22 @@ export function useDragula(options: UseDragulaOptions) {
           callbacksRef.current.onDragStart?.();
         });
 
-        drake.on('drop', (el: Element, target: Element | null, source: Element) => {
+        drake.on('drop', (el: Element, target: Element | null, source: Element, sibling: Element | null) => {
           el.classList.remove('dragging');
 
           if (!target) return;
 
           const characterId = el.id;
           const targetTier = target.getAttribute('data-tier') || 'unassigned';
+          // Capture sibling BEFORE reverting DOM — it tells us the insertion point
+          const siblingId = sibling?.id ?? null;
 
           // Revert Dragula's DOM move: put element back in source
           // so React can reconcile cleanly from state update
           source.appendChild(el);
 
           if (characterId) {
-            callbacksRef.current.onCharacterMoved(characterId, targetTier);
+            callbacksRef.current.onCharacterMoved(characterId, targetTier, siblingId);
           }
 
           callbacksRef.current.onDragEnd?.();

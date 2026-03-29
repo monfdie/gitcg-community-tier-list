@@ -93,9 +93,9 @@ export function useTierListState(allCharacters: Character[]) {
     }
   }, []);
 
-  // Move character from one tier to another
+  // Move character from one tier to another, optionally inserting before a sibling
   const moveCharacterToTier = useCallback(
-    (character: Character, tierKey: TierKey) => {
+    (character: Character, tierKey: TierKey, insertBeforeId?: string | null) => {
       setState((prevState) => {
         const newState = { ...prevState };
 
@@ -112,14 +112,21 @@ export function useTierListState(allCharacters: Character[]) {
           }
         }
 
-        // Add to new location (only if not already there)
+        const insertBefore = (arr: Character[]): Character[] => {
+          if (!insertBeforeId) return [...arr, character];
+          const idx = arr.findIndex((c) => c.id === insertBeforeId);
+          if (idx < 0) return [...arr, character];
+          return [...arr.slice(0, idx), character, ...arr.slice(idx)];
+        };
+
+        // Add to new location at the correct position
         if (tierKey === 'unassigned') {
           if (!newState.unassignedCharacters.some((c) => c.id === character.id)) {
-            newState.unassignedCharacters.push(character);
+            newState.unassignedCharacters = insertBefore(newState.unassignedCharacters);
           }
         } else {
           if (!newState.tierList[tierKey].some((c) => c.id === character.id)) {
-            newState.tierList[tierKey].push(character);
+            newState.tierList[tierKey] = insertBefore(newState.tierList[tierKey]);
           }
         }
 

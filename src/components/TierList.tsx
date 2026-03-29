@@ -27,14 +27,11 @@ export function TierList({ characters, onStateChange }: TierListProps) {
 
   // Set up dragula for drag-drop functionality
   useDragula({
-    onCharacterMoved: (characterId: string, targetTierId: string) => {
-      // Find the character from either tier or unassigned
+    onCharacterMoved: (characterId: string, targetTierId: string, siblingId: string | null) => {
       let character: Character | null = null;
 
-      // Search in unassigned first
       character = unassignedCharacters.find((c) => c.id === characterId) || null;
 
-      // Search in tiers if not found
       if (!character) {
         for (const tier of TIERS) {
           character = tierList[tier as keyof typeof tierList].find((c) => c.id === characterId) || null;
@@ -42,9 +39,8 @@ export function TierList({ characters, onStateChange }: TierListProps) {
         }
       }
 
-      // Move character to target tier
       if (character) {
-        moveCharacterToTier(character, targetTierId as any);
+        moveCharacterToTier(character, targetTierId as any, siblingId);
       }
     },
   });
