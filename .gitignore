@@ -11,7 +11,7 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
-*.local
+.env.local
 
 # Scripts artifacts (generated files, do NOT commit)
 scripts/form-questions.json
