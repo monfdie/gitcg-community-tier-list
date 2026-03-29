@@ -26,8 +26,10 @@ export async function loadCharacters(): Promise<Character[]> {
       throw new Error('Invalid character data format: expected array');
     }
 
-    // Validate character data
-    const validCharacters = characters.filter(validateCharacter);
+    // Validate character data and build imageUrl
+    const validCharacters = characters
+      .filter(validateCharacter)
+      .map(buildCharacterImageUrl);
 
     if (DEBUG) {
       console.log(`[CharacterLoader] Loaded ${validCharacters.length} valid characters`);
@@ -40,6 +42,18 @@ export async function loadCharacters(): Promise<Character[]> {
     console.error('[CharacterLoader] Error:', message);
     throw new Error(`Failed to load characters: ${message}`);
   }
+}
+
+/**
+ * Build imageUrl from avatarId
+ * Uses assets/avatars directory for images
+ */
+function buildCharacterImageUrl(character: Character): Character {
+  if (!character.imageUrl && character.avatarId) {
+    // Use assets/avatars directory where character images are stored
+    character.imageUrl = `${import.meta.env.BASE_URL}assets/avatars/${character.avatarId}.webp`;
+  }
+  return character;
 }
 
 /**

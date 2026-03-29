@@ -41,6 +41,40 @@
   line-height: 0;
 }
 
+/* Character Item */
+.characterItem {
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+.characterItem:hover {
+  opacity: 0.8;
+}
+
+.characterItem:focus {
+  outline: 2px solid #fff;
+  outline-offset: -2px;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .emptyPool {
   display: none;
 }

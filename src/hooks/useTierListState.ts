@@ -69,11 +69,15 @@ export function useTierListState(allCharacters: Character[]) {
           }
         }
 
-        // Add to new location
+        // Add to new location (only if not already there)
         if (tierKey === 'unassigned') {
-          newState.unassignedCharacters.push(character);
+          if (!newState.unassignedCharacters.some((c) => c.id === character.id)) {
+            newState.unassignedCharacters.push(character);
+          }
         } else {
-          newState.tierList[tierKey].push(character);
+          if (!newState.tierList[tierKey].some((c) => c.id === character.id)) {
+            newState.tierList[tierKey].push(character);
+          }
         }
 
         saveState(newState);

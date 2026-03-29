@@ -1,22 +1,29 @@
-import { Droppable } from 'react-beautiful-dnd';
 import type { Character } from '@/types';
-import { CharacterItem } from './CharacterItem';
 import { TIER_COLORS } from '@/config';
 import styles from './TierRow.module.css';
 
 interface TierRowProps {
   tier: string;
   characters: Character[];
+  count: number;
   onCharacterClick?: (character: Character) => void;
+  onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void;
+  onDrop?: (e: React.DragEvent<HTMLDivElement>) => void;
+  onCharacterDragStart?: (character: Character) => (e: React.DragEvent<HTMLDivElement>) => void;
 }
 
 /**
  * TierRow component - displays a single tier row (S, A, B, C, or D)
- * 
- * Shows the tier label and a droppable area for character cards.
- * Characters can be dropped here from the unassigned pool or other tiers.
  */
-export function TierRow({ tier, characters, onCharacterClick }: TierRowProps) {
+export function TierRow({
+  tier,
+  characters,
+  count,
+  onCharacterClick,
+  onDragOver,
+  onDrop,
+  onCharacterDragStart,
+}: TierRowProps) {
   const tierColor = TIER_COLORS[tier as keyof typeof TIER_COLORS] || '#999';
 
   return (
@@ -27,39 +34,52 @@ export function TierRow({ tier, characters, onCharacterClick }: TierRowProps) {
         style={{ backgroundColor: tierColor }}
       >
         <span className={styles.tierText}>{tier}</span>
-        <span className={styles.tierCount}>{characters.length}</span>
+        <span className={styles.tierCount}>{count}</span>
       </div>
 
       {/* Tier Content (Droppable) */}
-      <Droppable droppableId={`tier-${tier.toLowerCase()}`} type="CHARACTER" direction="horizontal">
-        {(provided, snapshot) => (
-          <div
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-            className={`${styles.tierContent} ${
-              snapshot.isDraggingOver ? styles.draggedOver : ''
-            }`}
-          >
-            {characters.length === 0 ? (
-              <div className={styles.empty}>
-                <span>⬆️ Drop characters here</span>
-              </div>
-            ) : (
-              <div className={styles.characterGrid}>
-                {characters.map((char, index) => (
-                  <CharacterItem
-                    key={char.id}
-                    character={char}
-                    index={index}
-                    onClick={onCharacterClick}
+      <div
+        className={styles.tierContent}
+        onDragOver={onDragOver}
+        onDrop={onDrop}
+      >
+        {characters.length === 0 ? (
+          <div className={styles.empty}>
+            <span>⬆️ Drop characters here</span>
+          </div>
+        ) : (
+          <div className={styles.characterGrid}>
+            {characters.map((char) => (
+              <div
+                key={char.id}
+                className={styles.characterItem}
+                onClick={() => onCharacterClick?.(char)}
+                draggable
+                onDragStart={onCharacterDragStart?.(char)}
+                role="button"
+                tabIndex={0}
+                aria-label={`${char.name} - ${char.rarity} star ${char.element}`}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    onCharacterClick?.(char);
+                  }
+                }}
+              >
+                {char.imageUrl && (
+                  <img
+                    src={char.imageUrl}
+                    alt={char.name}
+                    className={styles.image}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = `${import.meta.env.BASE_URL}assets/placeholder-avatar.png`;
+                    }}
                   />
-                ))}
+                )}
               </div>
-            )}
-            {provided.placeholder}
+            ))}
           </div>
         )}
-      </Droppable>
+      </div>
     </div>
   );
 }

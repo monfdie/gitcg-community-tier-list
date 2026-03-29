@@ -1,78 +1,46 @@
-import { DragDropContext } from 'react-beautiful-dnd';
-import type { DropResult } from 'react-beautiful-dnd';
-import type { Character, TierKey } from '@/types';
+import { useEffect } from 'react';
+import type { Character } from '@/types';
 import { useTierListState } from '@/hooks/useTierListState';
+import { useDragDrop } from '@/hooks/useDragDrop';
 import { TIERS } from '@/config';
 import { TierRow } from './TierRow';
 import { UnassignedPool } from './UnassignedPool';
+import type { TierList as TierListType } from '@/types';
 import styles from './TierList.module.css';
 
 interface TierListProps {
   characters: Character[];
+  onStateChange?: (tierList: TierListType, isComplete: boolean) => void;
 }
 
 /**
  * TierList component - main tier list container
- * 
- * Manages the complete tier list UI with:
- * - All tier rows (S, A, B, C, D)
- * - Unassigned character pool
- * - Drag and drop functionality
- * - Search filtering
- * - Validation and progress tracking
  */
-export function TierList({ characters }: TierListProps) {
+export function TierList({ characters, onStateChange }: TierListProps) {
   const {
     tierList,
     unassignedCharacters,
     moveCharacterToTier,
+    swapInTier,
+    reorderUnassigned,
+    isComplete,
+    getTierCount,
   } = useTierListState(characters);
 
-  /**
-   * Handle drag and drop events
-   */
-  const handleDragEnd = (result: DropResult) => {
-    const { source, destination, draggableId } = result;
+  const { handleDragStart, handleDragOver, handleDropOnTier, handleDropOnUnassigned } =
+    useDragDrop(moveCharacterToTier, swapInTier, reorderUnassigned, tierList, unassignedCharacters);
 
-    // No destination = dropped outside droppable area
-    if (!destination) {
-      return;
+  // Notify parent of state changes
+  useEffect(() => {
+    if (onStateChange) {
+      onStateChange(tierList, isComplete());
     }
+  }, [tierList, onStateChange, isComplete]);
 
-    // Same position = no change
-    if (
-      source.droppableId === destination.droppableId &&
-      source.index === destination.index
-    ) {
-      return;
-    }
-
-    // Find the character being dragged
-    const character = characters.find((c) => c.id === draggableId);
-    if (!character) {
-      return;
-    }
-
-    // Determine destination tier
-    let destinationTier: TierKey;
-    if (destination.droppableId === 'unassigned-pool') {
-      destinationTier = 'unassigned';
-    } else {
-      // Extract tier from droppableId: "tier-s" → "S"
-      destinationTier = destination.droppableId.replace('tier-', '').toUpperCase() as TierKey;
-    }
-
-    // Move character to destination
-    moveCharacterToTier(character, destinationTier);
-  };
-
-  /**
-   * Handle character click to move between tiers and unassigned
-   */
   const handleCharacterClick = (character: Character) => {
     // If character is in a tier, move to unassigned
     for (const tier of TIERS) {
-      if (tierList[tier as keyof typeof tierList].some((c) => c.id === character.id)) {
+      if (tierList[tier].some((c) => c.id === character.id)) {
         moveCharacterToTier(character, 'unassigned');
         return;
       }
@@ -85,26 +53,35 @@ export function TierList({ characters }: TierListProps) {
   };
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <div className={styles.tierList}>
-        {/* Tiers Section */}
-        <div className={styles.tiersContainer}>
-          {TIERS.map((tier) => (
-            <TierRow
-              key={tier}
-              tier={tier}
-              characters={tierList[tier as keyof typeof tierList]}
-              onCharacterClick={handleCharacterClick}
-            />
-          ))}
-        </div>
-
-        {/* Unassigned Pool */}
-        <UnassignedPool
-          characters={unassignedCharacters}
-          onCharacterClick={handleCharacterClick}
-        />
+    <div className={styles.tierList}>
+      <div className={styles.tiersContainer}>
+        {TIERS.map((tier) => (
+          <TierRow
+            key={tier}
+            tier={tier}
+            characters={tierList[tier as keyof typeof tierList]}
+            count={getTierCount(tier as keyof typeof tierList)}
+            onCharacterClick={handleCharacterClick}
+            onDragOver={handleDragOver}
+            onDrop={handleDropOnTier(tier)}
+            onCharacterDragStart={(char) => handleDragStart(char, 'tier', tier)}
+          />
+        ))}
       </div>
-    </DragDropContext>
+
+      <UnassignedPool
+        characters={unassignedCharacters}
+        onCharacterClick={handleCharacterClick}
+        onCharacterDragStart={(char) => handleDragStart(char, 'unassigned')}
+        onDragOver={handleDragOver}
+        onDrop={handleDropOnUnassigned}
+      />
+
+      {isComplete() && (
+        <div className={styles.completionMessage}>
+          <p>✅ All characters assigned! Ready to submit your tier list.</p>
+        </div>
+      )}
+    </div>
   );
 }

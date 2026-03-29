@@ -1,25 +1,26 @@
 import { useMemo } from 'react';
-import { Droppable } from 'react-beautiful-dnd';
 import type { Character } from '@/types';
-import { CharacterItem } from './CharacterItem';
 import styles from './UnassignedPool.module.css';
 
 interface UnassignedPoolProps {
   characters: Character[];
   searchQuery?: string;
   onCharacterClick?: (character: Character) => void;
+  onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void;
+  onDrop?: (e: React.DragEvent<HTMLDivElement>) => void;
+  onCharacterDragStart?: (character: Character) => (e: React.DragEvent<HTMLDivElement>) => void;
 }
 
 /**
  * UnassignedPool component - displays characters available for assignment
- * 
- * Shows a grid of unassigned characters that can be dragged to tier rows.
- * Supports filtering by name or element.
  */
 export function UnassignedPool({
   characters,
   searchQuery = '',
   onCharacterClick,
+  onDragOver,
+  onDrop,
+  onCharacterDragStart,
 }: UnassignedPoolProps) {
   const filteredCharacters = useMemo(() => {
     if (!searchQuery.trim()) {
@@ -51,33 +52,46 @@ export function UnassignedPool({
   }
 
   return (
-    <Droppable droppableId="unassigned-pool" type="CHARACTER">
-      {(provided, snapshot) => (
-        <div
-          {...provided.droppableProps}
-          ref={provided.innerRef}
-          className={`${styles.unassignedPool} ${
-            snapshot.isDraggingOver ? styles.draggedOver : ''
-          }`}
-        >
-          <div className={styles.header}>
-            <h3>Available Characters</h3>
-            <span className={styles.count}>{filteredCharacters.length} left</span>
-          </div>
+    <div
+      className={styles.unassignedPool}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
+    >
+      <div className={styles.header}>
+        <h3>Available Characters</h3>
+        <span className={styles.count}>{filteredCharacters.length} left</span>
+      </div>
 
-          <div className={styles.grid}>
-            {filteredCharacters.map((character, index) => (
-              <CharacterItem
-                key={character.id}
-                character={character}
-                index={index}
-                onClick={onCharacterClick}
+      <div className={styles.grid}>
+        {filteredCharacters.map((character) => (
+          <div
+            key={character.id}
+            className={styles.characterItem}
+            onClick={() => onCharacterClick?.(character)}
+            draggable
+            onDragStart={onCharacterDragStart?.(character)}
+            role="button"
+            tabIndex={0}
+            aria-label={`${character.name} - ${character.rarity} star ${character.element}`}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                onCharacterClick?.(character);
+              }
+            }}
+          >
+            {character.imageUrl && (
+              <img
+                src={character.imageUrl}
+                alt={character.name}
+                className={styles.image}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = `${import.meta.env.BASE_URL}assets/placeholder-avatar.png`;
+                }}
               />
-            ))}
-            {provided.placeholder}
+            )}
           </div>
-        </div>
-      )}
-    </Droppable>
+        ))}
+      </div>
+    </div>
   );
 }
