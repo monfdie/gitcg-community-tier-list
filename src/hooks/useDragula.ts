@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import dragula from 'dragula';
 
 interface UseDragulaOptions {
@@ -15,7 +15,12 @@ interface UseDragulaOptions {
  */
 export function useDragula(options: UseDragulaOptions) {
   const callbacksRef = useRef(options);
-  callbacksRef.current = options;
+  // Update ref after every render so event handlers always see the latest callbacks
+  // without causing the drake instance to be recreated. useLayoutEffect runs
+  // synchronously after DOM mutations and before Dragula fires any event.
+  useLayoutEffect(() => {
+    callbacksRef.current = options;
+  });
 
   useEffect(() => {
     // Track mouse position for 2D shadow placement correction in flex-wrap containers

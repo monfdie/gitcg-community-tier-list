@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import type { Character, TierList, TierKey } from '@/types';
 import { TIERS, DEBUG } from '@/config';
 
@@ -40,48 +40,35 @@ export function useTierListState(allCharacters: Character[]) {
     return initialState;
   });
 
-  // Update unassigned characters with new data when allCharacters changes
-  // This ensures imageUrl and other properties are synced from props
-  useEffect(() => {
-    if (allCharacters.length > 0) {
-      setState((prevState) => {
-        // Create a map of character IDs with their full data from allCharacters
-        const charMap = new Map<string, Character>();
-        allCharacters.forEach(char => charMap.set(char.id, char));
-
-        // Update unassigned characters with fresh data (preserves assignments)
-        const updatedUnassigned = prevState.unassignedCharacters.map(char => {
-          const freshChar = charMap.get(char.id);
-          return freshChar || char;
-        });
-
-        // Update all tiers with fresh data (preserves assignments)
-        const updatedTierList: TierList = { ...prevState.tierList };
-        TIERS.forEach(tier => {
-          updatedTierList[tier] = prevState.tierList[tier].map(char => {
-            const freshChar = charMap.get(char.id);
-            return freshChar || char;
-          });
-        });
-
-        // Only update if something actually changed
-        const hasChanged = 
-          updatedUnassigned !== prevState.unassignedCharacters ||
-          TIERS.some(tier => updatedTierList[tier] !== prevState.tierList[tier]);
-
-        if (hasChanged) {
-          const newState = {
-            tierList: updatedTierList,
-            unassignedCharacters: updatedUnassigned,
-          };
-          if (DEBUG) console.log('[useTierListState] Synced character data from props');
-          return newState;
-        }
-
-        return prevState;
-      });
-    }
+  // Build a lookup map so we can enrich stored character objects with the
+  // latest data from props (e.g. imageUrl computed after the JSON loads).
+  // This replaces the old useEffect+setState sync — no extra render needed.
+  const charMap = useMemo(() => {
+    const map = new Map<string, Character>();
+    allCharacters.forEach((char) => map.set(char.id, char));
+    return map;
   }, [allCharacters]);
+
+  const enrich = useCallback(
+    (chars: Character[]) => chars.map((c) => charMap.get(c.id) ?? c),
+    [charMap]
+  );
+
+  const enrichedTierList = useMemo<TierList>(
+    () => ({
+      S: enrich(state.tierList.S),
+      A: enrich(state.tierList.A),
+      B: enrich(state.tierList.B),
+      C: enrich(state.tierList.C),
+      D: enrich(state.tierList.D),
+    }),
+    [state.tierList, enrich]
+  );
+
+  const enrichedUnassigned = useMemo(
+    () => enrich(state.unassignedCharacters),
+    [state.unassignedCharacters, enrich]
+  );
 
   // Persist state to localStorage
   const saveState = useCallback((newState: TierListState) => {
@@ -148,15 +135,18 @@ export function useTierListState(allCharacters: Character[]) {
   const swapInTier = useCallback(
     (tierKey: keyof TierList, fromIndex: number, toIndex: number) => {
       setState((prevState) => {
-        const newState = { ...prevState };
-        const tier = newState.tierList[tierKey];
-
-        if (fromIndex >= 0 && fromIndex < tier.length && toIndex >= 0 && toIndex < tier.length) {
-          [tier[fromIndex], tier[toIndex]] = [tier[toIndex], tier[fromIndex]];
-          saveState(newState);
-          if (DEBUG) console.log(`[useTierListState] Swapped items in ${tierKey}`);
+        const tier = prevState.tierList[tierKey];
+        if (fromIndex < 0 || fromIndex >= tier.length || toIndex < 0 || toIndex >= tier.length) {
+          return prevState;
         }
-
+        const newTier = [...tier];
+        [newTier[fromIndex], newTier[toIndex]] = [newTier[toIndex], newTier[fromIndex]];
+        const newState = {
+          ...prevState,
+          tierList: { ...prevState.tierList, [tierKey]: newTier },
+        };
+        saveState(newState);
+        if (DEBUG) console.log(`[useTierListState] Swapped items in ${tierKey}`);
         return newState;
       });
     },
@@ -167,15 +157,15 @@ export function useTierListState(allCharacters: Character[]) {
   const reorderUnassigned = useCallback(
     (fromIndex: number, toIndex: number) => {
       setState((prevState) => {
-        const newState = { ...prevState };
-        const chars = newState.unassignedCharacters;
-
-        if (fromIndex >= 0 && fromIndex < chars.length && toIndex >= 0 && toIndex < chars.length) {
-          [chars[fromIndex], chars[toIndex]] = [chars[toIndex], chars[fromIndex]];
-          saveState(newState);
-          if (DEBUG) console.log('[useTierListState] Reordered unassigned characters');
+        const chars = prevState.unassignedCharacters;
+        if (fromIndex < 0 || fromIndex >= chars.length || toIndex < 0 || toIndex >= chars.length) {
+          return prevState;
         }
-
+        const newChars = [...chars];
+        [newChars[fromIndex], newChars[toIndex]] = [newChars[toIndex], newChars[fromIndex]];
+        const newState = { ...prevState, unassignedCharacters: newChars };
+        saveState(newState);
+        if (DEBUG) console.log('[useTierListState] Reordered unassigned characters');
         return newState;
       });
     },
@@ -214,8 +204,8 @@ export function useTierListState(allCharacters: Character[]) {
   }, [allCharacters, saveState]);
 
   return {
-    tierList: state.tierList,
-    unassignedCharacters: state.unassignedCharacters,
+    tierList: enrichedTierList,
+    unassignedCharacters: enrichedUnassigned,
     moveCharacterToTier,
     swapInTier,
     reorderUnassigned,
