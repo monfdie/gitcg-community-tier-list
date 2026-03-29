@@ -1,11 +1,12 @@
+import { GoogleLogin } from '@react-oauth/google';
 import { useGoogleAuth } from '@/hooks/useGoogleAuth';
 import styles from './Navbar.module.css';
 
 /**
- * Navbar component - minimal with only Google login button in top-right
+ * Navbar component - with Google Sign-In 2.0 button
  */
 export function Navbar() {
-  const { user, isAuthenticated, isLoading, login, logout } = useGoogleAuth();
+  const { user, isAuthenticated, logout, handleLoginSuccess, handleLoginError } = useGoogleAuth();
 
   return (
     <nav className={styles.navbar}>
@@ -24,19 +25,15 @@ export function Navbar() {
           <button
             onClick={logout}
             className={styles.button}
-            disabled={isLoading}
           >
             Logout
           </button>
         </div>
       ) : (
-        <button
-          onClick={login}
-          className={`${styles.button} ${styles.loginButton}`}
-          disabled={isLoading}
-        >
-          {isLoading ? 'Signing in...' : 'Sign in with Google'}
-        </button>
+        <GoogleLogin
+          onSuccess={handleLoginSuccess}
+          onError={handleLoginError}
+        />
       )}
     </nav>
   );

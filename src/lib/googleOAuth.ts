@@ -1,126 +1,38 @@
 /**
- * Google OAuth 2.0 configuration and utilities
- * Implements PKCE flow for secure browser-based authentication
+ * Google OAuth utilities for Sign-In 2.0
+ * ID token decoding and user profile extraction
  */
-
-import { GOOGLE_OAUTH_CONFIG } from '@/config';
 
 /**
- * Generate random string for PKCE code challenge
+ * Google user profile from ID token claims
  */
-function generateRandomString(length: number): string {
-  const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
-  let result = '';
-  for (let i = 0; i < length; i++) {
-    result += charset.charAt(Math.floor(Math.random() * charset.length));
-  }
-  return result;
+export interface GoogleUserProfile {
+  sub: string; // User ID
+  name: string;
+  email: string;
+  picture?: string;
+  email_verified?: boolean;
+}
+
+/** Full set of standard claims in a Google ID token */
+interface GoogleIdTokenClaims extends GoogleUserProfile {
+  iss: string;
+  aud: string;
+  exp: number;
+  iat: number;
 }
 
 /**
- * Create SHA256 hash (for PKCE code challenge)
- */
-async function sha256(data: string): Promise<ArrayBuffer> {
-  const encoder = new TextEncoder();
-  return crypto.subtle.digest('SHA-256', encoder.encode(data));
-}
-
-/**
- * Convert ArrayBuffer to base64url string
- */
-function bufferToBase64Url(buffer: ArrayBuffer): string {
-  const bytes = new Uint8Array(buffer);
-  let binary = '';
-  for (let i = 0; i < bytes.byteLength; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-}
-
-/**
- * Generate PKCE code verifier and challenge
- */
-export async function generatePKCE(): Promise<{
-  codeVerifier: string;
-  codeChallenge: string;
-}> {
-  const codeVerifier = generateRandomString(128);
-  const hash = await sha256(codeVerifier);
-  const codeChallenge = bufferToBase64Url(hash);
-  return { codeVerifier, codeChallenge };
-}
-
-/**
- * Generate Google OAuth authorization URL
- */
-export function generateAuthorizationUrl(
-  codeChallenge: string,
-  state: string
-): string {
-  const params = new URLSearchParams({
-    client_id: GOOGLE_OAUTH_CONFIG.clientId,
-    redirect_uri: GOOGLE_OAUTH_CONFIG.redirectUri,
-    response_type: 'code',
-    scope: GOOGLE_OAUTH_CONFIG.scopes.join(' '),
-    code_challenge: codeChallenge,
-    code_challenge_method: 'S256',
-    state: state,
-  });
-
-  return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
-}
-
-/**
- * Exchange authorization code for tokens
- * Note: In production, this should be done on the backend
- * For now, we're using Google's implicit token endpoint
- */
-export async function exchangeCodeForToken(
-  code: string,
-  codeVerifier: string
-): Promise<{
-  accessToken: string;
-  expiresIn: number;
-  idToken?: string;
-}> {
-  const params = new URLSearchParams({
-    client_id: GOOGLE_OAUTH_CONFIG.clientId,
-    code,
-    code_verifier: codeVerifier,
-    grant_type: 'authorization_code',
-    redirect_uri: GOOGLE_OAUTH_CONFIG.redirectUri,
-  });
-
-  const response = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: params.toString(),
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to exchange code for token: ${response.statusText}`);
-  }
-
-  const data = await response.json();
-  return {
-    accessToken: data.access_token,
-    expiresIn: data.expires_in,
-    idToken: data.id_token,
-  };
-}
-
-/**
- * Decode JWT token (without verification - for client-side only)
+ * Decode JWT token (without signature verification — client-side only)
  */
 export function decodeJWT<T = Record<string, unknown>>(token: string): T {
   const parts = token.split('.');
   if (parts.length !== 3) {
-    throw new Error('Invalid token');
+    throw new Error('Invalid token format');
   }
 
   try {
+    // Decode payload (second part)
     const decoded = JSON.parse(
       atob(parts[1].replace(/-/g, '+').replace(/_/g, '/'))
     );
@@ -131,27 +43,50 @@ export function decodeJWT<T = Record<string, unknown>>(token: string): T {
 }
 
 /**
- * Check if token is expired
+ * Validate a Google ID token and extract the user profile.
+ *
+ * Checks:
+ * - iss: must be "https://accounts.google.com"
+ * - aud: must match the app's OAuth client ID
+ * - exp: token must not be expired
+ * - sub + email: required profile claims must be present
+ *
+ * NOTE: Signature verification requires the public key and must be done
+ * server-side. These checks protect against the most common client-side
+ * mistakes (wrong audience, expired token, malformed payload).
+ */
+export function validateIdToken(idToken: string, expectedClientId: string): GoogleUserProfile {
+  const claims = decodeJWT<GoogleIdTokenClaims>(idToken);
+
+  if (claims.iss !== 'https://accounts.google.com') {
+    throw new Error('Invalid token issuer');
+  }
+
+  if (claims.aud !== expectedClientId) {
+    throw new Error('Token audience does not match client ID');
+  }
+
+  if (isTokenExpired(claims.exp)) {
+    throw new Error('Token is expired');
+  }
+
+  if (!claims.sub || !claims.email) {
+    throw new Error('Missing required token claims (sub, email)');
+  }
+
+  return {
+    sub: claims.sub,
+    name: claims.name,
+    email: claims.email,
+    picture: claims.picture,
+    email_verified: claims.email_verified,
+  };
+}
+
+/**
+ * Check if token is expired (JWT exp claim is seconds since epoch)
  */
 export function isTokenExpired(expiresAt: number): boolean {
   return Date.now() >= expiresAt * 1000;
 }
 
-/**
- * Get user profile from ID token
- */
-export interface GoogleUserProfile {
-  sub: string; // User ID
-  name: string;
-  email: string;
-  picture?: string;
-  email_verified?: boolean;
-}
-
-export function getUserProfileFromToken(idToken: string): GoogleUserProfile {
-  const payload = decodeJWT<GoogleUserProfile>(idToken);
-  if (!payload.sub || !payload.email) {
-    throw new Error('Invalid token: missing required claims');
-  }
-  return payload;
-}

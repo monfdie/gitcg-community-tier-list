@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Navbar } from '@/components/Navbar';
 import { TierList } from '@/components/TierList';
 import { SubmitButton } from '@/components/SubmitButton';
@@ -11,7 +12,7 @@ import styles from './App.module.css';
  * Main App component
  * Orchestrates character loading, auth, tier list state, and submission
  */
-function App() {
+function AppContent() {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -106,13 +107,34 @@ function App() {
         </div>
       )}
 
-      {/* Success/Error messages */}
       {submissionMessage && (
-        <div style={{ textAlign: 'center', padding: '1rem', color: '#66bb6a' }}>
+        <div className={styles.successMessage}>
           {submissionMessage}
         </div>
       )}
     </div>
+  );
+}
+
+/**
+ * Wrapped App with GoogleOAuthProvider
+ */
+function App() {
+  // Get Google OAuth Client ID from environment
+  const clientId = import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID || '';
+
+  if (!clientId) {
+    return (
+      <div className={styles.configError}>
+        ❌ Google OAuth Client ID not configured. Please set VITE_GOOGLE_OAUTH_CLIENT_ID in .env.local
+      </div>
+    );
+  }
+
+  return (
+    <GoogleOAuthProvider clientId={clientId}>
+      <AppContent />
+    </GoogleOAuthProvider>
   );
 }
 

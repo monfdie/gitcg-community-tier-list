@@ -19,10 +19,10 @@
     "scripts:generate-form-questions": "tsx scripts/generate-form-questions.ts"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.13.4",
     "@types/dragula": "^3.7.5",
     "dragula": "^3.7.3",
     "react": "^19.2.4",
-    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^19.2.4"
   },
   "devDependencies": {
@@ -32,7 +32,6 @@
     "@testing-library/react": "^16.3.2",
     "@types/node": "^24.12.0",
     "@types/react": "^19.2.14",
-    "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
     "@vitest/ui": "^4.1.2",

@@ -7,20 +7,14 @@
 
 .mainContent {
   flex: 1;
-  display: flex;
-  flex-direction: column;
+  display: block;
   padding: 0;
-  gap: 0;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  align-items: center;
 }
 
 .mainContent > :last-child {
-  align-self: flex-end;
-  margin-top: auto;
-  margin-right: 20px;
   margin-bottom: 20px;
 }
 
@@ -39,6 +33,18 @@
 
 .errorMessage {
   color: #ea4335;
+}
+
+.configError {
+  padding: 2rem;
+  text-align: center;
+  color: #ea4335;
+}
+
+.successMessage {
+  text-align: center;
+  padding: 1rem;
+  color: #66bb6a;
 }
 
 @media (max-width: 768px) {

@@ -57,22 +57,12 @@ export const ELEMENT_EMOJIS: Record<Element, string> = {
 
 /**
  * Google OAuth Configuration
- * 
+ *
  * Environment variables needed:
  * - VITE_GOOGLE_OAUTH_CLIENT_ID: OAuth client ID from Google Cloud Console
  */
 export const GOOGLE_OAUTH_CONFIG = {
   clientId: import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID || '',
-  redirectUri:
-    typeof window !== 'undefined'
-      ? `${window.location.origin}${import.meta.env.BASE_URL}`
-      : 'http://localhost:5173/20260328-gi-community-tier-list/',
-  scopes: ['openid', 'profile', 'email'],
-  
-  // OAuth endpoints
-  authEndpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
-  tokenEndpoint: 'https://oauth2.googleapis.com/token',
-  userInfoEndpoint: 'https://openidconnect.googleapis.com/v1/userinfo',
 } as const;
 
 // ============================================================================
