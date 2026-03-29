@@ -38,9 +38,6 @@ export function TierRow({
         id={`tier-${tier}`}
         data-tier={tier}
       >
-        {characters.length === 0 && (
-          <span className={styles.empty}>Drop characters here</span>
-        )}
         {characters.map((char) => (
           <CharacterItem
             key={char.id}

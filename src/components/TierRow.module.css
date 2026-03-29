@@ -77,15 +77,6 @@
   background: transparent;
 }
 
-/* Empty State */
-.empty {
-  color: #666;
-  font-size: 0.75rem;
-  padding: 0 0.75rem;
-  user-select: none;
-  pointer-events: none;
-}
-
 /* Character Grid */
 .characterGrid {
   display: flex;
@@ -154,10 +145,6 @@
   .characterGrid {
     gap: 0;
   }
-
-  .empty {
-    font-size: 0.8rem;
-  }
 }
 
 @media (max-width: 480px) {
@@ -191,10 +178,5 @@
 
   .characterGrid {
     gap: 0;
-  }
-
-  .empty {
-    font-size: 0.75rem;
-    min-height: 0;
   }
 }

@@ -42,8 +42,8 @@ describe('Tier List Components', () => {
       expect(screen.getByText('2')).toBeInTheDocument();
     });
 
-    it('should show empty state when no characters', () => {
-      render(
+    it('should render empty tier content when no characters', () => {
+      const { container } = render(
         <TierRow
           tier="B"
           characters={[]}
@@ -52,7 +52,9 @@ describe('Tier List Components', () => {
         />
       );
 
-      expect(screen.getByText('Drop characters here')).toBeInTheDocument();
+      const tierContent = container.querySelector('[data-tier="B"]');
+      expect(tierContent).toBeInTheDocument();
+      expect(tierContent?.children).toHaveLength(0);
     });
 
     it('should call onCharacterClick when character clicked', () => {
