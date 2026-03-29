@@ -29,12 +29,12 @@
 }
 
 .characterItem[draggable='true'] {
-  cursor: grab;
+  cursor: pointer;
 }
 
 .characterItem.dragging {
-  opacity: 0.7;
-  cursor: grabbing;
+  opacity: 1;
+  cursor: grabbing !important;
 }
 
 /* Image wrapper - full square */

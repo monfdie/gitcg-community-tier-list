@@ -123,8 +123,7 @@
 /* Mobile responsive */
 @media (max-width: 768px) {
   .tierLabel {
-    width: 100px;
-    min-height: 80px;
+    height: auto;
   }
 
   .tierText {
