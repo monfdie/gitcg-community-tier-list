@@ -19,6 +19,8 @@
     "scripts:generate-form-questions": "tsx scripts/generate-form-questions.ts"
   },
   "dependencies": {
+    "@types/dragula": "^3.7.5",
+    "dragula": "^3.7.3",
     "react": "^19.2.4",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^19.2.4"

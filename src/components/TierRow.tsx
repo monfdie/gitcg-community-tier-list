@@ -7,9 +7,6 @@ interface TierRowProps {
   characters: Character[];
   count: number;
   onCharacterClick?: (character: Character) => void;
-  onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void;
-  onDrop?: (e: React.DragEvent<HTMLDivElement>) => void;
-  onCharacterDragStart?: (character: Character) => (e: React.DragEvent<HTMLDivElement>) => void;
 }
 
 /**
@@ -20,9 +17,6 @@ export function TierRow({
   characters,
   count,
   onCharacterClick,
-  onDragOver,
-  onDrop,
-  onCharacterDragStart,
 }: TierRowProps) {
   const tierColor = TIER_COLORS[tier as keyof typeof TIER_COLORS] || '#999';
 
@@ -40,8 +34,7 @@ export function TierRow({
       {/* Tier Content (Droppable) */}
       <div
         className={styles.tierContent}
-        onDragOver={onDragOver}
-        onDrop={onDrop}
+        id={`tier-${tier}`}
       >
         {characters.length === 0 ? (
           <div className={styles.empty}>
@@ -52,10 +45,9 @@ export function TierRow({
             {characters.map((char) => (
               <div
                 key={char.id}
-                className={styles.characterItem}
+                id={char.id}
+                className={`${styles.characterItem} character`}
                 onClick={() => onCharacterClick?.(char)}
-                draggable
-                onDragStart={onCharacterDragStart?.(char)}
                 role="button"
                 tabIndex={0}
                 aria-label={`${char.name} - ${char.rarity} star ${char.element}`}

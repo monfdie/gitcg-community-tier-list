@@ -6,9 +6,6 @@ interface UnassignedPoolProps {
   characters: Character[];
   searchQuery?: string;
   onCharacterClick?: (character: Character) => void;
-  onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void;
-  onDrop?: (e: React.DragEvent<HTMLDivElement>) => void;
-  onCharacterDragStart?: (character: Character) => (e: React.DragEvent<HTMLDivElement>) => void;
 }
 
 /**
@@ -18,9 +15,6 @@ export function UnassignedPool({
   characters,
   searchQuery = '',
   onCharacterClick,
-  onDragOver,
-  onDrop,
-  onCharacterDragStart,
 }: UnassignedPoolProps) {
   const filteredCharacters = useMemo(() => {
     if (!searchQuery.trim()) {
@@ -54,8 +48,7 @@ export function UnassignedPool({
   return (
     <div
       className={styles.unassignedPool}
-      onDragOver={onDragOver}
-      onDrop={onDrop}
+      id="unassigned-pool"
     >
       <div className={styles.header}>
         <h3>Available Characters</h3>
@@ -66,10 +59,9 @@ export function UnassignedPool({
         {filteredCharacters.map((character) => (
           <div
             key={character.id}
-            className={styles.characterItem}
+            id={character.id}
+            className={`${styles.characterItem} character`}
             onClick={() => onCharacterClick?.(character)}
-            draggable
-            onDragStart={onCharacterDragStart?.(character)}
             role="button"
             tabIndex={0}
             aria-label={`${character.name} - ${character.rarity} star ${character.element}`}

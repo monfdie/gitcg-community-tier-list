@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import type { Character } from '@/types';
 import { useTierListState } from '@/hooks/useTierListState';
-import { useDragDrop } from '@/hooks/useDragDrop';
+import { useDragula } from '@/hooks/useDragula';
 import { TIERS } from '@/config';
 import { TierRow } from './TierRow';
 import { UnassignedPool } from './UnassignedPool';
@@ -21,14 +21,33 @@ export function TierList({ characters, onStateChange }: TierListProps) {
     tierList,
     unassignedCharacters,
     moveCharacterToTier,
-    swapInTier,
-    reorderUnassigned,
     isComplete,
     getTierCount,
   } = useTierListState(characters);
 
-  const { handleDragStart, handleDragOver, handleDropOnTier, handleDropOnUnassigned } =
-    useDragDrop(moveCharacterToTier, swapInTier, reorderUnassigned, tierList, unassignedCharacters);
+  // Set up dragula for drag-drop functionality
+  useDragula({
+    onCharacterMoved: (characterId: string, targetTierId: string) => {
+      // Find the character from either tier or unassigned
+      let character: Character | null = null;
+
+      // Search in unassigned first
+      character = unassignedCharacters.find((c) => c.id === characterId) || null;
+
+      // Search in tiers if not found
+      if (!character) {
+        for (const tier of TIERS) {
+          character = tierList[tier as keyof typeof tierList].find((c) => c.id === characterId) || null;
+          if (character) break;
+        }
+      }
+
+      // Move character to target tier
+      if (character) {
+        moveCharacterToTier(character, targetTierId as any);
+      }
+    },
+  });
 
   // Notify parent of state changes
   useEffect(() => {
@@ -62,9 +81,6 @@ export function TierList({ characters, onStateChange }: TierListProps) {
             characters={tierList[tier as keyof typeof tierList]}
             count={getTierCount(tier as keyof typeof tierList)}
             onCharacterClick={handleCharacterClick}
-            onDragOver={handleDragOver}
-            onDrop={handleDropOnTier(tier)}
-            onCharacterDragStart={(char) => handleDragStart(char, 'tier', tier)}
           />
         ))}
       </div>
@@ -72,9 +88,6 @@ export function TierList({ characters, onStateChange }: TierListProps) {
       <UnassignedPool
         characters={unassignedCharacters}
         onCharacterClick={handleCharacterClick}
-        onCharacterDragStart={(char) => handleDragStart(char, 'unassigned')}
-        onDragOver={handleDragOver}
-        onDrop={handleDropOnUnassigned}
       />
 
       {isComplete() && (

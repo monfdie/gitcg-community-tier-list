@@ -188,6 +188,42 @@ select:focus {
   width: 100%;
 }
 
+/* Dragula Drag & Drop Styles */
+
+/* Element being dragged */
+.character.dragging {
+  opacity: 0.5;
+}
+
+/* Mirror: The dragged element copy (visual feedback) */
+.gu-mirror {
+  opacity: 0.8;
+  z-index: 9999;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  position: fixed;
+  pointer-events: none;
+}
+
+/* Hide the original element being dragged */
+.gu-hide {
+  opacity: 0;
+}
+
+/* Drop zone that will accept the item */
+.gu-over {
+  background: rgba(76, 175, 80, 0.15) !important;
+  border: 1px dashed rgba(76, 175, 80, 0.5) !important;
+}
+
+/* Unselectable during drag */
+.gu-unselectable {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;

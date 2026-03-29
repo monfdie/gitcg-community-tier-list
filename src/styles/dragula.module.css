@@ -1,0 +1,44 @@
+/* Dragula Drag & Drop Styles */
+
+/* Style the dragged element itself */
+.character.dragging {
+  opacity: 0.5;
+}
+
+/* Mirror: The element being dragged (visual feedback) */
+.gu-mirror {
+  opacity: 0.8;
+  z-index: 9999;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  position: fixed;
+  pointer-events: none;
+  width: 80px !important;
+  height: 80px !important;
+}
+
+/* Hide the original element being dragged */
+.gu-hide {
+  opacity: 0;
+}
+
+/* Drop zone that will accept the item */
+.gu-over {
+  background: rgba(76, 175, 80, 0.1);
+  border: 1px dashed rgba(76, 175, 80, 0.5);
+}
+
+/* Unselectable during drag */
+.gu-unselectable {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Dragging container gets a visual indicator */
+#unassigned-pool.gu-over,
+[id^="tier-"].gu-over {
+  background: rgba(76, 175, 80, 0.1) !important;
+}
