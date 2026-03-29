@@ -18,9 +18,13 @@ export function useDragula(options: UseDragulaOptions) {
   callbacksRef.current = options;
 
   useEffect(() => {
+    // drake declared outside setTimeout so the cleanup function can destroy it
+    // even after the 100ms delay has fired
+    let drake: dragula.Drake | undefined;
+
     const timer = setTimeout(() => {
       try {
-        const drake = dragula({
+        drake = dragula({
           isContainer: (el) => {
             return el?.classList.contains('sort') ?? false;
           },
@@ -44,12 +48,18 @@ export function useDragula(options: UseDragulaOptions) {
 
           const characterId = el.id;
           const targetTier = target.getAttribute('data-tier') || 'unassigned';
-          // Capture sibling BEFORE reverting DOM — it tells us the insertion point
           const siblingId = sibling?.id ?? null;
 
-          // Revert Dragula's DOM move: put element back in source
-          // so React can reconcile cleanly from state update
-          source.appendChild(el);
+          if (source !== target) {
+            // Cross-container drop: revert el to source so React can remove it cleanly.
+            // Without this, React would call source.removeChild(el) when el is already
+            // in target — causing a DOM error.
+            source.appendChild(el);
+          }
+          // Same-container drop: Dragula already placed el at the correct position.
+          // Do NOT revert. React's lastPlacedIndex algorithm treats "old index > lastPlaced"
+          // as "no move needed" — if we append el to end, React leaves it there (WRONG).
+          // Leaving el at Dragula's position, React's insertBefore calls are no-ops. ✓
 
           if (characterId) {
             callbacksRef.current.onCharacterMoved(characterId, targetTier, siblingId);
@@ -62,15 +72,14 @@ export function useDragula(options: UseDragulaOptions) {
           if (el) el.classList.remove('dragging');
           callbacksRef.current.onDragEnd?.();
         });
-
-        return () => {
-          drake.destroy();
-        };
       } catch (error) {
         console.error('[useDragula] Failed to initialize:', error);
       }
     }, 100);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      drake?.destroy();
+    };
   }, []);
 }

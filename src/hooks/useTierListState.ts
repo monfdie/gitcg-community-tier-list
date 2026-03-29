@@ -97,7 +97,12 @@ export function useTierListState(allCharacters: Character[]) {
   const moveCharacterToTier = useCallback(
     (character: Character, tierKey: TierKey, insertBeforeId?: string | null) => {
       setState((prevState) => {
-        const newState = { ...prevState };
+        // Deep-copy tierList to avoid mutating prevState (important for React StrictMode
+        // double-invocations, which pass the same prevState reference both times)
+        const newState = {
+          ...prevState,
+          tierList: { ...prevState.tierList },
+        };
 
         // Remove character from current location
         if (newState.unassignedCharacters.some((c) => c.id === character.id)) {
@@ -106,9 +111,10 @@ export function useTierListState(allCharacters: Character[]) {
           );
         } else {
           for (const tier of TIERS) {
-            newState.tierList[tier] = newState.tierList[tier].filter(
-              (c) => c.id !== character.id
-            );
+            if (newState.tierList[tier].some((c) => c.id === character.id)) {
+              newState.tierList[tier] = newState.tierList[tier].filter((c) => c.id !== character.id);
+              break;
+            }
           }
         }
 
