@@ -50,7 +50,7 @@ export async function loadCharacters(): Promise<Character[]> {
  */
 function buildCharacterImageUrl(character: Character): Character {
   const baseUrl = import.meta.env.BASE_URL || '/';
-  const avatarId = (character as any).avatarId;
+  const avatarId = character.avatarId;
   
   if (!character.imageUrl && avatarId) {
     // Use assets/avatars directory where character images are stored

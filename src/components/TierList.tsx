@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import type { Character } from '@/types';
+import type { Character, TierKey } from '@/types';
 import { useTierListState } from '@/hooks/useTierListState';
 import { useDragula } from '@/hooks/useDragula';
 import { TIERS } from '@/config';
@@ -7,6 +7,15 @@ import { TierRow } from './TierRow';
 import { UnassignedPool } from './UnassignedPool';
 import type { TierList as TierListType } from '@/types';
 import styles from './TierList.module.css';
+
+const VALID_TIER_KEYS = new Set<TierKey>([...TIERS, 'unassigned']);
+
+function toTierKey(value: string | null): TierKey {
+  if (value !== null && VALID_TIER_KEYS.has(value as TierKey)) {
+    return value as TierKey;
+  }
+  return 'unassigned';
+}
 
 interface TierListProps {
   characters: Character[];
@@ -40,7 +49,7 @@ export function TierList({ characters, onStateChange }: TierListProps) {
       }
 
       if (character) {
-        moveCharacterToTier(character, targetTierId as any, siblingId);
+        moveCharacterToTier(character, toTierKey(targetTierId), siblingId);
       }
     },
   });
