@@ -64,7 +64,9 @@ export const ELEMENT_EMOJIS: Record<Element, string> = {
 export const GOOGLE_OAUTH_CONFIG = {
   clientId: import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID || '',
   redirectUri:
-    typeof window !== 'undefined' ? window.location.origin : 'http://localhost:5173',
+    typeof window !== 'undefined'
+      ? `${window.location.origin}${import.meta.env.BASE_URL}`
+      : 'http://localhost:5173/20260328-gi-community-tier-list/',
   scopes: ['openid', 'profile', 'email'],
   
   // OAuth endpoints
