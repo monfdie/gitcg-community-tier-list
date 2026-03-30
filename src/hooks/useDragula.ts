@@ -23,11 +23,25 @@ export function useDragula(options: UseDragulaOptions) {
   });
 
   useEffect(() => {
-    // Track mouse position for 2D shadow placement correction in flex-wrap containers
+    // Track mouse/touch position for 2D shadow placement correction in flex-wrap containers
     let mouseX = 0;
     let mouseY = 0;
-    const onMouseMove = (e: MouseEvent) => { mouseX = e.clientX; mouseY = e.clientY; };
+    
+    const onMouseMove = (e: MouseEvent) => { 
+      mouseX = e.clientX; 
+      mouseY = e.clientY; 
+    };
+    
+    const onTouchMove = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      if (touch) {
+        mouseX = touch.clientX;
+        mouseY = touch.clientY;
+      }
+    };
+    
     document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('touchmove', onTouchMove, false);
 
     // drake declared outside setTimeout so the cleanup function can destroy it
     // even after the 100ms delay has fired
@@ -152,6 +166,7 @@ export function useDragula(options: UseDragulaOptions) {
       clearTimeout(timer);
       drake?.destroy();
       document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('touchmove', onTouchMove, false);
     };
   }, []);
 }
