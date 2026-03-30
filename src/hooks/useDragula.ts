@@ -63,6 +63,8 @@ export function useDragula(options: UseDragulaOptions) {
 
         drake.on('drag', (el: Element) => {
           el.classList.add('dragging');
+          // Block page scroll on touch devices during drag
+          document.body.classList.add('dragging-active');
           callbacksRef.current.onDragStart?.();
         });
 
@@ -150,11 +152,14 @@ export function useDragula(options: UseDragulaOptions) {
             callbacksRef.current.onCharacterMoved(characterId, targetTier, siblingId);
           }
 
+          document.body.classList.remove('dragging-active');
           callbacksRef.current.onDragEnd?.();
         });
 
         drake.on('dragend', (el: Element) => {
           if (el) el.classList.remove('dragging');
+          // Always clean up — fires even if drop was cancelled
+          document.body.classList.remove('dragging-active');
           callbacksRef.current.onDragEnd?.();
         });
       } catch (error) {

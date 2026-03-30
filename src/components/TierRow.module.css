@@ -120,62 +120,69 @@
   pointer-events: none;
 }
 
-/* Mobile responsive */
+/* Mobile responsive — min-height and label width always match character size */
 @media (max-width: 768px) {
+  .tierRow {
+    min-height: 70px;
+  }
+
   .tierLabel {
+    width: 69px;
+    min-height: 70px;
     height: auto;
   }
 
   .tierText {
-    font-size: 1.4rem;
-  }
-
-  .tierCount {
-    font-size: 0.7rem;
-    margin-top: 0;
-    padding: 0;
+    font-size: 1.3rem;
   }
 
   .tierContent {
-    min-height: 80px;
+    min-height: 70px;
     padding: 0;
-  }
-
-  .characterGrid {
-    gap: 0;
   }
 }
 
 @media (max-width: 480px) {
   .tierRow {
-    flex-direction: row;
-    min-height: 80px;
+    min-height: 60px;
   }
 
   .tierLabel {
-    width: 80px;
-    min-height: 80px;
+    width: 59px;
+    min-height: 60px;
     border-right: 1px solid #000;
     border-bottom: none;
   }
 
   .tierText {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   .tierCount {
-    margin-top: 0;
-    font-size: 0;
-    padding: 0;
-    min-width: 0;
+    display: none;
   }
 
   .tierContent {
-    min-height: 80px;
+    min-height: 60px;
     padding: 0;
   }
+}
 
-  .characterGrid {
-    gap: 0;
+@media (max-width: 360px) {
+  .tierRow {
+    min-height: 52px;
+  }
+
+  .tierLabel {
+    width: 51px;
+    min-height: 52px;
+  }
+
+  .tierText {
+    font-size: 1rem;
+  }
+
+  .tierContent {
+    min-height: 52px;
   }
 }

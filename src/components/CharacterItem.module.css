@@ -5,6 +5,8 @@
   border-radius: 0;
   cursor: default;
   user-select: none;
+  /* Prevent browser scroll on touch — lets Dragula handle touch drag exclusively */
+  touch-action: none;
   transition: opacity 0.2s ease, transform 0.1s ease;
   position: relative;
   aspect-ratio: 1;
@@ -90,19 +92,24 @@
   display: none;
 }
 
-/* Mobile responsive */
-@media (max-width: 640px) {
+/* Mobile responsive — sizes must stay in sync with TierRow min-height and label width */
+@media (max-width: 768px) {
   .characterItem {
-    border-radius: 0;
     width: 70px;
     height: 70px;
   }
+}
 
-  .imageWrapper {
-    border-radius: 0;
+@media (max-width: 480px) {
+  .characterItem {
+    width: 60px;
+    height: 60px;
   }
+}
 
-  .image {
-    border-radius: 0;
+@media (max-width: 360px) {
+  .characterItem {
+    width: 52px;
+    height: 52px;
   }
 }

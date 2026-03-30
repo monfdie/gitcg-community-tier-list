@@ -214,6 +214,11 @@ select:focus {
   -webkit-user-select: none !important;
 }
 
+/* Block page scroll while dragging (touch devices) */
+body.dragging-active {
+  touch-action: none;
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;

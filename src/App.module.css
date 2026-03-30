@@ -9,13 +9,36 @@
   flex: 1;
   display: block;
   padding: 0;
-  width: 90%;
+  width: round(to-zero, 90%, 80px);
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .mainContent > :last-child {
   margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .mainContent {
+    width: round(to-zero, 90%, 70px);
+  }
+}
+
+@media (max-width: 480px) {
+  .mainContent {
+    width: round(to-zero, 90%, 60px);
+  }
+}
+
+@media (max-width: 360px) {
+  .mainContent {
+    width: round(to-zero, 90%, 52px);
+    min-width: 156px;
+  }
+  .mainContent > :last-child {
+    align-self: auto;
+    width: 100%;
+  }
 }
 
 .loadingMessage,
@@ -45,23 +68,4 @@
   text-align: center;
   padding: 1rem;
   color: #66bb6a;
-}
-
-@media (max-width: 768px) {
-  .mainContent {
-    padding: 1rem 1.5rem;
-    gap: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .mainContent {
-    padding: 0.75rem 1rem;
-    gap: 0.75rem;
-  }
-
-  .mainContent > :last-child {
-    align-self: auto;
-    width: 100%;
-  }
 }
