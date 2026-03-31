@@ -63,14 +63,13 @@ npm run scripts:fetch-avatars
 npm run scripts:fetch-characters
 ```
 
-### 4️⃣ Сгенерировать вопросы и Google Apps Script
+### 4️⃣ Сгенерировать Google Apps Script (Checkbox Grid)
 
 ```bash
 npm run scripts:generate-form-questions
 ```
 
 **Генерирует:**
-- ✅ `scripts/form-questions.json` — Все вопросы в JSON
 - ✅ `scripts/google-form-importer.gs` — Google Apps Script (АВТОГЕНЕРИРУЕТСЯ)
 
 ## 🖼️ Avatar Management
@@ -95,36 +94,32 @@ npm run scripts:fetch-avatars
 3. (Опционально) Обновите `public/data/characters.json` с `imageUrl`
 4. Используйте в компонентах
 
-## 🔌 Google Form Integration (Быстрый способ)
+## 🔌 Google Form Integration
 
-### Подготовка
+### Структура формы
 
-1. Убедитесь, что вы запустили генерацию скрипта:
+Форма использует **один вопрос типа Checkbox Grid**:
+- **Строки** = 118 персонажей (Путешественники: "Traveler (Anemo)", "Traveler (Geo)" и т.д.)
+- **Столбцы** = S / A / B / C / D
 
-```bash
-npm run scripts:generate-form-questions
-```
-
-Это создаст `scripts/google-form-importer.gs` с актуальными вопросами.
+Каждая строка сетки имеет свой `entry.XXXXXXX` ID — формат pre-fill URL не изменился.
 
 ### Шаг за шагом
 
-1. Откройте вашу **Google Form** в браузере
-2. Нажмите на **три точки** (⋮) → **Скрипты** (или Tools → Script editor)
-3. **Удалите весь текущий код** в редакторе
-4. **Скопируйте весь файл** `scripts/google-form-importer.gs`
-5. **Вставьте** его полностью в Google Apps Script редактор
-6. **Сохраните** скрипт (Ctrl+S / Cmd+S)
-7. В выпадающем меню выберите функцию **`addQuestionsToForm`**
-8. **Нажмите "Run"** (▶️ кнопка)
-9. **Авторизируйте скрипт** (первый запуск, нужно разрешить доступ)
-10. **Проверьте логи** (View → Logs) для статуса
+1. Сгенерируйте скрипт:
+   ```bash
+   npm run scripts:generate-form-questions
+   ```
+2. Откройте вашу **Google Form** → **три точки** (⋮) → **Редактор скриптов**
+3. **Удалите** весь текущий код, **вставьте** `scripts/google-form-importer.gs`
+4. Сохраните (Ctrl+S) и **авторизируйте** скрипт при первом запуске
+5. Запустите **`clearAllQuestions()`** — удалит старые вопросы
+6. Запустите **`addCheckboxGridToForm()`** — создаст Checkbox Grid с 118 строками
+7. Запустите **`exportFormMapping()`** — выведет JSON в логах (View → Logs)
+8. Скопируйте JSON из логов → `public/form-character-mapping.json`
+9. Закоммитьте обновлённый `form-character-mapping.json`
 
-### Результат
-
-Все 118+ вопросов добавятся в вашу форму за несколько секунд!
-
-**Готово! ✨** Форма заполнена и готова к публикации.
+**Готово! ✨** Форма пересоздана и SPA готов к работе с новой структурой.
 
 ---
 
@@ -180,27 +175,29 @@ CHARACTER_API_URL=https://your-api.com/characters.json npm run scripts:fetch-cha
 
 ### Как обновить вопросы в форме, если изменились персонажи
 
-1. Запустите синхронизацию:
+1. Синхронизируйте персонажей:
    ```bash
    npm run scripts:fetch-characters
    ```
 2. Обновите `public/data/characters.json` (если нужно)
-3. Переган форму-скрипты:
+3. Пересгенерируйте GAS скрипт:
    ```bash
    npm run scripts:generate-form-questions
    ```
-4. В Google Form: Tools → Script editor
-5. Запустите `clearAllQuestions()` чтобы удалить старые вопросы
-6. Копируйте новый `scripts/google-form-importer.gs`
-7. Запустите `addQuestionsToForm()` чтобы добавить новые
+4. В Google Form: Редактор скриптов
+5. Запустите `clearAllQuestions()` — удалит старую сетку
+6. Вставьте новый `scripts/google-form-importer.gs`
+7. Запустите `addCheckboxGridToForm()` — создаст новую сетку
+8. Запустите `exportFormMapping()` — выведет новые entry IDs
+9. Скопируйте JSON → `public/form-character-mapping.json` и закоммитьте
 
 ---
 
 ## ⚠️ Important Notes
 
-- **form-questions.json**, **characters-full.json**, и **google-form-importer.gs** не коммитятся в git (артефакты)
-- **public/data/characters.json** — это source of truth для production
-- Всегда переган форму-скрипты после изменения списка персонажей
+- **characters-full.json** и **google-form-importer.gs** не коммитятся в git (артефакты)
+- **public/data/characters.json** — source of truth для production
+- **public/form-character-mapping.json** — обновляется после каждого пересоздания формы
 - Google Apps Script требует авторизации при первом запуске
 - Все dev скрипты работают только локально (Node.js environment)
 

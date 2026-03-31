@@ -1,12 +1,15 @@
 /**
- * Script to generate Google Form questions and Google Apps Script from characters.json
- * 
+ * Script to generate Google Apps Script for creating a Checkbox Grid in Google Form.
+ *
+ * The form uses ONE Checkbox Grid question where:
+ * - Rows    = characters (118 rows, Traveler variants named "Traveler (Element)")
+ * - Columns = tier labels S / A / B / C / D
+ *
  * Usage:
  * npm run scripts:generate-form-questions
- * 
+ *
  * Outputs:
- * - scripts/form-questions.json (questions in JSON format)
- * - scripts/google-form-importer.gs (Google Apps Script with embedded questions)
+ * - scripts/google-form-importer.gs (Google Apps Script)
  */
 
 import { readFileSync, writeFileSync } from 'fs';
@@ -19,156 +22,187 @@ interface Character {
   rarity: number;
 }
 
-interface FormQuestion {
-  title: string;
-  description: string;
-  choices: string[];
-  required: boolean;
-}
-
-const ELEMENTS: Record<string, string> = {
-  pyro: '🔥 Pyro',
-  hydro: '💧 Hydro',
-  electro: '⚡ Electro',
-  cryo: '❄️ Cryo',
-  anemo: '🌪️ Anemo',
-  geo: '⛰️ Geo',
-  dendro: '🌱 Dendro',
-};
-
 function generateFormQuestions() {
   try {
-    // Load characters from public/data/characters.json
     const charactersPath = join(process.cwd(), 'public', 'data', 'characters.json');
-    const charactersJson = readFileSync(charactersPath, 'utf-8');
-    const characters: Character[] = JSON.parse(charactersJson);
+    const characters: Character[] = JSON.parse(readFileSync(charactersPath, 'utf-8'));
 
     if (!characters || characters.length === 0) {
       console.error('❌ No characters found in characters.json');
       process.exit(1);
     }
 
-    // Generate questions from characters
-    const questions: FormQuestion[] = characters.map((char) => ({
-      title: char.name,
-      description: `${ELEMENTS[char.element] || char.element} • ${char.rarity}★`,
-      choices: ['S', 'A', 'B', 'C', 'D'],
-      required: true,
-    }));
-
-    // Write to scripts/form-questions.json
-    const questionsPath = join(process.cwd(), 'scripts', 'form-questions.json');
-    writeFileSync(questionsPath, JSON.stringify(questions, null, 2));
-
-    // Generate Google Apps Script with embedded questions
-    const gsScript = generateGoogleAppsScript(questions);
+    const gsScript = generateGoogleAppsScript(characters);
     const gsPath = join(process.cwd(), 'scripts', 'google-form-importer.gs');
     writeFileSync(gsPath, gsScript);
 
-    console.log(`✅ Generated ${questions.length} form questions`);
-    console.log(`📁 Output:`);
-    console.log(`   - ${questionsPath} (JSON questions)`);
-    console.log(`   - ${gsPath} (Google Apps Script)`);
-    console.log(`\nTo use in Google Forms:`);
-    console.log(`1. Open your Google Form`);
-    console.log(`2. Go to Tools → Script Editor`);
-    console.log(`3. Copy entire contents from scripts/google-form-importer.gs`);
-    console.log(`4. Click Run button and select addQuestionsToForm function`);
+    console.log(`✅ Generated Checkbox Grid script for ${characters.length} characters`);
+    console.log(`📁 Output: ${gsPath}`);
+    console.log(`\nWorkflow:`);
+    console.log(`  1. Open your Google Form → Tools → Script editor`);
+    console.log(`  2. Paste google-form-importer.gs`);
+    console.log(`  3. Run clearAllQuestions()  — removes old questions`);
+    console.log(`  4. Run addCheckboxGridToForm()  — adds the new grid`);
+    console.log(`  5. Run exportFormMapping()  — logs JSON for form-character-mapping.json`);
+    console.log(`  6. Copy JSON from Logger → public/form-character-mapping.json`);
   } catch (error) {
     console.error('❌ Error generating form questions:', error);
     process.exit(1);
   }
 }
 
-function generateGoogleAppsScript(questions: FormQuestion[]): string {
-  // Escape quotes for JavaScript string
-  const questionsJson = JSON.stringify(questions);
-  
+function generateGoogleAppsScript(characters: Character[]): string {
+  // Embed only what the GAS needs at runtime
+  const charData = characters.map((c) => ({
+    id: c.id,
+    name: c.name,
+    element: c.element,
+    rarity: c.rarity,
+  }));
+  const charJson = JSON.stringify(charData);
+
   return `/**
- * Google Apps Script для добавления вопросов в Google Form
- * АВТОМАТИЧЕСКИ СГЕНЕРИРОВАН - НЕ РЕДАКТИРУЙТЕ ВРУЧНУЮ
- * Пересгенерируйте используя: npm run scripts:generate-form-questions
- * 
- * USAGE:
- * 1. Откройте вашу Google Form в браузере
- * 2. Нажмите на три точки → Скрипты (Tools → Script editor)
- * 3. Скопируйте весь код этого файла
- * 4. Вставьте в Google Apps Script редактор
- * 5. Выберите функцию "addQuestionsToForm" и нажмите "Run"
- * 6. Авторизируйте скрипт (первый запуск)
- * 7. Проверьте логи (View → Logs) для статуса
- * 
- * Вопросы встроены прямо в этот скрипт, не требуется внешних файлов.
+ * Google Apps Script для Google Form — Tier List (Checkbox Grid)
+ * АВТОМАТИЧЕСКИ СГЕНЕРИРОВАН — НЕ РЕДАКТИРУЙТЕ ВРУЧНУЮ
+ * Пересгенерируйте: npm run scripts:generate-form-questions
+ *
+ * WORKFLOW:
+ * 1. Откройте Google Form → три точки (⋮) → Редактор скриптов
+ * 2. Вставьте весь код этого файла
+ * 3. Запустите clearAllQuestions()    — удалит все старые вопросы
+ * 4. Запустите addCheckboxGridToForm() — создаст Checkbox Grid с ${characters.length} строками
+ * 5. Запустите exportFormMapping()     — выведет JSON для form-character-mapping.json
+ * 6. Скопируйте JSON из логов → public/form-character-mapping.json
  */
 
-// QUESTIONS DATA - встроено прямо в скрипт
-const FORM_QUESTIONS = ${questionsJson};
+// Данные персонажей (порядок должен совпадать с public/data/characters.json)
+const CHARACTERS = ${charJson};
+const TIERS = ['S', 'A', 'B', 'C', 'D'];
+
+/** Уникальное название строки — учитывает 6 вариантов Путешественника */
+function getRowLabel(char) {
+  if (char.name === 'Traveler') {
+    return 'Traveler (' + char.element.charAt(0).toUpperCase() + char.element.slice(1) + ')';
+  }
+  return char.name;
+}
 
 /**
- * Добавляет вопросы в форму из встроенных данных
+ * Создаёт один Checkbox Grid в форме.
+ * Строки = персонажи, столбцы = S / A / B / C / D.
  */
-function addQuestionsToForm() {
+function addCheckboxGridToForm() {
   try {
     const form = FormApp.getActiveForm();
-    
-    if (!FORM_QUESTIONS || FORM_QUESTIONS.length === 0) {
-      Logger.log('❌ No questions found in FORM_QUESTIONS');
-      return;
-    }
+    const rows = CHARACTERS.map(getRowLabel);
 
-    Logger.log('📝 Начинаем добавлять ' + FORM_QUESTIONS.length + ' вопросов...');
-    
-    // Добавляем каждый вопрос в форму
-    FORM_QUESTIONS.forEach((q, index) => {
-      try {
-        // Создаем раскрывающийся список (dropdown)
-        const item = form.addMultipleChoiceItem();
-        item.setTitle(q.title);
-        
-        // Добавляем описание (элемент и редкость)
-        if (q.description) {
-          item.setHelpText(q.description);
-        }
-        
-        // Добавляем варианты ответов
-        item.setChoiceValues(q.choices);
-        
-        // Делаем обязательным если требуется
-        if (q.required) {
-          item.setRequired(true);
-        }
-        
-        if ((index + 1) % 20 === 0) {
-          Logger.log('✅ ' + (index + 1) + '/' + FORM_QUESTIONS.length + ' вопросов добавлено');
-        }
-      } catch (error) {
-        Logger.log('⚠️ Ошибка при добавлении вопроса "' + q.title + '": ' + error);
-      }
-    });
-    
-    Logger.log('✨ Готово! Все ' + FORM_QUESTIONS.length + ' вопросов добавлены в форму');
+    const grid = form.addGridItem();
+    grid.setTitle('Tier List');
+    grid.setColumns(TIERS);
+    grid.setRows(rows);
+    grid.setRequired(true);
+
+    Logger.log('✅ Multiple Choice Grid создан: ' + rows.length + ' строк × ' + TIERS.length + ' столбцов');
+    Logger.log('ℹ️  Запустите exportFormMapping() чтобы получить маппинг entry ID');
   } catch (error) {
-    Logger.log('❌ Критическая ошибка: ' + error);
+    Logger.log('❌ Ошибка: ' + error);
   }
 }
 
 /**
- * Удаляет все вопросы из формы (для переделки)
- * ОСТОРОЖНО: это удалит все вопросы!
+ * Экспортирует маппинг character.id → entry.XXXXXXX из Multiple Choice Grid.
+ *
+ * GridItem не имеет getEntryIds(), поэтому парсим HTML формы через UrlFetchApp.
+ * Для типа 7 (Multiple Choice Grid): q[4][0] = массив entry ID (по одному на строку).
+ *
+ * Скопируйте вывод JSON в: public/form-character-mapping.json
+ */
+function exportFormMapping() {
+  try {
+    const form = FormApp.getActiveForm();
+    const formId = form.getId();
+
+    // Fetch the published URL (need encoded form ID for pre-fill URLs)
+    const publishedUrl = form.getPublishedUrl();
+    const urlMatch = publishedUrl.match(/\\/e\\/([^\\/]+)\\//);
+    const encodedFormId = urlMatch ? urlMatch[1] : formId;
+
+    // Fetch form edit page — has complete data without lazy loading
+    const editUrl = 'https://docs.google.com/forms/d/' + formId + '/edit';
+    const html = UrlFetchApp.fetch(editUrl, { followRedirects: true }).getContentText();
+
+    // Extract FB_PUBLIC_LOAD_DATA_ using bracket counting (regex can truncate large arrays)
+    const varStart = html.indexOf('FB_PUBLIC_LOAD_DATA_ = [');
+    if (varStart === -1) {
+      Logger.log('❌ FB_PUBLIC_LOAD_DATA_ не найден в HTML.');
+      return;
+    }
+
+    let depth = 0, i = varStart + 'FB_PUBLIC_LOAD_DATA_ = '.length, jsonStart = i;
+    while (i < html.length) {
+      if (html[i] === '[') depth++;
+      else if (html[i] === ']') { depth--; if (depth === 0) { i++; break; } }
+      else if (html[i] === '"') { i++; while (i < html.length && html[i] !== '"') { if (html[i] === '\\\\') i++; i++; } }
+      i++;
+    }
+    const rawJson = html.substring(jsonStart, i);
+
+    const data = JSON.parse(rawJson);
+    const questions = data[1][1];
+
+    Logger.log('🔍 Найдено вопросов: ' + questions.length);
+    questions.forEach(function(q, idx) {
+      if (q) Logger.log('  [' + idx + '] тип=' + q[3] + ' q[4][0].length=' + (Array.isArray(q[4] && q[4][0]) ? q[4][0].length : '?'));
+    });
+
+    // type 7 = Multiple Choice Grid; q[4][0] = array of entry IDs (one per row)
+    const gridQ = questions.find(function(q) { return q && q[3] === 7; });
+    if (!gridQ) {
+      Logger.log('❌ Grid-вопрос (тип 7) не найден.');
+      return;
+    }
+
+    const rows = gridQ[4]; // array of rows (one per character)
+    Logger.log('✅ Строк найдено: ' + rows.length + ', ожидается: ' + CHARACTERS.length);
+
+    if (rows.length !== CHARACTERS.length) {
+      Logger.log('⚠️ Количество не совпадает. row[0] первой строки: ' + JSON.stringify(rows[0][0]));
+    }
+
+    const characterToEntry = {};
+    CHARACTERS.forEach(function(char, idx) {
+      if (idx < rows.length) {
+        characterToEntry[char.id] = 'entry.' + rows[idx][0];
+      }
+    });
+
+    const output = JSON.stringify({ formId: encodedFormId, characterToEntry: characterToEntry }, null, 2);
+    Logger.log(output);
+    Logger.log('✅ Скопируйте JSON выше в: public/form-character-mapping.json');
+  } catch (error) {
+    Logger.log('❌ Ошибка: ' + error);
+    Logger.log(error.stack);
+  }
+}
+
+/**
+ * Удаляет все вопросы из формы (перед пересозданием).
+ * ⚠️ ОСТОРОЖНО: удалит все данные вопросов!
  */
 function clearAllQuestions() {
-  const form = FormApp.getActiveForm();
-  const items = form.getItems();
-  
-  Logger.log('⚠️ Удаляем ' + items.length + ' вопросов...');
-  
-  // Удаляем в обратном порядке, чтобы избежать проблем с индексами
-  for (let i = items.length - 1; i >= 0; i--) {
-    form.deleteItem(i);
+  try {
+    const form = FormApp.getActiveForm();
+    const items = form.getItems();
+    Logger.log('⚠️  Удаляем ' + items.length + ' вопрос(ов)...');
+    for (let i = items.length - 1; i >= 0; i--) {
+      form.deleteItem(i);
+    }
+    Logger.log('✅ Все вопросы удалены');
+  } catch (error) {
+    Logger.log('❌ Ошибка: ' + error);
   }
-  
-  Logger.log('✅ Все вопросы удалены');
-}`;
+}
+`;
 }
 
 generateFormQuestions();

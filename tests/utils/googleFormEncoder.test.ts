@@ -1,16 +1,10 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import {
-  encodeFormSubmission,
+  buildPrefilledUrl,
   validateTierListCompletion,
   generateTierListSummary,
 } from '@/utils/googleFormEncoder';
-import type { TierList, UserProfile } from '@/types';
-
-const mockUser: UserProfile = {
-  id: '123456',
-  name: 'John Doe',
-  email: 'john@example.com',
-};
+import type { TierList } from '@/types';
 
 const mockTierList: TierList = {
   S: [
@@ -25,75 +19,70 @@ const mockTierList: TierList = {
   D: [],
 };
 
+const mockMapping = {
+  formId: 'test-form-id',
+  characterToEntry: {
+    nahida: 'entry.1111111111',
+    fischl: 'entry.2222222222',
+    bennett: 'entry.3333333333',
+  },
+};
+
 describe('googleFormEncoder', () => {
-  describe('encodeFormSubmission', () => {
-    it('should encode user information', () => {
-      const params = encodeFormSubmission(mockTierList, mockUser);
-
-      expect(params.has('entry.1234567890')).toBe(true); // userName
-      expect(params.get('entry.1234567890')).toBe('John Doe');
-      expect(params.has('entry.0987654321')).toBe(true); // userEmail
-      expect(params.get('entry.0987654321')).toBe('john@example.com');
+  describe('buildPrefilledUrl', () => {
+    beforeEach(() => {
+      vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve(mockMapping),
+      }));
     });
 
-    it('should encode S tier characters', () => {
-      const params = encodeFormSubmission(mockTierList, mockUser);
-
-      expect(params.has('entry.1111111111')).toBe(true);
-      const sTierValue = params.get('entry.1111111111');
-      expect(sTierValue).toContain('Nahida');
-      expect(sTierValue).toContain('Fischl');
+    afterEach(() => {
+      vi.unstubAllGlobals();
+      // Reset module-level mapping cache so each test starts fresh
+      vi.resetModules();
     });
 
-    it('should encode A tier characters', () => {
-      const params = encodeFormSubmission(mockTierList, mockUser);
-
-      expect(params.has('entry.2222222222')).toBe(true);
-      const aTierValue = params.get('entry.2222222222');
-      expect(aTierValue).toContain('Bennett');
+    it('should build a viewform URL with correct base', async () => {
+      const url = await buildPrefilledUrl(mockTierList);
+      expect(url).toContain('https://docs.google.com/forms/d/e/test-form-id/viewform');
     });
 
-    it('should encode empty tiers as empty strings', () => {
-      const params = encodeFormSubmission(mockTierList, mockUser);
-
-      expect(params.get('entry.3333333333')).toBe(''); // B tier
-      expect(params.get('entry.4444444444')).toBe(''); // C tier
-      expect(params.get('entry.5555555555')).toBe(''); // D tier
+    it('should include usp=pp_url param', async () => {
+      const url = await buildPrefilledUrl(mockTierList);
+      expect(url).toContain('usp=pp_url');
     });
 
-    it('should encode timestamp', () => {
-      const params = encodeFormSubmission(mockTierList, mockUser);
-
-      expect(params.has('entry.6666666666')).toBe(true);
-      const timestamp = params.get('entry.6666666666');
-      // Should be ISO format
-      expect(timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+    it('should encode S tier characters with their entry IDs', async () => {
+      const url = await buildPrefilledUrl(mockTierList);
+      expect(url).toContain('entry.1111111111=S');
+      expect(url).toContain('entry.2222222222=S');
     });
 
-    it('should handle user with missing optional fields', () => {
-      const userWithoutEmail: UserProfile = {
-        id: '123',
-        name: 'John',
-        email: '',
+    it('should encode A tier characters with their entry IDs', async () => {
+      const url = await buildPrefilledUrl(mockTierList);
+      expect(url).toContain('entry.3333333333=A');
+    });
+
+    it('should omit characters not in mapping without throwing', async () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const tierListWithUnknown: TierList = {
+        ...mockTierList,
+        B: [{ id: 'unknown-char', name: 'Unknown', element: 'pyro', rarity: 4 }],
       };
-
-      const params = encodeFormSubmission(mockTierList, userWithoutEmail);
-
-      expect(params.get('entry.1234567890')).toBe('John');
-      expect(params.get('entry.0987654321')).toBe('');
+      const url = await buildPrefilledUrl(tierListWithUnknown);
+      expect(url).toContain('viewform');
+      expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('unknown-char'));
+      warnSpy.mockRestore();
     });
 
-    it('should join multiple characters with comma and space', () => {
-      const params = encodeFormSubmission(mockTierList, mockUser);
-
-      const sTierValue = params.get('entry.1111111111');
-      expect(sTierValue).toBe('Nahida, Fischl');
-    });
-
-    it('should return URLSearchParams instance', () => {
-      const params = encodeFormSubmission(mockTierList, mockUser);
-
-      expect(params instanceof URLSearchParams).toBe(true);
+    it('should throw if mapping fetch fails', async () => {
+      vi.resetModules();
+      vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false }));
+      const { buildPrefilledUrl: freshBuild } = await import('@/utils/googleFormEncoder');
+      await expect(freshBuild(mockTierList)).rejects.toThrow(
+        'Failed to load form-character-mapping.json'
+      );
     });
   });
 
