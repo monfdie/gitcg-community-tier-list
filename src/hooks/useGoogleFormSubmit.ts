@@ -52,14 +52,6 @@ export function useGoogleFormSubmit(totalCharacters: number) {
         return false;
       }
 
-      // Convert user from GoogleUserProfile to UserProfile format
-      const formUser = {
-        id: user.sub,
-        name: user.name,
-        email: user.email,
-        picture: user.picture,
-      };
-
       setState((prev) => ({
         ...prev,
         isSubmitting: true,
@@ -71,7 +63,7 @@ export function useGoogleFormSubmit(totalCharacters: number) {
           console.log('[useGoogleFormSubmit] Submitting tier list for:', user.email);
         }
 
-        await submitTierListForm(tierList, formUser);
+        await submitTierListForm(tierList);
 
         setState({
           isSubmitting: false,

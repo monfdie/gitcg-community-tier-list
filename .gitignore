@@ -14,8 +14,7 @@ dist-ssr
 .env.local
 
 # Scripts artifacts (generated files, do NOT commit)
-scripts/form-questions.json
-scripts/characters-full.json
+scripts/*.json
 scripts/google-form-importer.gs
 
 # Temporary directory (do NOT commit)

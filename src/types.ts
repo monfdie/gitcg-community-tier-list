@@ -1,8 +1,4 @@
 /**
- * Core TypeScript interfaces and types for the application
- */
-
-/**
  * Represents a playable character in Genshin Impact
  */
 export interface Character {
@@ -33,20 +29,6 @@ export interface TierList {
   B: Character[];
   C: Character[];
   D: Character[];
-}
-
-/**
- * Represents a complete tier list response ready for submission
- */
-export interface FormSubmissionPayload {
-  userName: string;
-  userEmail: string;
-  sTier: string;
-  aTier: string;
-  bTier: string;
-  cTier: string;
-  dTier: string;
-  timestamp: string;
 }
 
 /**

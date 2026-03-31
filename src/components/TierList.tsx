@@ -5,6 +5,7 @@ import { useDragula } from '@/hooks/useDragula';
 import { TIERS } from '@/config';
 import { TierRow } from './TierRow';
 import { UnassignedPool } from './UnassignedPool';
+import { SubmitButton } from './SubmitButton';
 import type { TierList as TierListType } from '@/types';
 import styles from './TierList.module.css';
 
@@ -96,11 +97,10 @@ export function TierList({ characters, onStateChange }: TierListProps) {
           onCharacterClick={handleCharacterClick}
         />
 
-        {isComplete() && (
-          <div className={styles.completionMessage}>
-            <p>✅ All characters assigned! Ready to submit your tier list.</p>
-          </div>
-        )}
+        <SubmitButton
+          tierList={tierList}
+          isComplete={isComplete()}
+        />
       </div>
     </div>
   );
