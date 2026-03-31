@@ -1,3 +1,30 @@
+.tierSelector {
+  display: flex;
+  gap: 0;
+  background: #1a1a17;
+}
+
+.tierBtn {
+  flex: 1;
+  padding: 6px 0;
+  border: none;
+  background: #2e2e2a;
+  color: #888;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.tierBtn:hover {
+  background: #3a3a36;
+  color: #ccc;
+}
+
+.tierBtnActive {
+  color: #1a1a17;
+}
+
 .unassignedPool {
   background: #242222;
   border: none;

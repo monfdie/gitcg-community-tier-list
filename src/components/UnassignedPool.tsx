@@ -1,11 +1,15 @@
 import { useMemo } from 'react';
 import type { Character } from '@/types';
+import { TIERS, TIER_COLORS } from '@/config';
+import type { TierLevel } from '@/config';
 import { CharacterItem } from './CharacterItem';
 import styles from './UnassignedPool.module.css';
 
 interface UnassignedPoolProps {
   characters: Character[];
   searchQuery?: string;
+  defaultTier: TierLevel;
+  onDefaultTierChange: (tier: TierLevel) => void;
   onCharacterClick?: (character: Character) => void;
 }
 
@@ -15,6 +19,8 @@ interface UnassignedPoolProps {
 export function UnassignedPool({
   characters,
   searchQuery = '',
+  defaultTier,
+  onDefaultTierChange,
   onCharacterClick,
 }: UnassignedPoolProps) {
   const filteredCharacters = useMemo(() => {
@@ -51,9 +57,19 @@ export function UnassignedPool({
       className={styles.unassignedPool}
       id="unassigned-pool"
     >
-      <div className={styles.header}>
-        <h3>Available Characters</h3>
-        <span className={styles.count}>{filteredCharacters.length} left</span>
+      <div className={styles.tierSelector}>
+        {TIERS.map((tier) => (
+          <button
+            key={tier}
+            className={`${styles.tierBtn} ${defaultTier === tier ? styles.tierBtnActive : ''}`}
+            style={defaultTier === tier ? { background: TIER_COLORS[tier] } : undefined}
+            onClick={() => onDefaultTierChange(tier)}
+            aria-pressed={defaultTier === tier}
+            aria-label={`Click sends to ${tier} tier`}
+          >
+            {tier}
+          </button>
+        ))}
       </div>
 
       <div className={`${styles.grid} sort`} data-tier="unassigned">

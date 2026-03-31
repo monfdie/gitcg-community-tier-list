@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import type { Character, TierKey } from '@/types';
 import { useTierListState } from '@/hooks/useTierListState';
 import { useDragula } from '@/hooks/useDragula';
 import { TIERS } from '@/config';
+import type { TierLevel } from '@/config';
 import { TierRow } from './TierRow';
 import { UnassignedPool } from './UnassignedPool';
 import { SubmitButton } from './SubmitButton';
@@ -35,6 +36,8 @@ export function TierList({ characters, onStateChange }: TierListProps) {
     getTierCount,
   } = useTierListState(characters);
 
+  const [defaultTier, setDefaultTier] = useState<TierLevel>('S');
+
   // Set up dragula for drag-drop functionality
   useDragula({
     onCharacterMoved: (characterId: string, targetTierId: string, siblingId: string | null) => {
@@ -63,18 +66,15 @@ export function TierList({ characters, onStateChange }: TierListProps) {
   }, [tierList, onStateChange, isComplete]);
 
   const handleCharacterClick = (character: Character) => {
-    // If character is in a tier, move to unassigned
+    // Characters in tiers move back to unassigned on click
     for (const tier of TIERS) {
       if (tierList[tier].some((c) => c.id === character.id)) {
         moveCharacterToTier(character, 'unassigned');
         return;
       }
     }
-
-    // If unassigned, move to first tier (S by default)
-    if (unassignedCharacters.some((c) => c.id === character.id)) {
-      moveCharacterToTier(character, 'S');
-    }
+    // Unassigned characters go to the currently selected default tier
+    moveCharacterToTier(character, defaultTier);
   };
 
   return (
@@ -94,6 +94,8 @@ export function TierList({ characters, onStateChange }: TierListProps) {
       <div className={styles.scrollBuffer}>
         <UnassignedPool
           characters={unassignedCharacters}
+          defaultTier={defaultTier}
+          onDefaultTierChange={setDefaultTier}
           onCharacterClick={handleCharacterClick}
         />
 
