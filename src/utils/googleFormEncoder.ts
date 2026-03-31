@@ -3,7 +3,7 @@ import { TIERS } from '@/config';
 
 interface CharacterMappingData {
   formId: string;
-  nameToEntry: Record<string, string>;
+  characterToEntry: Record<string, string>;
 }
 
 /**
@@ -23,7 +23,7 @@ async function loadCharacterMapping(): Promise<CharacterMappingData> {
   const data = await response.json();
   mappingData = {
     formId: data.formId,
-    nameToEntry: data.nameToEntry || {},
+    characterToEntry: data.characterToEntry || {},
   };
   return mappingData;
 }
@@ -39,18 +39,18 @@ async function loadCharacterMapping(): Promise<CharacterMappingData> {
  * Google handles authentication and CSRF internally.
  */
 export async function buildPrefilledUrl(tierList: TierList): Promise<string> {
-  const { formId, nameToEntry } = await loadCharacterMapping();
+  const { formId, characterToEntry } = await loadCharacterMapping();
 
   const params = new URLSearchParams({ usp: 'pp_url' });
 
   for (const tier of TIERS) {
     const characters = tierList[tier as keyof typeof tierList];
     for (const character of characters) {
-      const entryId = nameToEntry[character.name];
+      const entryId = characterToEntry[character.id];
       if (entryId) {
         params.append(entryId, tier);
       } else {
-        console.warn(`[Form] No entry ID for character: ${character.name}`);
+        console.warn(`[Form] No entry ID for character: ${character.id}`);
       }
     }
   }

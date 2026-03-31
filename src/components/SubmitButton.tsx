@@ -36,18 +36,15 @@ export function SubmitButton({ tierList, isComplete }: SubmitButtonProps) {
     }
   };
 
-  if (submitted) {
-    return (
-      <div className={styles.submitted}>
-        <p>✅ Google Form opened in a new tab!</p>
-        <small>Please click Submit in that tab to record your tier list.</small>
-      </div>
-    );
-  }
-
   return (
     <div className={styles.container}>
-      {hint && (
+      {submitted && (
+        <p className={styles.hint}>
+          ✅ Google Form opened — please click Submit in that tab.
+        </p>
+      )}
+
+      {hint && !submitted && (
         <p className={styles.hint}>{hint}</p>
       )}
 
