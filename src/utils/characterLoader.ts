@@ -26,10 +26,8 @@ export async function loadCharacters(): Promise<Character[]> {
       throw new Error('Invalid character data format: expected array');
     }
 
-    // Validate character data and build imageUrl
-    const validCharacters = characters
-      .filter(validateCharacter)
-      .map(buildCharacterImageUrl);
+    // Validate character data
+    const validCharacters = characters.filter(validateCharacter);
 
     if (DEBUG) {
       console.log(`[CharacterLoader] Loaded ${validCharacters.length} valid characters`);
@@ -42,24 +40,6 @@ export async function loadCharacters(): Promise<Character[]> {
     console.error('[CharacterLoader] Error:', message);
     throw new Error(`Failed to load characters: ${message}`);
   }
-}
-
-/**
- * Build imageUrl from avatarId
- * Uses assets/avatars directory for images
- */
-function buildCharacterImageUrl(character: Character): Character {
-  const baseUrl = import.meta.env.BASE_URL || '/';
-  const avatarId = character.avatarId;
-  
-  if (!character.imageUrl && avatarId) {
-    // Use assets/avatars directory where character images are stored
-    character.imageUrl = `${baseUrl}assets/avatars/${avatarId}.webp`;
-    if (DEBUG) {
-      console.log('[buildCharacterImageUrl] Set imageUrl for', character.id, character.imageUrl);
-    }
-  }
-  return character;
 }
 
 /**
@@ -77,7 +57,8 @@ function validateCharacter(character: unknown): character is Character {
     typeof obj.name === 'string' &&
     typeof obj.element === 'string' &&
     typeof obj.rarity === 'number' &&
-    (obj.rarity === 4 || obj.rarity === 5);
+    (obj.rarity === 4 || obj.rarity === 5) &&
+    typeof obj.imageUrl === 'string';
 
   const validElements = [
     'pyro',

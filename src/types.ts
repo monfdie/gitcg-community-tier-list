@@ -6,8 +6,9 @@ export interface Character {
   name: string;
   element: 'pyro' | 'hydro' | 'electro' | 'cryo' | 'anemo' | 'geo' | 'dendro';
   rarity: 4 | 5;
-  imageUrl?: string;
-  avatarId?: string;
+  imageUrl: string;
+  /** When true, renders the card at 2:1 aspect ratio instead of 1:1 */
+  wideIcon?: boolean;
 }
 
 /**

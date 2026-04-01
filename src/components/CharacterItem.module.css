@@ -9,7 +9,6 @@
   touch-action: none;
   transition: opacity 0.2s ease, transform 0.1s ease;
   position: relative;
-  aspect-ratio: 1;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -37,6 +36,13 @@
 .characterItem.dragging {
   opacity: 1;
   cursor: grabbing !important;
+}
+
+/* 2:1 wide variant for Traveler icons showing both characters */
+.wide {
+  width: 160px;
+  height: 80px;
+  aspect-ratio: 2 / 1;
 }
 
 /* Image wrapper - full square */
@@ -98,6 +104,10 @@
     width: 70px;
     height: 70px;
   }
+  .wide {
+    width: 140px;
+    height: 70px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -105,11 +115,19 @@
     width: 60px;
     height: 60px;
   }
+  .wide {
+    width: 120px;
+    height: 60px;
+  }
 }
 
 @media (max-width: 360px) {
   .characterItem {
     width: 52px;
+    height: 52px;
+  }
+  .wide {
+    width: 104px;
     height: 52px;
   }
 }

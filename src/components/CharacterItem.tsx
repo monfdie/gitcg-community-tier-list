@@ -33,10 +33,7 @@ export function CharacterItem({
   };
 
   const getImageUrl = (): string => {
-    if (character.imageUrl) return character.imageUrl;
-    if (character.avatarId)
-      return `${import.meta.env.BASE_URL}assets/avatars/${character.avatarId}.webp`;
-    return `${import.meta.env.BASE_URL}assets/placeholder-avatar.png`;
+    return `${import.meta.env.BASE_URL}${character.imageUrl}`;
   };
 
   const elementEmoji = ELEMENT_EMOJIS[character.element as keyof typeof ELEMENT_EMOJIS] || '?';
@@ -44,7 +41,7 @@ export function CharacterItem({
   return (
     <div
       id={character.id}
-      className={`${styles.characterItem} character`}
+      className={`${styles.characterItem}${character.wideIcon ? ` ${styles.wide}` : ''} character`}
       role="button"
       tabIndex={0}
       draggable={draggable}
