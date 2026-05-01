@@ -1,0 +1,954 @@
+[
+  {
+    "id": "1",
+    "name": "Ganyu",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Ganyu.png"
+  },
+  {
+    "id": "2",
+    "name": "Diona",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Diona.png"
+  },
+  {
+    "id": "3",
+    "name": "Kaeya",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Kaeya.png"
+  },
+  {
+    "id": "4",
+    "name": "Chongyun",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Chongyun.png"
+  },
+  {
+    "id": "5",
+    "name": "Kamisato Ayaka",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Ayaka.png"
+  },
+  {
+    "id": "6",
+    "name": "Eula",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Eula.png"
+  },
+  {
+    "id": "7",
+    "name": "Shenhe",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Shenhe.png"
+  },
+  {
+    "id": "8",
+    "name": "Qiqi",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Qiqi.png"
+  },
+  {
+    "id": "9",
+    "name": "Layla",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Layla.png"
+  },
+  {
+    "id": "10",
+    "name": "Charlotte",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Charlotte.png"
+  },
+  {
+    "id": "11",
+    "name": "Wriothesley",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Wriothesley.png"
+  },
+  {
+    "id": "12",
+    "name": "Freminet",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Freminet.png"
+  },
+  {
+    "id": "13",
+    "name": "Rosaria",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Rosaria.png"
+  },
+  {
+    "id": "14",
+    "name": "Citlali",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Citlali.png"
+  },
+  {
+    "id": "15",
+    "name": "Escoffier",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Escoffier.png"
+  },
+  {
+    "id": "16",
+    "name": "Skirk",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Skirk.png"
+  },
+  {
+    "id": "17",
+    "name": "Mika",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Mika.png"
+  },
+  {
+    "id": "18",
+    "name": "Barbara",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Barbara.png"
+  },
+  {
+    "id": "19",
+    "name": "Mona",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Mona.png"
+  },
+  {
+    "id": "20",
+    "name": "Tartaglia",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Tartaglia.png"
+  },
+  {
+    "id": "21",
+    "name": "Xingqiu",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Xingqiu.png"
+  },
+  {
+    "id": "22",
+    "name": "Sangonomiya Kokomi",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Sangonomiya Kokomi.png"
+  },
+  {
+    "id": "23",
+    "name": "Kamisato Ayato",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Kamisato Ayato.png"
+  },
+  {
+    "id": "24",
+    "name": "Yelan",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Yelan.png"
+  },
+  {
+    "id": "25",
+    "name": "Nilou",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Nilou.png"
+  },
+  {
+    "id": "26",
+    "name": "Candace",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Candace.png"
+  },
+  {
+    "id": "27",
+    "name": "Neuvillette",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Neuvillette.png"
+  },
+  {
+    "id": "28",
+    "name": "Furina",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Furina.png"
+  },
+  {
+    "id": "29",
+    "name": "Sigewinne",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Sigewinne.png"
+  },
+  {
+    "id": "30",
+    "name": "Mualani",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Mualani.png"
+  },
+  {
+    "id": "31",
+    "name": "Dahlia",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Dahlia.png"
+  },
+  {
+    "id": "32",
+    "name": "Aino",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Aino.png"
+  },
+  {
+    "id": "33",
+    "name": "Diluc",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Diluc.png"
+  },
+  {
+    "id": "34",
+    "name": "Xiangling",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Xiangling.png"
+  },
+  {
+    "id": "35",
+    "name": "Bennett",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Bennett.png"
+  },
+  {
+    "id": "36",
+    "name": "Amber",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Amber.png"
+  },
+  {
+    "id": "37",
+    "name": "Yoimiya",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Yoimiya.png"
+  },
+  {
+    "id": "38",
+    "name": "Klee",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Klee.png"
+  },
+  {
+    "id": "39",
+    "name": "Hu Tao",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Hu Tao.png"
+  },
+  {
+    "id": "40",
+    "name": "Yanfei",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Yanfei.png"
+  },
+  {
+    "id": "41",
+    "name": "Dehya",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Dehya.png"
+  },
+  {
+    "id": "42",
+    "name": "Lyney",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Lyney.png"
+  },
+  {
+    "id": "43",
+    "name": "Thoma",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Thoma.png"
+  },
+  {
+    "id": "44",
+    "name": "Xinyan",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Xinyan.png"
+  },
+  {
+    "id": "45",
+    "name": "Chevreuse",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Chevreuse.png"
+  },
+  {
+    "id": "46",
+    "name": "Arlecchino",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Arlecchino.png"
+  },
+  {
+    "id": "47",
+    "name": "Mavuika",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Mavuika.png"
+  },
+  {
+    "id": "48",
+    "name": "Gaming",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Gaming.png"
+  },
+  {
+    "id": "49",
+    "name": "Fischl",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Fischl.png"
+  },
+  {
+    "id": "50",
+    "name": "Razor",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Razor.png"
+  },
+  {
+    "id": "51",
+    "name": "Keqing",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Keqing.png"
+  },
+  {
+    "id": "52",
+    "name": "Cyno",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Cyno.png"
+  },
+  {
+    "id": "53",
+    "name": "Beidou",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Beidou.png"
+  },
+  {
+    "id": "54",
+    "name": "Kujou Sara",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Kujou Sara.png"
+  },
+  {
+    "id": "55",
+    "name": "Raiden Shogun",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Raiden Shogun.png"
+  },
+  {
+    "id": "56",
+    "name": "Yae Miko",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Yae Miko.png"
+  },
+  {
+    "id": "57",
+    "name": "Lisa",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Lisa.png"
+  },
+  {
+    "id": "58",
+    "name": "Dori",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Dori.png"
+  },
+  {
+    "id": "59",
+    "name": "Kuki Shinobu",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Kuki Shinobu.png"
+  },
+  {
+    "id": "60",
+    "name": "Clorinde",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Clorinde.png"
+  },
+  {
+    "id": "61",
+    "name": "Sethos",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Sethos.png"
+  },
+  {
+    "id": "62",
+    "name": "Iansan",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Iansan.png"
+  },
+  {
+    "id": "63",
+    "name": "Varesa",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Varesa.png"
+  },
+  {
+    "id": "64",
+    "name": "Ororon",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Ororon.png"
+  },
+  {
+    "id": "65",
+    "name": "Ineffa",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Ineffa.png"
+  },
+  {
+    "id": "66",
+    "name": "Sucrose",
+    "element": "anemo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Sucrose.png"
+  },
+  {
+    "id": "67",
+    "name": "Jean",
+    "element": "anemo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Jean.png"
+  },
+  {
+    "id": "68",
+    "name": "Venti",
+    "element": "anemo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Venti.png"
+  },
+  {
+    "id": "69",
+    "name": "Xiao",
+    "element": "anemo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Xiao.png"
+  },
+  {
+    "id": "70",
+    "name": "Kaedehara Kazuha",
+    "element": "anemo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Kaedehara Kazuha.png"
+  },
+  {
+    "id": "71",
+    "name": "Wanderer",
+    "element": "anemo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Wanderer.png"
+  },
+  {
+    "id": "72",
+    "name": "Sayu",
+    "element": "anemo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Sayu.png"
+  },
+  {
+    "id": "73",
+    "name": "Lynette",
+    "element": "anemo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Lynette.png"
+  },
+  {
+    "id": "74",
+    "name": "Faruzan",
+    "element": "anemo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Faruzan.png"
+  },
+  {
+    "id": "75",
+    "name": "Xianyun",
+    "element": "anemo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Xianyun.png"
+  },
+  {
+    "id": "76",
+    "name": "Chasca",
+    "element": "anemo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Chasca.png"
+  },
+  {
+    "id": "77",
+    "name": "Lan Yan",
+    "element": "anemo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Lan Yan.png"
+  },
+  {
+    "id": "78",
+    "name": "Shikanoin Heizou",
+    "element": "anemo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Shikanoin Heizou.png"
+  },
+  {
+    "id": "79",
+    "name": "Yumemizuki Mizuki",
+    "element": "anemo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Yumemizuki Mizuki.png"
+  },
+  {
+    "id": "80",
+    "name": "Ifa",
+    "element": "anemo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Ifa.png"
+  },
+  {
+    "id": "81",
+    "name": "Ningguang",
+    "element": "geo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Ningguang.png"
+  },
+  {
+    "id": "82",
+    "name": "Noelle",
+    "element": "geo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Noelle.png"
+  },
+  {
+    "id": "83",
+    "name": "Zhongli",
+    "element": "geo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Zhongli.png"
+  },
+  {
+    "id": "84",
+    "name": "Albedo",
+    "element": "geo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Albedo.png"
+  },
+  {
+    "id": "85",
+    "name": "Arataki Itto",
+    "element": "geo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Arataki Itto.png"
+  },
+  {
+    "id": "86",
+    "name": "Gorou",
+    "element": "geo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Gorou.png"
+  },
+  {
+    "id": "87",
+    "name": "Yun Jin",
+    "element": "geo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Yun Jin.png"
+  },
+  {
+    "id": "88",
+    "name": "Navia",
+    "element": "geo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Navia.png"
+  },
+  {
+    "id": "89",
+    "name": "Chiori",
+    "element": "geo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Chiori.png"
+  },
+  {
+    "id": "90",
+    "name": "Kachina",
+    "element": "geo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Kachina.png"
+  },
+  {
+    "id": "91",
+    "name": "Xilonen",
+    "element": "geo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Xilonen.png"
+  },
+  {
+    "id": "92",
+    "name": "Collei",
+    "element": "dendro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Collei.png"
+  },
+  {
+    "id": "93",
+    "name": "Tighnari",
+    "element": "dendro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Tighnari.png"
+  },
+  {
+    "id": "94",
+    "name": "Nahida",
+    "element": "dendro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Nahida.png"
+  },
+  {
+    "id": "95",
+    "name": "Yaoyao",
+    "element": "dendro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Yaoyao.png"
+  },
+  {
+    "id": "96",
+    "name": "Baizhu",
+    "element": "dendro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Baizhu.png"
+  },
+  {
+    "id": "97",
+    "name": "Alhaitham",
+    "element": "dendro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Alhaitham.png"
+  },
+  {
+    "id": "98",
+    "name": "Kirara",
+    "element": "dendro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Kirara.png"
+  },
+  {
+    "id": "99",
+    "name": "Kaveh",
+    "element": "dendro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Kaveh.png"
+  },
+  {
+    "id": "100",
+    "name": "Kinich",
+    "element": "dendro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Kinich.png"
+  },
+  {
+    "id": "101",
+    "name": "Emilie",
+    "element": "dendro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Emilie.png"
+  },
+  {
+    "id": "102",
+    "name": "Fatui Cryo Cicin Mage",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Fatui Cryo Cicin Mage.png"
+  },
+  {
+    "id": "103",
+    "name": "La Signora",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/La Signora.png"
+  },
+  {
+    "id": "104",
+    "name": "Cryo Hypostasis",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Cryo Hypostasis.png"
+  },
+  {
+    "id": "105",
+    "name": "Frost Operative",
+    "element": "cryo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Frost Operative.png"
+  },
+  {
+    "id": "106",
+    "name": "Rhodeia of Loch",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Rhodeia of Loch.png"
+  },
+  {
+    "id": "107",
+    "name": "Mirror Maiden",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Mirror Maiden.png"
+  },
+  {
+    "id": "108",
+    "name": "Abyss Herald: Wicked Torrents",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Abyss Herald.png"
+  },
+  {
+    "id": "109",
+    "name": "All-Devouring Narwhal",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/All-Devouring Narwhal.png"
+  },
+  {
+    "id": "110",
+    "name": "Hydro Hilichurl Rogue",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Hydro Hilichurl Rogue.png"
+  },
+  {
+    "id": "111",
+    "name": "Hydro Tulpa",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Hydro Tulpa.png"
+  },
+  {
+    "id": "112",
+    "name": "Consecrated Horned Crocodile",
+    "element": "hydro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Consecrated Horned Crocodile.png"
+  },
+  {
+    "id": "113",
+    "name": "Fatui Pyro Agent",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Fatui Pyro Agent.png"
+  },
+  {
+    "id": "114",
+    "name": "Abyss Lector: Fathomless Flames",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Abyss Lector Fathomless Flames.png"
+  },
+  {
+    "id": "115",
+    "name": "Eremite Scorching Loremaster",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Eremite Scorching Loremaster.png"
+  },
+  {
+    "id": "116",
+    "name": "Emperor of Fire and Iron",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Emperor of Fire and Iron.png"
+  },
+  {
+    "id": "117",
+    "name": "Lord of Eroded Primal Fire",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Lord of Eroded Primal Fire.png"
+  },
+  {
+    "id": "118",
+    "name": "Goldflame Qucusaur Tyrant",
+    "element": "pyro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Goldflame Qucusaur Tyrant.png"
+  },
+  {
+    "id": "119",
+    "name": "Electro Hypostasis",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Electro Hypostasis.png"
+  },
+  {
+    "id": "120",
+    "name": "Thunder Manifestation",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Thunder Manifestation.png"
+  },
+  {
+    "id": "121",
+    "name": "Millennial Pearl Seahorse",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Millennial Pearl Seahorse.png"
+  },
+  {
+    "id": "122",
+    "name": "Fatui Electro Cicin Mage",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Fatui Electro Cicin Mage.png"
+  },
+  {
+    "id": "123",
+    "name": "Consecrated Scorpion",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Consecrated Scorpion.png"
+  },
+  {
+    "id": "124",
+    "name": "Abyss Lector: Violet Lightning",
+    "element": "electro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Abyss Lector Violet Lightning.png"
+  },
+  {
+    "id": "125",
+    "name": "Maguu Kenki",
+    "element": "anemo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Maguu Kenki.png"
+  },
+  {
+    "id": "126",
+    "name": "Dvalin",
+    "element": "anemo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Dvalin.png"
+  },
+  {
+    "id": "127",
+    "name": "Consecrated Flying Serpent",
+    "element": "anemo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Consecrated Flying Serpent.png"
+  },
+  {
+    "id": "128",
+    "name": "Stonehide Lawachurl",
+    "element": "geo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Stonehide Lawachurl.png"
+  },
+  {
+    "id": "129",
+    "name": "Azhdaha",
+    "element": "geo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Azhdaha.png"
+  },
+  {
+    "id": "130",
+    "name": "Golden Wolflord",
+    "element": "geo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Golden Wolflord.png"
+  },
+  {
+    "id": "131",
+    "name": "Black Serpent Knight: Rockbreaker Ax",
+    "element": "geo",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Black Serpent Knight Rockbreaker Ax.png"
+  },
+  {
+    "id": "132",
+    "name": "Jadeplume Terrorshroom",
+    "element": "dendro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Jadeplume Terrorshroom.png"
+  },
+  {
+    "id": "133",
+    "name": "Guardian of Apep's Oasis",
+    "element": "dendro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Guardian of Apep's Oasis.png"
+  },
+  {
+    "id": "134",
+    "name": "Eremite Floral Ring-Dancer",
+    "element": "dendro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Eremite Floral Ring-Dancer.png"
+  },
+  {
+    "id": "135",
+    "name": "Gluttonous Yumkasaur Mountain King",
+    "element": "dendro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Gluttonous Yumkasaur Mountain King.png"
+  },
+  {
+    "id": "136",
+    "name": "Consecrated Fanged Beast",
+    "element": "dendro",
+    "rarity": 5,
+    "imageUrl": "assets/avatars/Consecrated Fanged Beast.png"
+  }
+]
